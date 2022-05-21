@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Conduct Legal Research with AI: Part 1 - Justin&#39;s Data Blog</title>
+
+<meta name="description" content="Integrate JSON data from a rest API into your Neo4j Stack">
+
+
+
+
+
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://blog.jnapolitano.io/favicon.png">
+
+
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
+
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="https://blog.jnapolitano.io/css/style.min.aadd6dd80ebf123717dcfe3d847163090d744aafb3d09e967f728dc0ef68bc1b.css" integrity="sha256-qt1t2A6/EjcX3P49hHFjCQ10Sq&#43;z0J6Wf3KNwO9ovBs=">
+    
+
+
+
+
+
+    
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <script src="https://blog.jnapolitano.io/js/script.min.510c781c39dbb21b4c76d85c82e2bdf4689220adbb7cd61e49e9d293e442fb42.js" type="text/javascript" charset="utf-8" integrity="sha256-UQx4HDnbshtMdthcguK99GiSIK27fNYeSenSk&#43;RC&#43;0I="></script>
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="Conduct Legal Research with AI: Part 1" />
+<meta property="og:description" content="Integrate JSON data from a rest API into your Neo4j Stack" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jnapolitano.io/posts/neo4j_integration/" /><meta property="og:image" content="https://blog.jnapolitano.io/feature-image.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-16T14:40:32+00:00" />
+<meta property="article:modified_time" content="2022-05-16T14:40:32+00:00" />
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.jnapolitano.io/feature-image.png"/>
+
+<meta name="twitter:title" content="Conduct Legal Research with AI: Part 1"/>
+<meta name="twitter:description" content="Integrate JSON data from a rest API into your Neo4j Stack"/>
+
+
+
+    
+        <link rel="webmention" href="https://webmention.io/hugo-theme-anubis/webmention" />
+        
+            <link rel="pingback" href="https://webmention.io/hugo-theme-anubis/xmlrpc" />
+        
+    
+    
+        <link rel="webmention" href="https://hugo-test-blog.jnapolitano.io/webmentions/receive" />
+    
+
+
+
+
+
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5H9YLZK4GH"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5H9YLZK4GH', { 'anonymize_ip': false });
+}
+</script>
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <div class="header-top">
+    <h1 class="site-title">
+    <a href="/">Justin&#39;s Data Blog</a>
+</h1>
+    <ul class="social-icons">
+
+
+    
+        
+        
+        <li>
+            <a href="https://github.com/justin-napolitano" title="Github" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="mailto:justin@jnapolitano.io" title="Email" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="https://www.linkedin.com/in/justin-napolitano" title="Linkedin" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="https://twitter.com/just_napolitano" title="Twitter" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+
+
+    <li>
+            <a href="https://blog.jnapolitano.io/index.xml" title="RSS" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+</ul>
+</div>
+
+    <nav>
+        
+        
+        <a class="" href="https://blog.jnapolitano.io" title="Feed">Feed</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/series/" title="">Series</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/categories/" title="">Categories</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/tags/" title="">Tags</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+
+    <article class="post h-entry">
+        <div class="post-header">
+            <header>
+                <h1 class="p-name post-title">Conduct Legal Research with AI: Part 1</h1>
+                            
+
+
+                
+                
+                
+                    
+                    
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                    
+                    
+
+                    <p><img
+                    srcset="/posts/neo4j_integration/post-image_hu341c2545ac77762db119912d9e3bcc76_625209_480x600_fill_q90_box_smart1_3.png 480w, /posts/neo4j_integration/post-image_hu341c2545ac77762db119912d9e3bcc76_625209_768x600_fill_q90_box_smart1_3.png 768w, /posts/neo4j_integration/post-image_hu341c2545ac77762db119912d9e3bcc76_625209_1024x600_fill_q90_box_smart1_3.png 1024w, /posts/neo4j_integration/post-image_hu341c2545ac77762db119912d9e3bcc76_625209_1366x600_fill_q90_box_smart1_3.png 1366w"
+                    src="/posts/neo4j_integration/"
+                    alt="banner-image">
+                    </p>    
+                
+
+                
+                    <p>Justin Napolitano</p>
+                
+
+                
+                <p>2022-05-16 14:40:32.169 &#43;0000 UTC</p>
+                    
+                
+
+                <hr/>
+            </header>
+        </div>
+        <div class="content e-content">
+            <h1>Table of Contents</h1>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#instantiate-neo-model-api">Instantiate Neo Model Api</a></li>
+    <li><a href="#get-files">Get Files</a></li>
+    <li><a href="#create-master-subject-file">Create Master Subject File</a></li>
+    <li><a href="#json-pipeline-function">Json Pipeline function</a>
+      <ul>
+        <li><a href="#case-pipeline">Case Pipeline</a></li>
+        <li><a href="#the-subject-pipeline">The Subject Pipeline</a></li>
+        <li><a href="#uploading-case-and-subject-data">Uploading Case and Subject data</a></li>
+        <li><a href="#submit-the-relationships">Submit the Relationships</a></li>
+      </ul>
+    </li>
+    <li><a href="#putting-everything-together">Putting Everything Together</a></li>
+  </ul>
+</nav>
+            <hr/>
+            
+    Warning - check your series - as none found
+
+            <hr/>
+            <h2 id="introduction" >Introduction
+<span>
+    <a href="#introduction">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>In a previous <a href="https://blog.jnapolitano.io/loc_crawler/">post</a>, I detailed the process of crawling the Library of Congress API to generate json files that could be intergrated into you DB of choice.</p>
+<p>In this discussion, we will integrate JSON data into a Neo4j graph database.</p>
+<h2 id="overview" >Overview
+<span>
+    <a href="#overview">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The process is fairly straightforward.  The most difficult part is wrangling your json data into the right format for integration.</p>
+<p>The main function first instantiates the database config informormation.  It then gets the cwd from a context manager.  We then import the files to be integrated.  A master subject table is created to record only unique subjects to avoid duplicates.  Finally, a json pipeline extracts the data from json, transforms it to integrate into neo4j, and finally we upload using the neomodels api.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    neo_applified <span style="color:#f92672">=</span> instantiate_neo_model_api()
+    cwd <span style="color:#f92672">=</span> get_cwd()
+    file_list <span style="color:#f92672">=</span> get_files(cwd <span style="color:#f92672">=</span> cwd)
+    master_subject_table <span style="color:#f92672">=</span> create_master_subject_table()
+    json_pipeline(file_list<span style="color:#f92672">=</span>file_list, master_subject_table<span style="color:#f92672">=</span>master_subject_table)
+</code></pre></div><h2 id="instantiate-neo-model-api" >Instantiate Neo Model Api
+<span>
+    <a href="#instantiate-neo-model-api">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>I extended the neo model api with a few helper functions.  The repo is found at <a href="https://github.com/justin-napolitano/neo4jAPI">https://github.com/justin-napolitano/neo4jAPI</a>.</p>
+<p>You can also review the snapshot below.</p>
+<p>We will be calling the initation function to set the config information, update, create Case, and Create Subject classes during this review.</p>
+<p>create subject calls the custom subject class and returns an object that can later be integrated into the db with the .save() function.</p>
+<p>Create case does exactly the same.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> dataclasses <span style="color:#f92672">import</span> dataclass
+<span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> date
+<span style="color:#f92672">from</span> shelve <span style="color:#f92672">import</span> Shelf
+<span style="color:#f92672">from</span> neomodel <span style="color:#f92672">import</span> (config, StructuredNode, StringProperty, IntegerProperty,
+    UniqueIdProperty, RelationshipTo, BooleanProperty, EmailProperty, Relationship, db)
+<span style="color:#f92672">from</span> pprint <span style="color:#f92672">import</span> pprint
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">neoAPI</span>():
+
+    <span style="color:#66d9ef">def</span> __init__(self,uri,user,psw):
+        self<span style="color:#f92672">.</span>db_init <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>instantiate_neo_model_session(uri,user,psw)    
+        
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">instantiate_neo_model_session</span>(uri,user,psw):
+        
+        <span style="color:#75715e">#config.DATABASE_URL = &#39;neo4j+s://{}:{}@{}&#39;.format(user, psw, uri)</span>
+        config<span style="color:#f92672">.</span>DATABASE_URL <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bolt://neo4j:beautiful@localhost:7687&#39;</span>
+        <span style="color:#75715e">#config.DATABASE_URL = uri</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">standard_query</span>():
+        results, meta <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>cypher_query(query, params)
+        people <span style="color:#f92672">=</span> [Person<span style="color:#f92672">.</span>inflate(row[<span style="color:#ae81ff">0</span>]) <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> results]
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_case_node</span>(date, dates, group,name, pdf, shelf_id, subject, title, url, subject_relationship <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>):
+        <span style="color:#66d9ef">return</span> Case(date<span style="color:#f92672">=</span>date, dates<span style="color:#f92672">=</span>dates, group<span style="color:#f92672">=</span>group,name<span style="color:#f92672">=</span>name, pdf<span style="color:#f92672">=</span>pdf, shelf_id<span style="color:#f92672">=</span>shelf_id, subject<span style="color:#f92672">=</span>subject, title<span style="color:#f92672">=</span>title, url<span style="color:#f92672">=</span>url)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_city_node</span>(name):
+        <span style="color:#66d9ef">return</span> City(name <span style="color:#f92672">=</span> name)
+        
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_country_node</span>(code,name):
+        <span style="color:#66d9ef">return</span> Country(code <span style="color:#f92672">=</span> code, name <span style="color:#f92672">=</span> name)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_state_node</span>(code,name):
+        <span style="color:#66d9ef">return</span> State(code <span style="color:#f92672">=</span> code, name <span style="color:#f92672">=</span> name)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_realtor_search_url_node</span>(url):
+        <span style="color:#66d9ef">return</span> Realtor_Search_URL(url <span style="color:#f92672">=</span> url, is_root <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, is_sibling <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, is_parent<span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, is_child <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, searched <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>)
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_root_node</span>(url, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;realtor.com&#39;</span>):
+        <span style="color:#66d9ef">return</span> Root(is_root <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,name <span style="color:#f92672">=</span> name,is_parent <span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, is_sibling <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, is_child <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, url <span style="color:#f92672">=</span> url)
+        uid <span style="color:#f92672">=</span> UniqueIdProperty()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_child_node</span>(url, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;realtor.com&#39;</span>):
+        <span style="color:#66d9ef">return</span> Child(is_root <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,name <span style="color:#f92672">=</span> name,is_parent <span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, is_sibling <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, is_child <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, url <span style="color:#f92672">=</span> url)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_parent_node</span>(url, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;realtor.com&#39;</span>):
+        <span style="color:#66d9ef">return</span> Parent(is_root <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,name <span style="color:#f92672">=</span> name,is_parent <span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, is_sibling <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, is_child <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, url <span style="color:#f92672">=</span> url)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_sibling_node</span>(url, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;realtor.com&#39;</span>):
+        <span style="color:#66d9ef">return</span> Sibling(is_root <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,name <span style="color:#f92672">=</span> name,is_parent <span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, is_sibling <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, is_child <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>, url <span style="color:#f92672">=</span> url)
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_relationship</span>(source,target):
+      
+        
+        rel <span style="color:#f92672">=</span> source<span style="color:#f92672">.</span>connect(target)
+        <span style="color:#66d9ef">return</span> rel
+
+        <span style="color:#75715e">#print(&#34;{}&#34;+&#34;.connect&#34; + &#34;{}&#34;.format(source,target))</span>
+        
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_subject_node</span>(name <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>,):
+        <span style="color:#66d9ef">return</span> Subject(name <span style="color:#f92672">=</span> name)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update</span>(obj):
+        <span style="color:#66d9ef">with</span> db<span style="color:#f92672">.</span>transaction:
+            <span style="color:#66d9ef">return</span> obj<span style="color:#f92672">.</span>save()
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Subject</span>(StructuredNode):
+    uuid <span style="color:#f92672">=</span> UniqueIdProperty()
+    name <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Case</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    date <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    dates <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    group <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    pdf <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) 
+    shelf_id <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    subject <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    <span style="color:#75715e">#primary_topic = StringProperty(unique_index=True, required=True)</span>
+    title <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    url <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    subject_relationship <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Subject&#34;</span>, <span style="color:#e6db74">&#34;IS_SUBJECT&#34;</span>)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Processed</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotProcessed</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">City</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    name <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    state <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;State&#39;</span>, <span style="color:#e6db74">&#39;IS_STATE_OF&#39;</span>)
+    country <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Country&#39;</span>, <span style="color:#e6db74">&#39;IS_COUNTRY_OF&#39;</span>)
+    
+    
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Country</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    code <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">State</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    code <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    country <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Country&#39;</span>, <span style="color:#e6db74">&#39;IS_COUNTRY_OF&#39;</span>)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Root</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    is_root <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_parent <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_sibling <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_child <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>)
+    url <span style="color:#f92672">=</span> StringProperty()
+    processed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Processed&#34;</span>, <span style="color:#e6db74">&#34;IS_PROCESSED&#34;</span>)
+    NotProcessed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;NotProcessed&#34;</span>, <span style="color:#e6db74">&#34;NOT_PROCESSED&#34;</span>)
+    sibling <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Sibling&#34;</span>,<span style="color:#e6db74">&#34;IS_SIBLING&#34;</span>)
+    child <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Child&#34;</span>,<span style="color:#e6db74">&#34;IS_CHILD&#34;</span>)
+    parent <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Parent&#34;</span>,<span style="color:#e6db74">&#34;IS_PARENT&#34;</span>)
+    root <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Root&#34;</span>, <span style="color:#e6db74">&#34;IS_ROOT&#34;</span>)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Child</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    is_root <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_parent <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_sibling <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_child <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty()
+    processed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Processed&#34;</span>, <span style="color:#e6db74">&#34;IS_PROCESSED&#34;</span>)
+    NotProcessed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;NotProcessed&#34;</span>, <span style="color:#e6db74">&#34;NOT_PROCESSED&#34;</span>)
+    sibling <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Sibling&#34;</span>,<span style="color:#e6db74">&#34;IS_SIBLING&#34;</span>)
+    child <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Child&#34;</span>,<span style="color:#e6db74">&#34;IS_CHILD&#34;</span>)
+    parent <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Parent&#34;</span>,<span style="color:#e6db74">&#34;IS_PARENT&#34;</span>)
+    root <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Root&#34;</span>, <span style="color:#e6db74">&#34;IS_ROOT&#34;</span>)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Parent</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    name <span style="color:#f92672">=</span> StringProperty()
+    is_root <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_parent <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_sibling <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_child <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    processed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Processed&#34;</span>, <span style="color:#e6db74">&#34;IS_PROCESSED&#34;</span>)
+    NotProcessed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;NotProcessed&#34;</span>, <span style="color:#e6db74">&#34;NOT_PROCESSED&#34;</span>)
+    sibling <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Sibling&#34;</span>,<span style="color:#e6db74">&#34;IS_SIBLING&#34;</span>)
+    child <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Child&#34;</span>,<span style="color:#e6db74">&#34;IS_CHILD&#34;</span>)
+    parent <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Parent&#34;</span>,<span style="color:#e6db74">&#34;IS_PARENT&#34;</span>)
+    root <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Root&#34;</span>, <span style="color:#e6db74">&#34;IS_ROOT&#34;</span>)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sibling</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    is_root <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_parent <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_sibling <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_child <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty()
+    processed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Processed&#34;</span>, <span style="color:#e6db74">&#34;IS_PROCESSED&#34;</span>)
+    NotProcessed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;NotProcessed&#34;</span>, <span style="color:#e6db74">&#34;NOT_PROCESSED&#34;</span>)
+    sibling <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Sibling&#34;</span>,<span style="color:#e6db74">&#34;IS_SIBLING&#34;</span>)
+    child <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Child&#34;</span>,<span style="color:#e6db74">&#34;IS_CHILD&#34;</span>)
+    parent <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Parent&#34;</span>,<span style="color:#e6db74">&#34;IS_PARENT&#34;</span>)
+    root <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Root&#34;</span>, <span style="color:#e6db74">&#34;IS_ROOT&#34;</span>)
+    
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Realtor_com</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    is_realtor_com <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty()
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Realtor_Search_URL</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    url <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    searched <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_root <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_child <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_parent <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    is_sibling <span style="color:#f92672">=</span> BooleanProperty(unique_index <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>, required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    <span style="color:#75715e">#state = Relationship(&#39;State&#39;, &#39;OF&#39;)</span>
+    state <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;State&#39;</span>, <span style="color:#e6db74">&#39;IS_STATE_OF&#39;</span>)
+    city <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;City&#39;</span>, <span style="color:#e6db74">&#39;IS_CITY_OF&#39;</span>)
+    root <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Root&#39;</span>,<span style="color:#e6db74">&#39;IS_ROOT&#39;</span>)
+    child <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Child&#39;</span>,<span style="color:#e6db74">&#34;IS_CHILD&#34;</span>)
+    parent <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Parent&#39;</span>, <span style="color:#e6db74">&#34;IS_PARENT&#34;</span>)
+    sibling <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Sibling&#39;</span>, <span style="color:#e6db74">&#34;IS_SIBLING&#34;</span>)
+    realtor_com <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#39;Realtor_com&#39;</span>, <span style="color:#e6db74">&#34;IS_REALTOR.COM_URL&#34;</span>)
+    processed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Processed&#34;</span>, <span style="color:#e6db74">&#34;IS_PROCESSED&#34;</span>)
+    NotProcessed <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;NotProcessed&#34;</span>, <span style="color:#e6db74">&#34;NOT_PROCESSED&#34;</span>)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    full_name <span style="color:#f92672">=</span> StringProperty(required <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+    email <span style="color:#f92672">=</span> EmailProperty()
+</code></pre></div><h2 id="get-files" >Get Files
+<span>
+    <a href="#get-files">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The get_files function returns a list of files within the input directory.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_files</span>(cwd <span style="color:#f92672">=</span>os<span style="color:#f92672">.</span>getcwd(), input_directory <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;input&#39;</span>):
+    
+    path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>sep<span style="color:#f92672">.</span>join([cwd,input_directory])
+    file_list<span style="color:#f92672">=</span> [f <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> glob<span style="color:#f92672">.</span>glob(path <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;**/*.json&#34;</span>, recursive<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)]
+  
+    <span style="color:#66d9ef">return</span> file_list
+
+</code></pre></div><h2 id="create-master-subject-file" >Create Master Subject File
+<span>
+    <a href="#create-master-subject-file">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>Create maseter subject table generates an empty dataframe that will record every unique subject experienced in the data.</p>
+<p>I will improve upon this later, by uploading a master file that will be saved following each modification.  This would enable resuming the process following an error or fault.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_master_subject_table</span>():
+    table <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame()
+    table[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    table[<span style="color:#e6db74">&#39;transaction&#39;</span>]<span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    table[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">return</span>(table)
+
+</code></pre></div><h2 id="json-pipeline-function" >Json Pipeline function
+<span>
+    <a href="#json-pipeline-function">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The json pipeline function is the runner for the etl job.  It loads each file into dataframe, manipulates the data accordingly, and updates the neo4j database.</p>
+<p>When I refactor the code, I will most likely create an object that calls static functions to generate then desired output.</p>
+<p>I may also seperate the case, subject, and relationship pipeline into seperate classes in order to avoid shadowing functions within functions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">json_pipeline</span>(file_list, master_subject_table):
+    case_counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> file <span style="color:#f92672">in</span> file_list:
+        
+        data <span style="color:#f92672">=</span> load_json_data(file<span style="color:#f92672">=</span>file)
+        data <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#39;results&#39;</span>]
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#75715e">#pprint(data[0])</span>
+        
+        <span style="color:#75715e">#filtered_data = filter_json_data(json_data = data, filter = filter)</span>
+
+        <span style="color:#75715e"># Creating the case nodes transaction nodes and df</span>
+        data <span style="color:#f92672">=</span> clean_json_data(data)
+        case_data <span style="color:#f92672">=</span> stringify_json_values(data)
+        case_data <span style="color:#f92672">=</span> pandify_case_data(case_data)
+        case_data <span style="color:#f92672">=</span> nodify_case_data(case_data <span style="color:#f92672">=</span> case_data)
+        
+        <span style="color:#75715e"># Creating the subject nodes transaction nodes and df</span>
+        subject_list <span style="color:#f92672">=</span> slice_subject_data(data)
+        subject_list <span style="color:#f92672">=</span> identify_unique_subjects(subject_list)
+        subject_lookup_table <span style="color:#f92672">=</span> create_subject_lookup_table(subject_list)
+        master_subject_table <span style="color:#f92672">=</span> integrate_to_master_table(subject_lookup_table,master_subject_table)
+        <span style="color:#75715e">#pprint(master_subject_table.duplicated())</span>
+        case_counter <span style="color:#f92672">=</span> case_counter <span style="color:#f92672">+</span> len(case_data)
+
+        master_subject_table <span style="color:#f92672">=</span> nodify_subjects(master_subject_table)
+
+        <span style="color:#75715e">#pprint(case_data)</span>
+        <span style="color:#75715e">#pprint(master_subject_table[&#39;transaction&#39;])</span>
+        <span style="color:#75715e">#lets save data to the database</span>
+
+        master_subject_table <span style="color:#f92672">=</span> submit_subjects_to_db(master_subject_table)
+        case_data <span style="color:#f92672">=</span> submit_cases_to_db(case_data <span style="color:#f92672">=</span> case_data)
+
+        <span style="color:#75715e"># Create Relationships</span>
+
+        relationship_list<span style="color:#f92672">=</span> create_relationship_table(case_data<span style="color:#f92672">=</span>case_data, master_subject_table<span style="color:#f92672">=</span>master_subject_table)
+</code></pre></div><h3 id="case-pipeline" >Case Pipeline
+<span>
+    <a href="#case-pipeline">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Creating the case nodes transaction nodes and df</span>
+data <span style="color:#f92672">=</span> clean_json_data(data)
+case_data <span style="color:#f92672">=</span> stringify_json_values(data)
+case_data <span style="color:#f92672">=</span> pandify_case_data(case_data)
+case_data <span style="color:#f92672">=</span> nodify_case_data(case_data <span style="color:#f92672">=</span> case_data)
+</code></pre></div><p>To create the case nodes four functions are called.</p>
+<h4 id="clean-json-data" >Clean Json Data
+<span>
+    <a href="#clean-json-data">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>The first is clean_json_data which is actually unnecessary.  The only operation that is required is moving the pdf froma list to a dicktionary key.  It should and will be refactored.  As it stands now, I am leaving iut as an artifact of a previous workflow.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">clean_json_data</span>(filtered_data):
+    <span style="color:#75715e"># Select the keys that I want from the dictionary</span>
+    <span style="color:#75715e"># filter appropriatly into a df </span>
+    <span style="color:#75715e"># write df to file</span>
+    <span style="color:#75715e">#print(type(filtered_data))</span>
+    <span style="color:#75715e">#pprint(filtered_data)</span>
+    <span style="color:#66d9ef">for</span> data <span style="color:#f92672">in</span> filtered_data:
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#75715e">#creat a dictionary of columns and values for each row.  Combine them all into a df when we are done</span>
+        <span style="color:#75715e"># each dictionary must be a row.... which makes perfect sense, but they can not be nested... </span>
+        item <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;item&#39;</span>, <span style="color:#66d9ef">None</span>)
+        resources <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;resources&#39;</span>, <span style="color:#66d9ef">None</span>)
+        index <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;index&#39;</span>, <span style="color:#66d9ef">None</span>)
+        language <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;language&#39;</span>, <span style="color:#66d9ef">None</span>)
+        online_format<span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;online_format&#39;</span>, <span style="color:#66d9ef">None</span>)
+        original_format <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;original_format&#39;</span>, <span style="color:#66d9ef">None</span>)
+        kind <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;type&#39;</span>, <span style="color:#66d9ef">None</span>)
+        image_url <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;image_url&#39;</span>, <span style="color:#66d9ef">None</span>)
+        hassegments <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;hassegments&#39;</span>, <span style="color:#66d9ef">None</span>)
+        extract_timestamp <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;extract_timestamp&#39;</span>, <span style="color:#66d9ef">None</span>)
+        timestampe <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;timestamp&#39;</span>, <span style="color:#66d9ef">None</span>)
+        mimetype<span style="color:#f92672">=</span>data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;mime_type&#39;</span>, <span style="color:#66d9ef">None</span>)
+        <span style="color:#66d9ef">try</span>:
+            pdf <span style="color:#f92672">=</span> resources[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;pdf&#39;</span>]
+        <span style="color:#66d9ef">except</span>: 
+            pdf <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;noPdf&#34;</span>
+        data[<span style="color:#e6db74">&#34;pdf&#34;</span>] <span style="color:#f92672">=</span> pdf
+        data[<span style="color:#e6db74">&#39;search_index&#39;</span>] <span style="color:#f92672">=</span> index
+    
+</code></pre></div><h4 id="stringify-json-data" >Stringify Json Data
+<span>
+    <a href="#stringify-json-data">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>The Second is Stringify_json_data.  The imporatance of this function is that it creates strings from lists in order to properly integrate into the neo4j databse.  Iterables are permitted, however they can not be searched.  For my use case, I decided to create csv strings instead that can later be parsed if necessary.</p>
+<p>This function also moves the subject list to a dedicated key in the dictionary.  This is important because it is used to generate the subject tables.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">stringify_json_values</span>(data):
+    <span style="color:#66d9ef">for</span> dict <span style="color:#f92672">in</span> data:
+        subject_list <span style="color:#f92672">=</span> dict[<span style="color:#e6db74">&#39;subject&#39;</span>]
+        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> dict:
+            <span style="color:#66d9ef">if</span> type(dict[key]) <span style="color:#f92672">==</span> list:
+                tmp_list <span style="color:#f92672">=</span> []
+                <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> (dict[key]):
+                    item <span style="color:#f92672">=</span> item<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34; &#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>)
+                    tmp_list<span style="color:#f92672">.</span>append(item)
+                dict[key] <span style="color:#f92672">=</span> tmp_list
+
+                dict[key] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">.</span>join(dict[key])
+        dict[<span style="color:#e6db74">&#39;subject_list&#39;</span>] <span style="color:#f92672">=</span> subject_list
+
+                
+    <span style="color:#66d9ef">return</span> data
+</code></pre></div><h4 id="pandify-case-data" >Pandify Case Data
+<span>
+    <a href="#pandify-case-data">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>The next function creates a pandas dataframe from a list of dictionaries.  Thankfully this is easy to accommplish.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pandify_case_data</span>(data):
+    <span style="color:#75715e">#case_df = pd.concat(data, sort=False)</span>
+    df<span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+    df[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">return</span> df
+</code></pre></div><h4 id="nodify-case-data" >Nodify Case Data
+<span>
+    <a href="#nodify-case-data">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>Nodify creates transaction objects that can be saved to the neo4j databse.  I call the neomodel api to generate the results and save them into a dataframe that is used to apply the upload with a lambda function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_case_data</span>(case_data):
+    <span style="color:#75715e">#non_submitted_nodes = case_data[case_data.notna()]</span>
+    non_submitted_nodes <span style="color:#f92672">=</span> case_data[case_data<span style="color:#f92672">.</span>notna()<span style="color:#f92672">.</span>any(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)]
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    case_nodes <span style="color:#f92672">=</span> non_submitted_nodes<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_case_node(date <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;date&#39;</span>], dates<span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;dates&#39;</span>],group <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;group&#39;</span>], name<span style="color:#f92672">=</span>x[<span style="color:#e6db74">&#39;id&#39;</span>], pdf<span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;pdf&#39;</span>], shelf_id <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;shelf_id&#39;</span>], subject<span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;subject&#39;</span>], title <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;title&#39;</span>], url <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;url&#39;</span>], subject_relationship<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+
+    case_data[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> case_nodes
+    <span style="color:#66d9ef">return</span> case_data
+
+</code></pre></div><h3 id="the-subject-pipeline" >The Subject Pipeline
+<span>
+    <a href="#the-subject-pipeline">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>The subject pipeline slices the subject data from the current search result page.</p>
+<p>It then identifies the unique subjects</p>
+<p>The subject_lookup_table is a dataframe containing the subjects returned by subject list.  They are unique only to the result page.</p>
+<p>The master_subject_table is then updated by the integrate_to_master_table function that identifes new subjects to integrate into the master table.</p>
+<p>finally, the nodify subject function creates transaction objects to be uploaded to the neo4j db.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">  <span style="color:#75715e"># Creating the subject nodes transaction nodes and df</span>
+    subject_list <span style="color:#f92672">=</span> slice_subject_data(data)
+    subject_list <span style="color:#f92672">=</span> identify_unique_subjects(subject_list)
+    subject_lookup_table <span style="color:#f92672">=</span> create_subject_lookup_table(subject_list)
+    master_subject_table <span style="color:#f92672">=</span> integrate_to_master_table(subject_lookup_table,master_subject_table)
+    <span style="color:#75715e">#pprint(master_subject_table.duplicated())</span>
+
+    master_subject_table <span style="color:#f92672">=</span> nodify_subjects(master_subject_table)
+    
+</code></pre></div><h4 id="slice_subject_data" >slice_subject_data
+<span>
+    <a href="#slice_subject_data">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">slice_subject_data</span>(data):
+    subject_list <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> case <span style="color:#f92672">in</span> data:
+        subject_list <span style="color:#f92672">=</span> subject_list <span style="color:#f92672">+</span> case[<span style="color:#e6db74">&#39;subject_list&#39;</span>]
+    <span style="color:#75715e">#pprint(subject_list)</span>
+    <span style="color:#66d9ef">return</span> subject_list
+</code></pre></div><h4 id="identify-unique-subjects" >Identify Unique Subjects
+<span>
+    <a href="#identify-unique-subjects">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">identify_unique_subjects</span>(subject_list):
+    
+    <span style="color:#75715e"># insert the list to the set</span>
+    list_set <span style="color:#f92672">=</span> set(subject_list)
+    <span style="color:#75715e"># convert the set to the list</span>
+    unique_list <span style="color:#f92672">=</span> (list(list_set))
+    <span style="color:#66d9ef">return</span> unique_list
+
+</code></pre></div><h4 id="create-subject-lookup-table" >Create Subject Lookup Table
+<span>
+    <a href="#create-subject-lookup-table">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_subject_lookup_table</span>(subject_list):
+    lookup_table <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(subject_list, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;subject&#39;</span>])
+    lookup_table[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    lookup_table[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">return</span> lookup_table
+</code></pre></div><h4 id="nodify-subject" >Nodify Subject
+<span>
+    <a href="#nodify-subject">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_subjects</span>(master_subject_table):
+    non_submitted_nodes <span style="color:#f92672">=</span> master_subject_table[master_subject_table<span style="color:#f92672">.</span>isna()<span style="color:#f92672">.</span>any(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)]<span style="color:#f92672">.</span>copy()
+    <span style="color:#75715e">#df[df.isna().any(axis=1)]</span>
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    non_submitted_nodes[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> non_submitted_nodes[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_subject_node(name <span style="color:#f92672">=</span> x))
+    master_subject_table<span style="color:#f92672">.</span>update(non_submitted_nodes)
+    <span style="color:#66d9ef">return</span> master_subject_table
+</code></pre></div><h3 id="uploading-case-and-subject-data" >Uploading Case and Subject data
+<span>
+    <a href="#uploading-case-and-subject-data">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>With the transaction object dataframes created, we can then update the data to the database.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">master_subject_table <span style="color:#f92672">=</span> submit_subjects_to_db(master_subject_table)
+case_data <span style="color:#f92672">=</span> submit_cases_to_db(case_data <span style="color:#f92672">=</span> case_data)
+</code></pre></div><h4 id="submit-subjects" >Submit Subjects
+<span>
+    <a href="#submit-subjects">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>This function selects the subject nodes from the master table that have not been uploaded to the neo4j database.</p>
+<p>It identifies na in the submitted collumn in order to slice non-submitted nodes.</p>
+<p>If that table can be created we upload all of the df with the update function from the neoapi.  It simply calls the db and calls save() on the object.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">submit_subjects_to_db</span>(master_subject_table):
+    <span style="color:#75715e">#unsubmitted = master_subject_table[master_subject_table.notna()]</span>
+    <span style="color:#75715e">#pprint(master_subject_table)</span>
+    <span style="color:#75715e">#non_submitted_nodes=master_subject_table[[master_subject_table[&#39;submitted&#39;] == np.nan]]</span>
+    non_submitted_nodes <span style="color:#f92672">=</span> master_subject_table[master_subject_table[<span style="color:#e6db74">&#39;submitted&#39;</span>]<span style="color:#f92672">.</span>isna()]<span style="color:#f92672">.</span>copy()
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    <span style="color:#66d9ef">if</span> non_submitted_nodes<span style="color:#f92672">.</span>empty:   
+        <span style="color:#66d9ef">return</span> master_subject_table
+    <span style="color:#66d9ef">else</span>:
+         <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+        non_submitted_nodes[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> non_submitted_nodes[<span style="color:#e6db74">&#39;transaction&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>update(x))
+        non_submitted_nodes[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    
+    <span style="color:#75715e">#test = non_submitted_nodes.iloc[32][&#39;transaction&#39;]</span>
+    <span style="color:#75715e">#return_obj = neo.neoAPI.update(test)</span>
+        master_subject_table<span style="color:#f92672">.</span>update(non_submitted_nodes)
+        <span style="color:#75715e">#pprint(master_subject_table)</span>
+        <span style="color:#66d9ef">return</span> master_subject_table
+</code></pre></div><h4 id="submit-cases" >Submit Cases
+<span>
+    <a href="#submit-cases">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>Initially i had copy and pasted the subject submission function. I realized that the checks were unnecessary.   I am assuming that each result is unique.  Therefore, every case is uploaded.  If it proves that there are duplicates in the database, the neo4j cypher language would permit me to prune those duplicate edges.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">submit_cases_to_db</span>(case_data):
+        <span style="color:#75715e">#unsubmitted = master_subject_table[master_subject_table.notna()]</span>
+
+        <span style="color:#75715e">### in theory none of the cases wouldhave been submitted becasue i am pulling them from file.  There is no need to check.. Just submit</span>
+    <span style="color:#75715e">#non_submitted_nodes = case_data[case_data[&#39;submitted&#39;].isna()].copy()</span>
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    <span style="color:#75715e">##pprint(non_submitted_nodes)</span>
+    <span style="color:#75715e">#if non_submitted_nodes.empty:</span>
+    <span style="color:#75715e">#    return case_data</span>
+    <span style="color:#75715e">#else:</span>
+    case_data[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> case_data[<span style="color:#e6db74">&#39;transaction&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>update(x))
+    <span style="color:#75715e">#Assume all are submitted..</span>
+    case_data[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#75715e">#test = non_submitted_nodes.iloc[32][&#39;transaction&#39;]</span>
+    <span style="color:#75715e">#return_obj = neo.neoAPI.update(test)</span>
+    <span style="color:#75715e">#case_data.update(non_submitted_nodes)</span>
+    <span style="color:#66d9ef">return</span> case_data
+</code></pre></div><h3 id="submit-the-relationships" >Submit the Relationships
+<span>
+    <a href="#submit-the-relationships">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>The final step is to relate the cases to the subject nodes.</p>
+<pre tabindex="0"><code>relationship_list= create_relationship_table(case_data=case_data, master_subject_table=master_subject_table)
+</code></pre><p>This is accomplished by calling the relationship function declared in the Case class declared in the neomodel api.</p>
+<p>View the reference below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Case</span>(StructuredNode):
+    uid <span style="color:#f92672">=</span> UniqueIdProperty()
+    date <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    dates <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    group <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    name <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    pdf <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) 
+    shelf_id <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    subject <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    <span style="color:#75715e">#primary_topic = StringProperty(unique_index=True, required=True)</span>
+    title <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    url <span style="color:#f92672">=</span> StringProperty(unique_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, required<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    subject_relationship <span style="color:#f92672">=</span> Relationship(<span style="color:#e6db74">&#34;Subject&#34;</span>, <span style="color:#e6db74">&#34;IS_SUBJECT&#34;</span>)
+</code></pre></div><h4 id="create-relationship-table" >Create Relationship Table
+<span>
+    <a href="#create-relationship-table">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>To create the relationships the case_data and the master_subject_table are necessary.</p>
+<p>for every case a relationship is created to every subject within its subject list.</p>
+<p>It is important to note, that in order for this function to work correctly, the cases and subjects must first be submitted to the database.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_relationship_table</span>(case_data, master_subject_table):
+    <span style="color:#75715e">#pprint(case_data[])</span>
+        <span style="color:#75715e">#test = master_subject_table[&#39;subject&#39;]</span>
+        <span style="color:#75715e"># select </span>
+    relationship_list <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> range(len(case_data)):
+        unique_dataframe <span style="color:#f92672">=</span> (master_subject_table[master_subject_table[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">.</span>isin(case_data[<span style="color:#e6db74">&#39;subject_list&#39;</span>][row])])
+        <span style="color:#75715e">#pprint(unique_dataframe)</span>
+        <span style="color:#66d9ef">for</span> subject_row <span style="color:#f92672">in</span> range(len(unique_dataframe)):
+            case <span style="color:#f92672">=</span> case_data<span style="color:#f92672">.</span>iloc[row][<span style="color:#e6db74">&#39;transaction&#39;</span>]
+            subject <span style="color:#f92672">=</span> unique_dataframe<span style="color:#f92672">.</span>iloc[subject_row][<span style="color:#e6db74">&#39;transaction&#39;</span>]
+            <span style="color:#75715e">#create relationship</span>
+            <span style="color:#75715e">#pprint(case)</span>
+            <span style="color:#75715e">#pprint(subject)</span>
+            relationship <span style="color:#f92672">=</span> neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(case<span style="color:#f92672">.</span>subject_relationship,subject)
+            <span style="color:#75715e">#pprint(relationship)</span>
+            relationship_list<span style="color:#f92672">.</span>append(relationship)
+
+    <span style="color:#66d9ef">return</span> relationship_list
+</code></pre></div><h2 id="putting-everything-together" >Putting Everything Together
+<span>
+    <a href="#putting-everything-together">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#75715e">#realtor_graph.py</span>
+
+
+<span style="color:#75715e">#from neo4j_connect_2 import NeoSandboxApp</span>
+<span style="color:#75715e">#import neo4j_connect_2 as neo</span>
+<span style="color:#75715e">#import GoogleServices as google</span>
+<span style="color:#75715e">#from pyspark.sql import SparkSession</span>
+<span style="color:#75715e">#from pyspark.sql.functions import struct</span>
+<span style="color:#f92672">from</span> cgitb <span style="color:#f92672">import</span> lookup
+<span style="color:#f92672">import</span> code
+<span style="color:#f92672">from</span> dbm <span style="color:#f92672">import</span> dumb
+<span style="color:#f92672">from</span> doctest <span style="color:#f92672">import</span> master
+<span style="color:#f92672">from</span> hmac <span style="color:#f92672">import</span> trans_36
+<span style="color:#f92672">import</span> mimetypes
+<span style="color:#f92672">from</span> platform <span style="color:#f92672">import</span> node
+<span style="color:#f92672">from</span> pprint <span style="color:#f92672">import</span> pprint
+<span style="color:#f92672">from</span> pty <span style="color:#f92672">import</span> master_open
+<span style="color:#f92672">from</span> re <span style="color:#f92672">import</span> sub
+<span style="color:#f92672">from</span> unittest.util <span style="color:#f92672">import</span> unorderable_list_difference
+<span style="color:#f92672">from</span> urllib.parse <span style="color:#f92672">import</span> non_hierarchical
+<span style="color:#f92672">from</span> neomodel <span style="color:#f92672">import</span> (config, StructuredNode, StringProperty, IntegerProperty,
+    UniqueIdProperty, RelationshipTo, BooleanProperty, EmailProperty, Relationship,db)
+<span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+<span style="color:#75715e">#import NeoNodes as nn</span>
+<span style="color:#75715e">#import GoogleServices</span>
+<span style="color:#f92672">import</span> neo4jClasses
+<span style="color:#75715e">#import sparkAPI as spark</span>
+<span style="color:#f92672">import</span> neoModelAPI <span style="color:#66d9ef">as</span> neo
+<span style="color:#f92672">import</span> glob
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+<span style="color:#75715e">#from neoModelAPI import NeoNodes as nn</span>
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DataUploadFunctions</span>():
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upload_df</span>(self,df):
+        <span style="color:#75715e">#df.apply(lambda x: pprint(str(x) + str(type(x))))</span>
+        
+        node_list <span style="color:#f92672">=</span>  df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>update(x))
+        <span style="color:#75715e">#pprint(node_list)</span>
+        <span style="color:#66d9ef">return</span>  node_list
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">map_to_df</span>(self,df1,df2,lookup_value :str, lookup_key: str):
+        df1[lookup_value] <span style="color:#f92672">=</span> df1[lookup_key]
+        <span style="color:#75715e">#pprint(df1.columns)</span>
+        <span style="color:#75715e">#pprint(df1)</span>
+        
+        val  <span style="color:#f92672">=</span> df1[lookup_value]<span style="color:#f92672">.</span>replace(dict(zip(df2[lookup_key],  df2[lookup_value])))
+        <span style="color:#66d9ef">return</span> val
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_relationships</span>(self,source_node, target_node):
+        <span style="color:#75715e">#pprint(self.df.columns)</span>
+        <span style="color:#75715e">#pprint(source_node)</span>
+        rel <span style="color:#f92672">=</span> neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(source <span style="color:#f92672">=</span> source_node ,target <span style="color:#f92672">=</span> target_node)
+        <span style="color:#66d9ef">return</span> rel
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DataPipelineFunctions</span>():
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_df_to_csv</span>(self,df,path: str):
+        cwd <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+        path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>sep<span style="color:#f92672">.</span>join([cwd,path])
+
+        <span style="color:#66d9ef">with</span> open(path,<span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
+            df<span style="color:#f92672">.</span>to_csv(path, index<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+
+        <span style="color:#66d9ef">return</span> path
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_city_nodes</span>(self,df):
+        city_nodes <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;city_name&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_city_node(name <span style="color:#f92672">=</span> x))
+        <span style="color:#66d9ef">return</span> city_nodes
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_url_nodes</span>(self,df):
+        url_nodes <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;root_realtor_url&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_realtor_search_url_node(url<span style="color:#f92672">=</span> x))
+        <span style="color:#66d9ef">return</span> url_nodes
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_root_nodes</span>(self,df):
+        root_nodes <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;root_realtor_url&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_root_node(url<span style="color:#f92672">=</span> x))
+        <span style="color:#66d9ef">return</span> root_nodes
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_country_nodes</span>(self,df):
+        country_nodes <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_country_node(code <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>country_code, name <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>country_name),axis <span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">return</span> country_nodes
+        
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">return_unique_country_df</span>(self,df):
+        df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>drop_duplicates(subset<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;country_name&#39;</span>])<span style="color:#f92672">.</span>copy()
+        df<span style="color:#f92672">.</span>drop(df<span style="color:#f92672">.</span>columns<span style="color:#f92672">.</span>difference([<span style="color:#e6db74">&#39;country_node&#39;</span>,<span style="color:#e6db74">&#39;state_node&#39;</span>,<span style="color:#e6db74">&#39;country_name&#39;</span>, <span style="color:#e6db74">&#39;country_code&#39;</span>,<span style="color:#e6db74">&#39;state_name&#39;</span>]), <span style="color:#ae81ff">1</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+        <span style="color:#75715e">#pprint(df)</span>
+        <span style="color:#66d9ef">return</span> df
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_state_nodes</span>(self,df):
+        state_nodes <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_state_node(code <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>state_code, name <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>state_name),axis <span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">return</span> state_nodes    
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">return_unique_state_df</span>(self,df):
+        df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>drop_duplicates(subset<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;state_name&#39;</span>])<span style="color:#f92672">.</span>copy()
+        df<span style="color:#f92672">.</span>drop(df<span style="color:#f92672">.</span>columns<span style="color:#f92672">.</span>difference([<span style="color:#e6db74">&#39;state_node&#39;</span>,<span style="color:#e6db74">&#39;country_node&#39;</span>,<span style="color:#e6db74">&#39;country_code&#39;</span>,<span style="color:#e6db74">&#39;state_name&#39;</span>,<span style="color:#e6db74">&#39;country_name&#39;</span>,<span style="color:#e6db74">&#39;state_code&#39;</span>]), <span style="color:#ae81ff">1</span>, inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+        <span style="color:#75715e">#pprint(df)</span>
+
+        <span style="color:#66d9ef">return</span> df
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">rename_columns</span>(self,df, mapper <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;city&#39;</span>: <span style="color:#e6db74">&#39;city_name&#39;</span>, <span style="color:#e6db74">&#39;state&#39;</span>: <span style="color:#e6db74">&#39;state_code&#39;</span>,<span style="color:#e6db74">&#39;realtor_url&#39;</span>: <span style="color:#e6db74">&#39;root_realtor_url&#39;</span>}):
+        <span style="color:#66d9ef">return</span> df<span style="color:#f92672">.</span>rename(columns <span style="color:#f92672">=</span> mapper)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_country_code</span>(self,country_code <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;USA&#34;</span>):
+        <span style="color:#66d9ef">return</span> country_code
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_country_name</span>(self,country_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;United States of America&#34;</span>):
+        <span style="color:#66d9ef">return</span> country_name
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upload_df</span>(self,df):
+        <span style="color:#75715e">#df.apply(lambda x: pprint(str(x) + str(type(x))))</span>
+        
+        node_list <span style="color:#f92672">=</span>  df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>update(x))
+        pprint(node_list)
+        <span style="color:#66d9ef">return</span>  node_list
+        <span style="color:#75715e">#df[&#39;server_node&#39;] =  node_list</span>
+        <span style="color:#75715e">#pprint(df)</span>
+        
+        
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_url_relationships</span>(self):
+        <span style="color:#75715e">#pprint(self.df.columns)</span>
+        update_list <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(source <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>url_node<span style="color:#f92672">.</span>city,target <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>city_node), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        pprint(update_list)
+        <span style="color:#66d9ef">return</span> update_list
+        <span style="color:#75715e">#rel = self.df.url.connect(self.df.city)</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_city_relationships</span>(self):
+        <span style="color:#75715e">#pprint(self.df.columns)</span>
+        update_list <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(source <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>city_node<span style="color:#f92672">.</span>country,target <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>country_node), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        update_list <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(source <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>city_node<span style="color:#f92672">.</span>state,target <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>state_node), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        pprint(update_list)
+        <span style="color:#75715e">#rel = self.df.url.connect(self.df.city)</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_state_relationships</span>(self):
+        <span style="color:#75715e">#pprint(self.df.columns)</span>
+        neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(source <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>unique_state_nodes<span style="color:#f92672">.</span>state_node[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>country,target <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>unique_state_nodes<span style="color:#f92672">.</span>country_node[<span style="color:#ae81ff">0</span>])
+        <span style="color:#75715e">#update_list = self.unique_state_nodes.apply(lambda x: neo.neoAPI.create_relationship(source = x.state_node.country,target = x.country_node.name), axis=1)</span>
+        <span style="color:#75715e">#pprint(update_list)</span>
+        <span style="color:#75715e">#rel = self.df.url.connect(self.df.city)</span>
+
+
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">group_by_state</span>(self):
+        grouped <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df<span style="color:#f92672">.</span>groupby(by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;state_name&#34;</span>)
+        
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_to_pandas_df</span>(self,file_path <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+        <span style="color:#66d9ef">if</span> file_path <span style="color:#f92672">!=</span> <span style="color:#66d9ef">None</span>:
+
+            <span style="color:#66d9ef">with</span> open (file_path) <span style="color:#66d9ef">as</span> file:
+                df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_json(file)
+            <span style="color:#66d9ef">return</span> df
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_city_column</span>(self):
+        self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;city_node&#39;</span>] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;city&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x : neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_city_node(name <span style="color:#f92672">=</span> x))
+        
+        
+        <span style="color:#75715e">#pprint(df.city_nodes)</span>
+
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_states_column</span>(self):
+
+        unique_states <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df<span style="color:#f92672">.</span>drop_duplicates(subset<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;state&#39;</span>])<span style="color:#f92672">.</span>copy()
+        <span style="color:#75715e">#pprint(state_dict)</span>
+
+        unique_states[<span style="color:#e6db74">&#39;state_node&#39;</span>] <span style="color:#f92672">=</span> unique_states<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_state_node(name <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>state_name, code <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>state), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#75715e">#pprint(unique_states)</span>
+        <span style="color:#75715e">#self.df[&#39;state_nodes&#39;] = unique_states[&#39;state_nodes&#39;] where unique_states[state_name] = self.df_stateName</span>
+        self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#34;state_node&#34;</span>] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;state_name&#39;</span>]
+        <span style="color:#75715e">#self.df[&#39;state_node&#39;] =</span>
+        <span style="color:#75715e">#pprint(self.df[&#39;state_name&#39;].map(unique_states))</span>
+        self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;state_node&#39;</span>] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;state_node&#39;</span>]<span style="color:#f92672">.</span>replace(dict(zip(unique_states<span style="color:#f92672">.</span>state_name,  unique_states<span style="color:#f92672">.</span>state_node)))
+        <span style="color:#75715e">#pprint(self.df)</span>
+
+        
+     
+        <span style="color:#75715e">#mask = dfd[&#39;a&#39;].str.startswith(&#39;o&#39;)</span>
+        
+        
+        <span style="color:#75715e">#self.df[&#39;state_nodes&#39;] = self.df.apply(lambda x: neo.create_state_node(name = x.state_name, code = x.state) if x not in states_dict else states_dict[x], axis=1)</span>
+        
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_url_column</span>(self):
+        self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;url_node&#39;</span>] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>df[<span style="color:#e6db74">&#39;realtor_url&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x : neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_url_node(url <span style="color:#f92672">=</span> x, searched<span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>))
+
+
+    
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_cwd</span>():
+    cwd <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+    <span style="color:#66d9ef">return</span> cwd
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_files</span>(cwd <span style="color:#f92672">=</span>os<span style="color:#f92672">.</span>getcwd(), input_directory <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;input&#39;</span>):
+    
+    path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>sep<span style="color:#f92672">.</span>join([cwd,input_directory])
+    file_list<span style="color:#f92672">=</span> [f <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> glob<span style="color:#f92672">.</span>glob(path <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;**/*.json&#34;</span>, recursive<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)]
+  
+    <span style="color:#66d9ef">return</span> file_list
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">instantiate_neo_model_api</span>():
+    uri <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;7a92f171.databases.neo4j.io&#34;</span>
+    user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;neo4j&#34;</span>
+    psw <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;RF4Gr2IJTNhHlW6HOrLDqz_I2E2Upyh7o8paTwfnCxg&#39;</span>
+    <span style="color:#66d9ef">return</span> neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>instantiate_neo_model_session(uri<span style="color:#f92672">=</span>uri,user<span style="color:#f92672">=</span>user,psw<span style="color:#f92672">=</span>psw)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">prepare_data_pipeline</span>():
+    pipeline_functions <span style="color:#f92672">=</span> DataPipelineFunctions()
+    master_df <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>load_data_to_pandas_df()
+    master_df[<span style="color:#e6db74">&#39;country_name&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>add_country_name()
+    master_df[<span style="color:#e6db74">&#39;country_code&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>add_country_code()
+    master_df <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>rename_columns(master_df)
+    master_df[<span style="color:#e6db74">&#39;city_node&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>create_city_nodes(master_df)
+    master_df[<span style="color:#e6db74">&#39;url_node&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>create_url_nodes(master_df)
+    master_df[<span style="color:#e6db74">&#39;root_node&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>create_root_nodes(master_df)
+
+    
+    master_df_path <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>write_df_to_csv(master_df,<span style="color:#e6db74">&#39;master_df.csv&#39;</span>)
+
+    
+
+    
+    state_df <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>return_unique_state_df(master_df)
+    state_df[<span style="color:#e6db74">&#39;state_node&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>create_state_nodes(state_df)
+    state_df_path <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>write_df_to_csv(state_df,<span style="color:#e6db74">&#39;state_df.csv&#39;</span>)
+    
+
+    country_df <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>return_unique_country_df(master_df)
+    country_df[<span style="color:#e6db74">&#39;country_node&#39;</span>] <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>create_country_nodes(country_df)
+    country_df_path <span style="color:#f92672">=</span> pipeline_functions<span style="color:#f92672">.</span>write_df_to_csv(country_df,<span style="color:#e6db74">&#39;country.csv&#39;</span>)
+
+
+    
+
+
+
+    <span style="color:#75715e">#upload nodes</span>
+    
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;master_df&#34;</span> : master_df, <span style="color:#e6db74">&#39;state_df&#39;</span> : state_df, <span style="color:#e6db74">&#39;country_df&#39;</span>: country_df}
+
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_json_data</span>(file):
+    f <span style="color:#f92672">=</span> open (file, <span style="color:#e6db74">&#34;r&#34;</span>)
+  
+    <span style="color:#75715e"># Reading from file</span>
+    data <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(f<span style="color:#f92672">.</span>read())
+    <span style="color:#66d9ef">return</span> data
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">json_pipeline</span>(file_list, master_subject_table):
+    case_counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> file <span style="color:#f92672">in</span> file_list:
+        
+        data <span style="color:#f92672">=</span> load_json_data(file<span style="color:#f92672">=</span>file)
+        data <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#39;results&#39;</span>]
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#75715e">#pprint(data[0])</span>
+        
+        <span style="color:#75715e">#filtered_data = filter_json_data(json_data = data, filter = filter)</span>
+
+        <span style="color:#75715e"># Creating the case nodes transaction nodes and df</span>
+        data <span style="color:#f92672">=</span> clean_json_data(data)
+        case_data <span style="color:#f92672">=</span> stringify_json_values(data)
+        case_data <span style="color:#f92672">=</span> pandify_case_data(case_data)
+        case_data <span style="color:#f92672">=</span> nodify_case_data(case_data <span style="color:#f92672">=</span> case_data)
+        
+        <span style="color:#75715e"># Creating the subject nodes transaction nodes and df</span>
+        subject_list <span style="color:#f92672">=</span> slice_subject_data(data)
+        subject_list <span style="color:#f92672">=</span> identify_unique_subjects(subject_list)
+        subject_lookup_table <span style="color:#f92672">=</span> create_subject_lookup_table(subject_list)
+        master_subject_table <span style="color:#f92672">=</span> integrate_to_master_table(subject_lookup_table,master_subject_table)
+        <span style="color:#75715e">#pprint(master_subject_table.duplicated())</span>
+        case_counter <span style="color:#f92672">=</span> case_counter <span style="color:#f92672">+</span> len(case_data)
+
+        master_subject_table <span style="color:#f92672">=</span> nodify_subjects(master_subject_table)
+
+        <span style="color:#75715e">#pprint(case_data)</span>
+        <span style="color:#75715e">#pprint(master_subject_table[&#39;transaction&#39;])</span>
+        <span style="color:#75715e">#lets save data to the database</span>
+
+        master_subject_table <span style="color:#f92672">=</span> submit_subjects_to_db(master_subject_table)
+        case_data <span style="color:#f92672">=</span> submit_cases_to_db(case_data <span style="color:#f92672">=</span> case_data)
+
+        <span style="color:#75715e"># Create Relationships</span>
+
+        relationship_list<span style="color:#f92672">=</span> create_relationship_table(case_data<span style="color:#f92672">=</span>case_data, master_subject_table<span style="color:#f92672">=</span>master_subject_table)
+    
+
+
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">submit_cases_to_db</span>(case_data):
+        <span style="color:#75715e">#unsubmitted = master_subject_table[master_subject_table.notna()]</span>
+
+        <span style="color:#75715e">### in theory none of the cases wouldhave been submitted becasue i am pulling them from file.  There is no need to check.. Just submit</span>
+    <span style="color:#75715e">#non_submitted_nodes = case_data[case_data[&#39;submitted&#39;].isna()].copy()</span>
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    <span style="color:#75715e">##pprint(non_submitted_nodes)</span>
+    <span style="color:#75715e">#if non_submitted_nodes.empty:</span>
+    <span style="color:#75715e">#    return case_data</span>
+    <span style="color:#75715e">#else:</span>
+    case_data[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> case_data[<span style="color:#e6db74">&#39;transaction&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>update(x))
+    <span style="color:#75715e">#Assume all are submitted..</span>
+    case_data[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#75715e">#test = non_submitted_nodes.iloc[32][&#39;transaction&#39;]</span>
+    <span style="color:#75715e">#return_obj = neo.neoAPI.update(test)</span>
+    <span style="color:#75715e">#case_data.update(non_submitted_nodes)</span>
+    <span style="color:#66d9ef">return</span> case_data
+
+    <span style="color:#75715e">#Relationships must need to be created following saving to the df</span>
+    <span style="color:#75715e">#relationships = create_relationship_table(case_data, master_subject_table)</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">submit_subjects_to_db</span>(master_subject_table):
+    <span style="color:#75715e">#unsubmitted = master_subject_table[master_subject_table.notna()]</span>
+    <span style="color:#75715e">#pprint(master_subject_table)</span>
+    <span style="color:#75715e">#non_submitted_nodes=master_subject_table[[master_subject_table[&#39;submitted&#39;] == np.nan]]</span>
+    non_submitted_nodes <span style="color:#f92672">=</span> master_subject_table[master_subject_table[<span style="color:#e6db74">&#39;submitted&#39;</span>]<span style="color:#f92672">.</span>isna()]<span style="color:#f92672">.</span>copy()
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    <span style="color:#66d9ef">if</span> non_submitted_nodes<span style="color:#f92672">.</span>empty:   
+        <span style="color:#66d9ef">return</span> master_subject_table
+    <span style="color:#66d9ef">else</span>:
+         <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+        non_submitted_nodes[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> non_submitted_nodes[<span style="color:#e6db74">&#39;transaction&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>update(x))
+        non_submitted_nodes[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    
+    <span style="color:#75715e">#test = non_submitted_nodes.iloc[32][&#39;transaction&#39;]</span>
+    <span style="color:#75715e">#return_obj = neo.neoAPI.update(test)</span>
+        master_subject_table<span style="color:#f92672">.</span>update(non_submitted_nodes)
+        <span style="color:#75715e">#pprint(master_subject_table)</span>
+        <span style="color:#66d9ef">return</span> master_subject_table
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">tester</span>():
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello Dolly&#34;</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_relationship_table</span>(case_data, master_subject_table):
+    <span style="color:#75715e">#pprint(case_data[])</span>
+        <span style="color:#75715e">#test = master_subject_table[&#39;subject&#39;]</span>
+        <span style="color:#75715e"># select </span>
+    relationship_list <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> range(len(case_data)):
+        unique_dataframe <span style="color:#f92672">=</span> (master_subject_table[master_subject_table[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">.</span>isin(case_data[<span style="color:#e6db74">&#39;subject_list&#39;</span>][row])])
+        <span style="color:#75715e">#pprint(unique_dataframe)</span>
+        <span style="color:#66d9ef">for</span> subject_row <span style="color:#f92672">in</span> range(len(unique_dataframe)):
+            case <span style="color:#f92672">=</span> case_data<span style="color:#f92672">.</span>iloc[row][<span style="color:#e6db74">&#39;transaction&#39;</span>]
+            subject <span style="color:#f92672">=</span> unique_dataframe<span style="color:#f92672">.</span>iloc[subject_row][<span style="color:#e6db74">&#39;transaction&#39;</span>]
+            <span style="color:#75715e">#create relationship</span>
+            <span style="color:#75715e">#pprint(case)</span>
+            <span style="color:#75715e">#pprint(subject)</span>
+            relationship <span style="color:#f92672">=</span> neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_relationship(case<span style="color:#f92672">.</span>subject_relationship,subject)
+            <span style="color:#75715e">#pprint(relationship)</span>
+            relationship_list<span style="color:#f92672">.</span>append(relationship)
+
+    <span style="color:#66d9ef">return</span> relationship_list
+
+
+
+
+        
+    <span style="color:#75715e">#create relationship between the case and each uid in the unique_data_frame_transaction_list </span>
+    pprint(unique_dataframe)
+
+
+    <span style="color:#75715e">## Creating the realation table</span>
+
+    <span style="color:#75715e"># Thoughts</span>
+    <span style="color:#75715e"># pass subject and case table</span>
+    <span style="color:#75715e"># case_subject list collumn</span>
+    <span style="color:#75715e"># where that list is in the master table</span>
+        <span style="color:#75715e">#return  the subjects </span>
+    <span style="color:#75715e"># make a connection to between each subject and the case in the returned tableuid in the table</span>
+    <span style="color:#75715e"># return a transaction list </span>
+    <span style="color:#75715e"># with the list commit a transaction for eachn </span>
+    <span style="color:#75715e">#</span>
+
+    <span style="color:#75715e">#case_data= filter_case_data(data)</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_case_data</span>(case_data):
+    <span style="color:#75715e">#non_submitted_nodes = case_data[case_data.notna()]</span>
+    non_submitted_nodes <span style="color:#f92672">=</span> case_data[case_data<span style="color:#f92672">.</span>notna()<span style="color:#f92672">.</span>any(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)]
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    case_nodes <span style="color:#f92672">=</span> non_submitted_nodes<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_case_node(date <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;date&#39;</span>], dates<span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;dates&#39;</span>],group <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;group&#39;</span>], name<span style="color:#f92672">=</span>x[<span style="color:#e6db74">&#39;id&#39;</span>], pdf<span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;pdf&#39;</span>], shelf_id <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;shelf_id&#39;</span>], subject<span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;subject&#39;</span>], title <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;title&#39;</span>], url <span style="color:#f92672">=</span> x[<span style="color:#e6db74">&#39;url&#39;</span>], subject_relationship<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+
+    case_data[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> case_nodes
+    <span style="color:#66d9ef">return</span> case_data
+
+
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">filter_case_data</span>(data):
+    pprint(data[<span style="color:#ae81ff">0</span>])
+
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nodify_subjects</span>(master_subject_table):
+    non_submitted_nodes <span style="color:#f92672">=</span> master_subject_table[master_subject_table<span style="color:#f92672">.</span>isna()<span style="color:#f92672">.</span>any(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)]<span style="color:#f92672">.</span>copy()
+    <span style="color:#75715e">#df[df.isna().any(axis=1)]</span>
+    <span style="color:#75715e">#pprint(non_submitted_nodes)</span>
+    non_submitted_nodes[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> non_submitted_nodes[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x :neo<span style="color:#f92672">.</span>neoAPI<span style="color:#f92672">.</span>create_subject_node(name <span style="color:#f92672">=</span> x))
+    master_subject_table<span style="color:#f92672">.</span>update(non_submitted_nodes)
+    <span style="color:#66d9ef">return</span> master_subject_table
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">integrate_to_master_table</span>(subject_lookup_table, master_subject_table):
+    <span style="color:#75715e">#check_if subject in list is in subject of the table</span>
+    <span style="color:#75715e"># if so drop it from the temp table</span>
+    <span style="color:#75715e"># append what is left to the master table </span>
+    <span style="color:#75715e">#pprint(subject_lookup_table)</span>
+    test <span style="color:#f92672">=</span> master_subject_table[<span style="color:#e6db74">&#39;subject&#39;</span>]
+    unique_dataframe <span style="color:#f92672">=</span> (subject_lookup_table[<span style="color:#f92672">~</span>subject_lookup_table[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">.</span>isin(test)])
+    <span style="color:#75715e">#pprint(unique_dataframe)</span>
+    <span style="color:#75715e">#duplicate_list = (master_subject_table[~master_subject_table[&#39;subject&#39;].isin(subject_lookup_table[&#39;subject&#39;])])</span>
+    master_subject_table <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat([master_subject_table,unique_dataframe])
+    <span style="color:#75715e">#master_subject_table.update(unique_dataframe)</span>
+    master_subject_table<span style="color:#f92672">.</span>reset_index(inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, drop<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+    <span style="color:#75715e">#pprint(master_subject_table)</span>
+    <span style="color:#75715e">#pprint(master_subject_table.duplicated())</span>
+    <span style="color:#66d9ef">return</span> master_subject_table
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_subject_lookup_table</span>(subject_list):
+    lookup_table <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(subject_list, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;subject&#39;</span>])
+    lookup_table[<span style="color:#e6db74">&#39;transaction&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    lookup_table[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">return</span> lookup_table
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">identify_unique_subjects</span>(subject_list):
+    
+    <span style="color:#75715e"># insert the list to the set</span>
+    list_set <span style="color:#f92672">=</span> set(subject_list)
+    <span style="color:#75715e"># convert the set to the list</span>
+    unique_list <span style="color:#f92672">=</span> (list(list_set))
+    <span style="color:#66d9ef">return</span> unique_list
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">slice_subject_data</span>(data):
+    subject_list <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> case <span style="color:#f92672">in</span> data:
+        subject_list <span style="color:#f92672">=</span> subject_list <span style="color:#f92672">+</span> case[<span style="color:#e6db74">&#39;subject_list&#39;</span>]
+    <span style="color:#75715e">#pprint(subject_list)</span>
+    <span style="color:#66d9ef">return</span> subject_list
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pandify_case_data</span>(data):
+    <span style="color:#75715e">#case_df = pd.concat(data, sort=False)</span>
+    df<span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data)
+    df[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">return</span> df
+        
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">stringify_json_values</span>(data):
+    <span style="color:#66d9ef">for</span> dict <span style="color:#f92672">in</span> data:
+        subject_list <span style="color:#f92672">=</span> dict[<span style="color:#e6db74">&#39;subject&#39;</span>]
+        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> dict:
+            <span style="color:#66d9ef">if</span> type(dict[key]) <span style="color:#f92672">==</span> list:
+                tmp_list <span style="color:#f92672">=</span> []
+                <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> (dict[key]):
+                    item <span style="color:#f92672">=</span> item<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34; &#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>)
+                    tmp_list<span style="color:#f92672">.</span>append(item)
+                dict[key] <span style="color:#f92672">=</span> tmp_list
+
+                dict[key] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">.</span>join(dict[key])
+        dict[<span style="color:#e6db74">&#39;subject_list&#39;</span>] <span style="color:#f92672">=</span> subject_list
+
+                
+    <span style="color:#66d9ef">return</span> data
+                
+
+    <span style="color:#75715e">#pprint(data)</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">clean_json_data</span>(filtered_data):
+    <span style="color:#75715e"># Select the keys that I want from the dictionary</span>
+    <span style="color:#75715e"># filter appropriatly into a df </span>
+    <span style="color:#75715e"># write df to file</span>
+    <span style="color:#75715e">#print(type(filtered_data))</span>
+    <span style="color:#75715e">#pprint(filtered_data)</span>
+    <span style="color:#66d9ef">for</span> data <span style="color:#f92672">in</span> filtered_data:
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#75715e">#creat a dictionary of columns and values for each row.  Combine them all into a df when we are done</span>
+        <span style="color:#75715e"># each dictionary must be a row.... which makes perfect sense, but they can not be nested... </span>
+        item <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;item&#39;</span>, <span style="color:#66d9ef">None</span>)
+        resources <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;resources&#39;</span>, <span style="color:#66d9ef">None</span>)
+        index <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;index&#39;</span>, <span style="color:#66d9ef">None</span>)
+        language <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;language&#39;</span>, <span style="color:#66d9ef">None</span>)
+        online_format<span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;online_format&#39;</span>, <span style="color:#66d9ef">None</span>)
+        original_format <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;original_format&#39;</span>, <span style="color:#66d9ef">None</span>)
+        kind <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;type&#39;</span>, <span style="color:#66d9ef">None</span>)
+        image_url <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;image_url&#39;</span>, <span style="color:#66d9ef">None</span>)
+        hassegments <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;hassegments&#39;</span>, <span style="color:#66d9ef">None</span>)
+        extract_timestamp <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;extract_timestamp&#39;</span>, <span style="color:#66d9ef">None</span>)
+        timestampe <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;timestamp&#39;</span>, <span style="color:#66d9ef">None</span>)
+        mimetype<span style="color:#f92672">=</span>data<span style="color:#f92672">.</span>pop(<span style="color:#e6db74">&#39;mime_type&#39;</span>, <span style="color:#66d9ef">None</span>)
+        <span style="color:#66d9ef">try</span>:
+            pdf <span style="color:#f92672">=</span> resources[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;pdf&#39;</span>]
+        <span style="color:#66d9ef">except</span>: 
+            pdf <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;noPdf&#34;</span>
+        data[<span style="color:#e6db74">&#34;pdf&#34;</span>] <span style="color:#f92672">=</span> pdf
+        data[<span style="color:#e6db74">&#39;search_index&#39;</span>] <span style="color:#f92672">=</span> index
+    
+
+
+    <span style="color:#75715e"># convert to strings maybe move into another function to be called.  Actually will definitely move to a nother function </span>
+
+    <span style="color:#66d9ef">return</span> filtered_data
+    <span style="color:#75715e">#uid = UniqueIdProperty()</span>
+    <span style="color:#75715e">##date = date</span>
+    <span style="color:#75715e">#dates = dates</span>
+    <span style="color:#75715e">#group = group</span>
+    <span style="color:#75715e">#id = id </span>
+    <span style="color:#75715e">#pdf = pdf </span>
+    <span style="color:#75715e">#shelf_id = shelf_id</span>
+    <span style="color:#75715e">#subject = subject</span>
+    <span style="color:#75715e">#primary_topic = primary_topic</span>
+    <span style="color:#75715e">#title = title</span>
+    <span style="color:#75715e">#url = url</span>
+    <span style="color:#75715e">#description = description</span>
+    <span style="color:#75715e">#source_collection = source_collection</span>
+
+
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">filter_json_data</span>(json_data, filter):
+    <span style="color:#75715e"># Using dict()</span>
+    <span style="color:#75715e"># Extracting specific keys from dictionary</span>
+
+    filter <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;contributor&#39;</span>,<span style="color:#e6db74">&#39;date&#39;</span>, <span style="color:#e6db74">&#39;dates&#39;</span>, <span style="color:#e6db74">&#39;digitized&#39;</span>]
+    res <span style="color:#f92672">=</span> dict((k, json_data[k]) <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> filter <span style="color:#66d9ef">if</span> k <span style="color:#f92672">in</span> json_data)
+    <span style="color:#66d9ef">return</span> res
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_master_subject_table</span>():
+    table <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame()
+    table[<span style="color:#e6db74">&#39;subject&#39;</span>]<span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    table[<span style="color:#e6db74">&#39;transaction&#39;</span>]<span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    table[<span style="color:#e6db74">&#39;submitted&#39;</span>] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">return</span>(table)
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    neo_applified <span style="color:#f92672">=</span> instantiate_neo_model_api()
+    cwd <span style="color:#f92672">=</span> get_cwd()
+    file_list <span style="color:#f92672">=</span> get_files(cwd <span style="color:#f92672">=</span> cwd)
+    master_subject_table <span style="color:#f92672">=</span> create_master_subject_table()
+    json_pipeline(file_list<span style="color:#f92672">=</span>file_list, master_subject_table<span style="color:#f92672">=</span>master_subject_table)
+    
+    <span style="color:#75715e">#neo_sandbox_app = instantiate_neo_sandbox_app()</span>
+    <span style="color:#75715e">#google_creds = load_google_creds()</span>
+    <span style="color:#75715e">#sheets_app = instantiate_sheets_app(google_creds.credentials)</span>
+    <span style="color:#75715e">#drive_app = instantiate_drive_app(google_creds.credentials)</span>
+    <span style="color:#75715e">#googleAPI = instantiate_google_API()</span>
+    <span style="color:#75715e">#sparkAPI = instantiate_spark_API()</span>
+    <span style="color:#75715e">#neoAPI = NeoAPI()</span>
+    <span style="color:#75715e">#nodified_df = pandas_functions.nodify_dataframe()</span>
+    <span style="color:#75715e">#test()</span>
+    <span style="color:#75715e">#google_api = googleServices.GoogleAPI()</span>
+    <span style="color:#75715e">###neo_model_api = instantiate_neo_model_api()</span>
+    <span style="color:#75715e">###df_pipeline_dictionary = prepare_data_pipeline()</span>
+    <span style="color:#75715e">#final_df_dictionary = upload_data_pipeline_to_neo(df_pipeline_dictionary)</span>
+    <span style="color:#75715e">#for k,v in final_df_dictionary.items():</span>
+    <span style="color:#75715e">#    cwd = os.getcwd()</span>
+    <span style="color:#75715e">#    path = str(k) +&#34;Final&#34;</span>
+    <span style="color:#75715e">#    path = os.sep.join([cwd,path])</span>
+
+     <span style="color:#75715e">#   with open(path, &#34;w&#34;) as file:</span>
+     <span style="color:#75715e">#       v.to_csv(path, index=False)</span>
+
+    <span style="color:#75715e">#prepared_dfs = prepare_pandas_df()</span>
+    <span style="color:#75715e">#pprint(prepared_df)</span>
+    <span style="color:#75715e">#upload_df_to_db(df = prepared_df, neo_model_api = neo_model_api)</span>
+
+</code></pre></div>
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+
+    
+        <div class="post-date dt-published">2022-05-16</div>
+    
+
+    <a class="post-hidden-url u-url" href="https://blog.jnapolitano.io/posts/neo4j_integration/">https://blog.jnapolitano.io/posts/neo4j_integration/</a>
+    <a href="https://blog.jnapolitano.io" class="p-name p-author post-hidden-author h-card" rel="me">Justin Napolitano</a>
+
+
+    <div class="post-taxonomies">
+        
+        
+        
+            <ul class="post-categories">
+                
+                    
+                    <li><a href="">Legal Research</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/research/">Research</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/scotus/">SCOTUS</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/neo4j/">Neo4j</a></li>
+                
+                    
+                    <li><a href="">Data Integration</a></li>
+                
+                    
+                    <li><a href="">Graph Database</a></li>
+                
+            </ul>
+        
+        
+            <ul class="post-tags">
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/python/">#python</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/legal/">#legal</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/neo4j/">#neo4j</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/graphdb/">#graphDB</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/scotus/">#scotus</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/json/">#json</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/data/">#data</a></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+        <hr/>
+        
+    Warning - check your series - as none found
+
+        <hr/>
+    </article>
+
+
+
+    
+        
+        
+            <h3 class="read-next-title">Read next</h3>
+            <ul class="read-next-posts">
+                
+                <li><a href="/posts/loc_crawler/">Conduct Legal Research with AI: Part 0</a></li>
+                
+                <li><a href="/posts/masterpiece/">Voting Behavior, Textual Analysis, and the Spirit of the Law</a></li>
+                
+                <li><a href="/posts/feasibility_study_shipping_carbon/">Feasibility of Shipping Carbon Across the Atlantic</a></li>
+                
+                <li><a href="/posts/carbon-shipping-projections/">Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States</a></li>
+                
+                <li><a href="/posts/coal/">US Coal Plant Distribution</a></li>
+                
+            </ul>
+        
+    
+
+    
+
+    
+        
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jnapolitano-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+
+
+
+    
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Justin Napolitano, 2022<br>
+            Maintained by Justin Napolitano.<br>
+            
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+
+<script>
+const STORAGE_KEY = 'user-color-scheme'
+const defaultTheme = "auto"
+
+let currentTheme
+let switchButton
+let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+const autoChangeScheme = e => {
+    currentTheme = e.matches ? 'dark' : 'light'
+    document.documentElement.setAttribute('data-theme', currentTheme)
+    changeButtonText()
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    switchButton = document.querySelector('.theme-switcher')
+    currentTheme = detectCurrentScheme()
+    if (currentTheme == 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark')
+    }
+    if (currentTheme == 'auto') {
+        autoChangeScheme(autoDefinedScheme);
+        autoDefinedScheme.addListener(autoChangeScheme);
+    }
+
+    if (switchButton) {
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    }
+  
+    showContent()
+})
+
+function detectCurrentScheme() {
+    if (localStorage.getItem(STORAGE_KEY)) {
+        return localStorage.getItem(STORAGE_KEY)
+    } 
+    if (defaultTheme) {
+        return defaultTheme
+    } 
+    if (!window.matchMedia) {
+        return 'light'
+    } 
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark'
+    }
+    return 'light'
+}
+
+function changeButtonText()
+{   
+    if (switchButton) {
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+}
+
+function switchTheme(e) {
+    if (currentTheme == 'dark') {
+        localStorage.setItem(STORAGE_KEY, 'light')
+        document.documentElement.setAttribute('data-theme', 'light')
+        currentTheme = 'light'
+    } else {
+        localStorage.setItem(STORAGE_KEY, 'dark')
+        document.documentElement.setAttribute('data-theme', 'dark')
+        currentTheme = 'dark'
+    }
+    changeButtonText()
+}
+
+function showContent() {
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = 1;
+}
+</script>   
+    </div>
+
+    <p class="h-card vcard">
+
+    <a href=https://blog.jnapolitano.io class="p-name u-url url fn" rel="me">Justin Napolitano</a> 
+
+     
+        /
+        <a class="p-email u-email email" rel="me" href="mailto:justin@jnapolitano.io">justin@jnapolitano.io</a>
+    
+
+     
+        <img class="u-photo" src="/images/me.png" />
+    
+</p> 
+</footer>
+
+        
+    </div>
+</body>
+</html>

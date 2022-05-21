@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States - Justin&#39;s Data Blog</title>
+
+<meta name="description" content="Monte Carlo Carbon Shipping Projections">
+
+
+
+
+
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://blog.jnapolitano.io/favicon.png">
+
+
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
+
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="https://blog.jnapolitano.io/css/style.min.aadd6dd80ebf123717dcfe3d847163090d744aafb3d09e967f728dc0ef68bc1b.css" integrity="sha256-qt1t2A6/EjcX3P49hHFjCQ10Sq&#43;z0J6Wf3KNwO9ovBs=">
+    
+
+
+
+
+
+    
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <script src="https://blog.jnapolitano.io/js/script.min.510c781c39dbb21b4c76d85c82e2bdf4689220adbb7cd61e49e9d293e442fb42.js" type="text/javascript" charset="utf-8" integrity="sha256-UQx4HDnbshtMdthcguK99GiSIK27fNYeSenSk&#43;RC&#43;0I="></script>
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States" />
+<meta property="og:description" content="Monte Carlo Carbon Shipping Projections" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jnapolitano.io/posts/carbon-shipping-projections/" /><meta property="og:image" content="https://blog.jnapolitano.io/feature-image.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-07T18:40:32+00:00" />
+<meta property="article:modified_time" content="2022-05-07T18:40:32+00:00" />
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.jnapolitano.io/feature-image.png"/>
+
+<meta name="twitter:title" content="Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States"/>
+<meta name="twitter:description" content="Monte Carlo Carbon Shipping Projections"/>
+
+
+
+    
+        <link rel="webmention" href="https://webmention.io/hugo-theme-anubis/webmention" />
+        
+            <link rel="pingback" href="https://webmention.io/hugo-theme-anubis/xmlrpc" />
+        
+    
+    
+        <link rel="webmention" href="https://hugo-test-blog.jnapolitano.io/webmentions/receive" />
+    
+
+
+
+
+
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5H9YLZK4GH"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5H9YLZK4GH', { 'anonymize_ip': false });
+}
+</script>
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <div class="header-top">
+    <h1 class="site-title">
+    <a href="/">Justin&#39;s Data Blog</a>
+</h1>
+    <ul class="social-icons">
+
+
+    
+        
+        
+        <li>
+            <a href="https://github.com/justin-napolitano" title="Github" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="mailto:justin@jnapolitano.io" title="Email" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="https://www.linkedin.com/in/justin-napolitano" title="Linkedin" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="https://twitter.com/just_napolitano" title="Twitter" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+
+
+    <li>
+            <a href="https://blog.jnapolitano.io/index.xml" title="RSS" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+</ul>
+</div>
+
+    <nav>
+        
+        
+        <a class="" href="https://blog.jnapolitano.io" title="Feed">Feed</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/series/" title="">Series</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/categories/" title="">Categories</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/tags/" title="">Tags</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+
+    <article class="post h-entry">
+        <div class="post-header">
+            <header>
+                <h1 class="p-name post-title">Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States</h1>
+                            
+
+
+                
+                
+                
+                    
+                    
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                    
+                    
+
+                    <p><img
+                    srcset="/posts/carbon-shipping-projections/post-image_huae215c142b78dc76a768171ef273b98b_505036_480x600_fill_q90_box_smart1.jpeg 480w, /posts/carbon-shipping-projections/post-image_huae215c142b78dc76a768171ef273b98b_505036_768x600_fill_q90_box_smart1.jpeg 768w, /posts/carbon-shipping-projections/post-image_huae215c142b78dc76a768171ef273b98b_505036_1024x600_fill_q90_box_smart1.jpeg 1024w, /posts/carbon-shipping-projections/post-image_huae215c142b78dc76a768171ef273b98b_505036_1366x600_fill_q90_box_smart1.jpeg 1366w"
+                    src="/posts/carbon-shipping-projections/"
+                    alt="banner-image">
+                    </p>    
+                
+
+                
+                    <p>Justin Napolitano</p>
+                
+
+                
+                <p>2022-05-07 18:40:32.169 &#43;0000 UTC</p>
+                    
+                
+
+                <hr/>
+            </header>
+        </div>
+        <div class="content e-content">
+            <h1>Table of Contents</h1>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#revision">Revision</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#methodology">Methodology</a>
+      <ul>
+        <li><a href="#modeling-dynamic-variables">Modeling Dynamic Variables</a></li>
+        <li><a href="#modeling-the-shipping-infrastructure">Modeling the Shipping Infrastructure</a></li>
+      </ul>
+    </li>
+    <li><a href="#findings">Findings</a>
+      <ul>
+        <li><a href="#the-take-away">The Take Away</a></li>
+      </ul>
+    </li>
+    <li><a href="#limitations-of-the-model">Limitations of the Model</a></li>
+    <li><a href="#data-analysis">Data Analysis</a></li>
+    <li><a href="#calculating-the-confidence-interval">Calculating the Confidence Interval</a>
+      <ul>
+        <li><a href="#monte-carlo-histogram">Monte Carlo Histogram</a></li>
+      </ul>
+    </li>
+    <li><a href="#data-imports-and-manipulation">Data Imports and Manipulation</a>
+      <ul>
+        <li><a href="#the-shipping-dataframe">The Shipping Dataframe</a></li>
+        <li><a href="#the-european-ports-df">The European Ports Df</a></li>
+        <li><a href="#filtered-wells-dataframe">Filtered Wells DataFrame</a></li>
+        <li><a href="#us-ports-dataframes">US Ports Dataframes</a></li>
+      </ul>
+    </li>
+    <li><a href="#random-distribution-distance-and-pricing-functions">Random Distribution, Distance and Pricing Functions</a>
+      <ul>
+        <li><a href="#accounting-for-random-days-at-sea">Accounting for Random Days at Sea</a></li>
+        <li><a href="#accounting-for-random-european-ports">Accounting for Random European Ports</a></li>
+        <li><a href="#accounting-for-random-us-ports">Accounting for Random US Ports</a></li>
+        <li><a href="#calculating-distance-between-ports">Calculating Distance Between Ports</a></li>
+        <li><a href="#calculating-cost-per-day">Calculating Cost Per Day</a></li>
+      </ul>
+    </li>
+    <li><a href="#costs-per-annum-algorithm">Costs Per Annum Algorithm</a></li>
+    <li><a href="#monte-carlo-simulation-with-500-iterations">Monte Carlo Simulation with 500 iterations</a>
+      <ul>
+        <li><a href="#creating-the-annual-price-samples-df">Creating the Annual Price Samples DF</a></li>
+      </ul>
+    </li>
+    <li><a href="#imports">Imports</a></li>
+  </ul>
+</nav>
+            <hr/>
+            
+    Warning - check your series - as none found
+
+            <hr/>
+            <h1 id="a-monte-carlo-projection-of-the-annual-cost-of-shipping-carbon-from-europe-to-us-ports" >A Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to US Ports
+<span>
+    <a href="#a-monte-carlo-projection-of-the-annual-cost-of-shipping-carbon-from-europe-to-us-ports">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h1><h2 id="revision" >Revision
+<span>
+    <a href="#revision">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>An earlier version of this report had reported values that were erroneously elevated by a decimal error in the meters to km conversion of distances between ports.  I apologize for unintentionally publishing misleading information.</p>
+<p>Situations like this one, are why I always publish with code.  Transparency is the key to rigor.</p>
+<h2 id="introduction" >Introduction
+<span>
+    <a href="#introduction">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>I produced an earlier <a href="https://blog.jnapolitano.io/wells-near-ports/">report</a> that identified potential ports that may be suitable terminals for carbon imports into the United States for storage or industrial applications.</p>
+<p>Following that report, I became interested in what could be the annual economic value of shipping CO2.  In this report, I analyze the results of a Monte Carlo simulation I developed in Python (documented at the end of this page) that projects the annual cost of shipping carbon across the Atlantic from Europe to the United States.</p>
+<h2 id="methodology" >Methodology
+<span>
+    <a href="#methodology">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><h3 id="modeling-dynamic-variables" >Modeling Dynamic Variables
+<span>
+    <a href="#modeling-dynamic-variables">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>To account for dynamic variables I designed a Monte Carlo simulation that randomly selected variables across normal distributions bounded by minima and maxima.</p>
+<p>The current simulation includes:</p>
+<ul>
+<li>Variable shipping distances</li>
+<li>Variable shipping capacity</li>
+<li>Variable ports of origin</li>
+<li>Variable terminal ports</li>
+<li>Variable round trip shipping duration</li>
+</ul>
+<p>Fixed variables include:</p>
+<ul>
+<li>Cost of Transport per ton (though this will be converted to a random distribution as soon as I find a better data source)</li>
+</ul>
+<h3 id="modeling-the-shipping-infrastructure" >Modeling the Shipping Infrastructure
+<span>
+    <a href="#modeling-the-shipping-infrastructure">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><h4 id="source" >Source
+<span>
+    <a href="#source">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>Susanna Dorigoni, Luigi Mazzei, Federico Pontoni, and Antonio Sileo
+IEFE – Centre for Research on Energy and Environmental Economics and Policy,
+Università Bocconi, Milan, Italy</p>
+<h4 id="modeling-the-capacity-of-tankers" >Modeling the Capacity of Tankers
+<span>
+    <a href="#modeling-the-capacity-of-tankers">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>To complete this analysis, I converted values found for lng shipping to super critical co2.  To do this,  I converted LNG capacties to super critical Co2 with the following conversion factors:</p>
+<ul>
+<li>1 tonne co2 super critical = 2.64812 meter cubed super critical co</li>
+<li>1 tonnes LNG = 2.21 m3 LNG (liquid)</li>
+<li>1 tonne co2 super critical = 544.66 m^3 gaseous</li>
+</ul>
+<p>The capacity range:</p>
+<ul>
+<li>The lower bound of the distribution is 33358 cubic meteres</li>
+<li>The upper bound is 175132</li>
+<li>The median provided is 114723</li>
+<li>The standard deviation is 5 (surprisingly homogeneous)</li>
+</ul>
+<h4 id="modeling-the-number-of-tankers" >Modeling the Number of Tankers
+<span>
+    <a href="#modeling-the-number-of-tankers">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>The number of tankers in the Atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately model.  If ships are used to transport both lng and carbon a random distribution designed according to a CO2 carrying probability distribution would suitably model the data.</p>
+<p>A total of 15 tankers were modeled in this example.</p>
+<h2 id="findings" >Findings
+<span>
+    <a href="#findings">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>Carbon capture is likely a billion dollar industry at scale.</p>
+<p>Across 500 iterations of modeling we see about $57.5 million dollars worth of economic activity annualy.</p>
+<h3 id="the-take-away" >The Take Away
+<span>
+    <a href="#the-take-away">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $57.5 million USD annual industry could develop as nations move towards a net carbon zero economy.</p>
+<h2 id="limitations-of-the-model" >Limitations of the Model
+<span>
+    <a href="#limitations-of-the-model">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The model as it is presented in this report is unconstrained.  A more accurate portrayal of what would be possible with current systems in place could be designed with better data.  It is also important to note that I have not included incentives into the model.  It is entirely possible that government subsidies could prove the carbon shipping industry to be more expansive than presented here.</p>
+<h2 id="data-analysis" >Data Analysis
+<span>
+    <a href="#data-analysis">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">annual_price_samples_df<span style="color:#f92672">.</span>describe()
+</code></pre></div><div style="overflow-x:auto;">
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cost_in_usd</th>
+      <th>cost_in_usd_billions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>5.000000e+02</td>
+      <td>5.000000e+02</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>5.744345e+07</td>
+      <td>5.744345e+07</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.191639e+06</td>
+      <td>1.191639e+06</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>5.351741e+07</td>
+      <td>5.351741e+07</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>5.663254e+07</td>
+      <td>5.663254e+07</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>5.740286e+07</td>
+      <td>5.740286e+07</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>5.827798e+07</td>
+      <td>5.827798e+07</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>6.081661e+07</td>
+      <td>6.081661e+07</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="calculating-the-confidence-interval" >Calculating the Confidence Interval
+<span>
+    <a href="#calculating-the-confidence-interval">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The data is nearly normal.  I could test for normality, but that would be beyond the scope of this analysis.  Also, by design the Monte Carlo model should produce a normal distribution with sufficient samples.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+st<span style="color:#f92672">.</span>norm<span style="color:#f92672">.</span>interval(alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.90</span>, loc<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>mean(annual_price_samples_df[<span style="color:#e6db74">&#39;cost_in_usd&#39;</span>]), scale<span style="color:#f92672">=</span>st<span style="color:#f92672">.</span>sem(annual_price_samples_df[<span style="color:#e6db74">&#39;cost_in_usd&#39;</span>]))
+</code></pre></div><pre><code>(57355794.336350285, 57531108.50357006)
+</code></pre>
+<p>It is safe to assume that 90 percent of the time we would see an annual cost of $57,355,794 to $57,531,109 USD with the assumptions of the model taken into account.</p>
+<h3 id="monte-carlo-histogram" >Monte Carlo Histogram
+<span>
+    <a href="#monte-carlo-histogram">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">annual_price_samples_df<span style="color:#f92672">.</span>plot<span style="color:#f92672">.</span>hist(grid<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, bins<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, rwidth<span style="color:#f92672">=</span><span style="color:#ae81ff">0.9</span>,
+                   color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;#607c8e&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Annual Price Distribution for Shipping Carbon&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Annual Price in Billions USD&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Frequency&#39;</span>)
+plt<span style="color:#f92672">.</span>grid(axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;y&#39;</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.75</span>)
+</code></pre></div><p><img src="shipping_projections_files/shipping_projections_10_0.png" alt="png"></p>
+<h2 id="data-imports-and-manipulation" >Data Imports and Manipulation
+<span>
+    <a href="#data-imports-and-manipulation">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><h3 id="the-shipping-dataframe" >The Shipping Dataframe
+<span>
+    <a href="#the-shipping-dataframe">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>The shipping dataframe is the basis of the simulation.  It is used to tabulate total cost and to record the values of variables.</p>
+<h4 id="capacity-distribution-and-number-of-ships-calculation" >Capacity Distribution and Number of Ships Calculation
+<span>
+    <a href="#capacity-distribution-and-number-of-ships-calculation">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Capacity range</span>
+<span style="color:#75715e"># 40,000 m3 71,500 to 210,000</span>
+
+<span style="color:#75715e">#Susanna Dorigoni, Luigi Mazzei, Federico Pontoni, and Antonio Sileo</span>
+<span style="color:#75715e">#IEFE – Centre for Research on Energy and Environmental Economics and Policy,</span>
+<span style="color:#75715e">#Università Bocconi, Milan, Italy</span>
+
+<span style="color:#75715e"># I&#39;m sure a better report is available but this is a start</span>
+<span style="color:#75715e"># cubic meters unit</span>
+
+<span style="color:#75715e">### a rough estimate of global suplly dedicated to co2 shipping</span>
+
+<span style="color:#75715e"># I will probably need a better metric but this is a good start that can be modified later when necessary</span>
+
+ships <span style="color:#f92672">=</span> int(<span style="color:#ae81ff">63</span><span style="color:#f92672">*</span><span style="color:#ae81ff">.25</span>)
+ships
+
+
+conversion_factor <span style="color:#f92672">=</span> <span style="color:#ae81ff">2.21</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2.65</span>
+conversion_factor
+
+lower_bound <span style="color:#f92672">=</span> int(<span style="color:#ae81ff">40000</span> <span style="color:#f92672">*</span> conversion_factor)
+upper_bound <span style="color:#f92672">=</span> int(<span style="color:#ae81ff">210000</span> <span style="color:#f92672">*</span> conversion_factor)
+
+median <span style="color:#f92672">=</span> <span style="color:#ae81ff">137564</span> <span style="color:#f92672">*</span> conversion_factor
+standard_dev <span style="color:#f92672">=</span> <span style="color:#ae81ff">6.63</span> <span style="color:#f92672">*</span> conversion_factor  <span style="color:#75715e">#file:///Users/jnapolitano/Downloads/LNG_Shipping_a_Descriptive_Analysis.pdf</span>
+
+cap_range <span style="color:#f92672">=</span> range(lower_bound, upper_bound)
+
+cap_distribution <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(loc<span style="color:#f92672">=</span>median , scale<span style="color:#f92672">=</span>standard_dev, size<span style="color:#f92672">=</span>ships)
+
+
+</code></pre></div><h4 id="the-shipping-df" >The Shipping Df
+<span>
+    <a href="#the-shipping-df">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">shipping_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(cap_distribution, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;co2_capacity_cubic_meters&#39;</span>])
+shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+shipping_df[<span style="color:#e6db74">&#39;europe_port&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+shipping_df[<span style="color:#e6db74">&#34;us_port&#34;</span>] <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>
+shipping_df[<span style="color:#e6db74">&#39;distance&#39;</span>] <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>
+shipping_df[<span style="color:#e6db74">&#39;price&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+shipping_df[<span style="color:#e6db74">&#39;cost_per_day&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+shipping_df[<span style="color:#e6db74">&#39;co2_capacity_tonnes&#39;</span>] <span style="color:#f92672">=</span> shipping_df[<span style="color:#e6db74">&#39;co2_capacity_cubic_meters&#39;</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">544.66</span> <span style="color:#75715e">## Verify this factor.  It seems to high</span>
+shipping_df
+</code></pre></div><div style="overflow-x:auto;">
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>co2_capacity_cubic_meters</th>
+      <th>days_to_port</th>
+      <th>europe_port</th>
+      <th>us_port</th>
+      <th>distance</th>
+      <th>price</th>
+      <th>cost_per_day</th>
+      <th>co2_capacity_tonnes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>114719.277384</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.625486</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>114719.302198</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.625532</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>114717.986907</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.623117</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>114720.952261</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.628561</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>114720.134738</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.627060</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>114727.030286</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.639721</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>114721.222398</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.629057</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>114724.259547</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.634634</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>114729.358745</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.643996</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>114727.005543</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.639675</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>114722.946362</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.632223</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>114726.394450</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.638553</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>114720.412603</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.627571</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>114726.647417</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.639018</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>114717.266732</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0</td>
+      <td>0</td>
+      <td>210.621795</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="the-european-ports-df" >The European Ports Df
+<span>
+    <a href="#the-european-ports-df">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+gisfilepath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/Users/jnapolitano/Projects/data/energy/PORT_2013_SH/Data/PORT_PT_2013.shp&#34;</span>
+
+
+ports_df <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>read_file(gisfilepath)
+
+ports_df <span style="color:#f92672">=</span> ports_df<span style="color:#f92672">.</span>to_crs(epsg<span style="color:#f92672">=</span><span style="color:#ae81ff">3857</span>)
+</code></pre></div><h3 id="filtered-wells-dataframe" >Filtered Wells DataFrame
+<span>
+    <a href="#filtered-wells-dataframe">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">## Importing our DataFrames</span>
+
+gisfilepath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/Users/jnapolitano/Projects/data/energy/filtered-wells.geojson&#34;</span>
+
+
+filtered_df <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>read_file(gisfilepath)
+
+filtered_df <span style="color:#f92672">=</span> filtered_df<span style="color:#f92672">.</span>to_crs(epsg<span style="color:#f92672">=</span><span style="color:#ae81ff">3857</span>)
+
+
+</code></pre></div><h4 id="getting-map-conditions-for-us-port-filtering" >Getting Map Conditions for Us Port Filtering
+<span>
+    <a href="#getting-map-conditions-for-us-port-filtering">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">map_conditions <span style="color:#f92672">=</span> filtered_df<span style="color:#f92672">.</span>TERMID<span style="color:#f92672">.</span>unique()<span style="color:#f92672">.</span>tolist()
+</code></pre></div><h3 id="us-ports-dataframes" >US Ports Dataframes
+<span>
+    <a href="#us-ports-dataframes">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">## Importing our DataFrames</span>
+
+gisfilepath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/Users/jnapolitano/Projects/data/energy/Liquified_Natural_Gas_Import_Exports_and_Terminals.geojson&#34;</span>
+
+
+terminal_df <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>read_file(gisfilepath)
+
+terminal_df <span style="color:#f92672">=</span> terminal_df<span style="color:#f92672">.</span>to_crs(epsg<span style="color:#f92672">=</span><span style="color:#ae81ff">3857</span>)
+
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">terminal_df<span style="color:#f92672">.</span>drop(terminal_df[terminal_df[<span style="color:#e6db74">&#39;STATUS&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;SUSPENDED&#39;</span>]<span style="color:#f92672">.</span>index, inplace <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+terminal_df<span style="color:#f92672">.</span>rename(columns<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;NAME&#34;</span>: <span style="color:#e6db74">&#34;TERMINAL_NAME&#34;</span>})
+terminal_df[<span style="color:#e6db74">&#39;TERMINAL_GEO&#39;</span>] <span style="color:#f92672">=</span> terminal_df[<span style="color:#e6db74">&#39;geometry&#39;</span>]<span style="color:#f92672">.</span>copy()
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">port_terminals_df <span style="color:#f92672">=</span> terminal_df<span style="color:#f92672">.</span>query(<span style="color:#e6db74">&#39;TERMID in @map_conditions&#39;</span>)<span style="color:#f92672">.</span>copy()
+port_terminals_df[<span style="color:#e6db74">&#39;co2_capacity_mmta&#39;</span>] <span style="color:#f92672">=</span> port_terminals_df[<span style="color:#e6db74">&#39;CURRENTCAP&#39;</span>] <span style="color:#f92672">*</span> conversion_factor
+port_terminals_df[<span style="color:#e6db74">&#39;co2_capacity_metric_tons&#39;</span>] <span style="color:#f92672">=</span> port_terminals_df[<span style="color:#e6db74">&#39;co2_capacity_mmta&#39;</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000000</span>
+port_terminals_df[<span style="color:#e6db74">&#39;available&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</code></pre></div><h2 id="random-distribution-distance-and-pricing-functions" >Random Distribution, Distance and Pricing Functions
+<span>
+    <a href="#random-distribution-distance-and-pricing-functions">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><h3 id="accounting-for-random-days-at-sea" >Accounting for Random Days at Sea
+<span>
+    <a href="#accounting-for-random-days-at-sea">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>As days at sea is variable I created a range between 20 and 40 days to account for a round trip to every major port in Europe.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">random_day</span>():
+    lower_bound <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+    upper_bound <span style="color:#f92672">=</span> <span style="color:#ae81ff">40</span>
+
+    median <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+    standard_dev <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+
+    days_range <span style="color:#f92672">=</span> range(lower_bound, upper_bound)
+
+    days_distribution <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(loc<span style="color:#f92672">=</span>median , scale<span style="color:#f92672">=</span>standard_dev, size<span style="color:#f92672">=</span>ships)
+
+
+    days_randomized <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(days_distribution, size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+
+
+    <span style="color:#66d9ef">return</span> (days_randomized[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>astype(np<span style="color:#f92672">.</span>int64))
+
+</code></pre></div><h3 id="accounting-for-random-european-ports" >Accounting for Random European Ports
+<span>
+    <a href="#accounting-for-random-european-ports">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>I randomized the port selection process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual LNG ports.  A better data set could be substituded directly into the function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">random_europe_port</span>():
+    <span style="color:#75715e">#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  </span>
+    <span style="color:#75715e">#select indices from the dataframe that are valid.  ie capacity has not yet been met.  </span>
+    ports_randomized <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(ports_df<span style="color:#f92672">.</span>index, size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    index_location <span style="color:#f92672">=</span> ports_randomized[<span style="color:#ae81ff">0</span>]
+    <span style="color:#66d9ef">return</span> ports_df<span style="color:#f92672">.</span>geometry[index_location]
+
+</code></pre></div><h3 id="accounting-for-random-us-ports" >Accounting for Random US Ports
+<span>
+    <a href="#accounting-for-random-us-ports">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>I was able to filter import/export ports in the United States in to a dataset of about 15.  Like the European dataset, I randomized selection.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">random_us_port</span>():
+    <span style="color:#75715e">#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  </span>
+
+    ports_randomized <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>choice(port_terminals_df<span style="color:#f92672">.</span>index, size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    index_location <span style="color:#f92672">=</span> ports_randomized[<span style="color:#ae81ff">0</span>]
+    <span style="color:#66d9ef">return</span> port_terminals_df<span style="color:#f92672">.</span>geometry[index_location]
+
+</code></pre></div><h3 id="calculating-distance-between-ports" >Calculating Distance Between Ports
+<span>
+    <a href="#calculating-distance-between-ports">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><p>I calculated the shortest distance between ports based on their geographic locations with the shapley.distance function.  It returns distance in meters.  I divide by 1000 to convert into Km.   The algorithm could be improved by using official shipping data to randomize a distribution of distances between ports.  Unfortunately, I do not have that data available to me.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">geo_distance</span>(dist1,dist2):
+    <span style="color:#75715e"># return distance in km</span>
+    distance <span style="color:#f92672">=</span> dist1<span style="color:#f92672">.</span>distance(dist2)<span style="color:#f92672">/</span><span style="color:#ae81ff">1000</span>
+    <span style="color:#66d9ef">return</span>(distance)
+
+</code></pre></div><h4 id="calculating-price-of-transport" >Calculating Price of Transport
+<span>
+    <a href="#calculating-price-of-transport">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h4><p>The cost of transport accounts for port fees, liquification, and transport.   Unfortunately, my data is from a paper published in 2004.  I would like to find a more recent paper.   I did not convert the value of 2004 USD to 2022 because I am not sure of the validity of the conversion factors available online.  I would need a better source to correctly model the true cost of transport.</p>
+<p><a href="https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf">source</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">price_to_transport</span>(distance,tonnes):
+    price <span style="color:#f92672">=</span> (distance<span style="color:#f92672">/</span><span style="color:#ae81ff">100</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">*</span> tonnes
+    <span style="color:#66d9ef">return</span> price
+
+</code></pre></div><h3 id="calculating-cost-per-day" >Calculating Cost Per Day
+<span>
+    <a href="#calculating-cost-per-day">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cost_per_day</span>(price,distance):
+    <span style="color:#66d9ef">return</span> price<span style="color:#f92672">/</span>distance
+</code></pre></div><h2 id="costs-per-annum-algorithm" >Costs Per Annum Algorithm
+<span>
+    <a href="#costs-per-annum-algorithm">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The algorithm I used calculates the daily status of ships transporting CO2 across the Atlantic from a random European port to a random port in the United States.  It will run for 365 iterations or until the total carbon capacity of the US ports is reached.  This value could and probably should be dynamically allocated via a similiar algorithm, but I do not yet have historical probability distributions of carbon imports to determime a valid price allocation function.</p>
+<p>When the daily counter reaches zero for a tanker:</p>
+<ul>
+<li>The capacity is refilled to full.</li>
+<li>A random us port is assigned.</li>
+<li>A random European port is assigned.</li>
+<li>The distance between ports is calculated.</li>
+<li>The cost of transport over that distance is calculated per 100 km.</li>
+<li>The total shipping price of that cycle is tabulated.</li>
+<li>The total tonnage of that cycle is tabulated.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+days <span style="color:#f92672">=</span> <span style="color:#ae81ff">365</span>
+day_counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+carbon_total_millions_metric_tons <span style="color:#f92672">=</span> <span style="color:#ae81ff">300000000</span>
+total_tons_shipped <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+total_price <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+cycle_mean_price_samples <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(shape<span style="color:#f92672">=</span>days)
+
+<span style="color:#75715e">#deduction = capacity of empty ships</span>
+<span style="color:#66d9ef">for</span> day <span style="color:#f92672">in</span> range(days):
+    <span style="color:#66d9ef">if</span> carbon_total_millions_metric_tons <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#75715e"># must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day </span>
+        shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+        shipping_df[<span style="color:#e6db74">&#39;us_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  random_us_port() <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;us_port&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        shipping_df[<span style="color:#e6db74">&#39;europe_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  random_europe_port() <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;europe_port&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        shipping_df[<span style="color:#e6db74">&#39;distance&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  geo_distance(x[<span style="color:#e6db74">&#39;us_port&#39;</span>], x[<span style="color:#e6db74">&#39;europe_port&#39;</span>]) <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;distance&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        shipping_df[<span style="color:#e6db74">&#39;price&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  price_to_transport(x[<span style="color:#e6db74">&#39;distance&#39;</span>],x[<span style="color:#e6db74">&#39;co2_capacity_tonnes&#39;</span>]) <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;price&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#75715e">#calculate cost per day for fun...</span>
+        <span style="color:#75715e"># query all that are = o.  Summate the capacities deduct the total </span>
+        tmp_df<span style="color:#f92672">=</span>shipping_df<span style="color:#f92672">.</span>loc[shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>]
+        sum_of_capacity <span style="color:#f92672">=</span> tmp_df[<span style="color:#e6db74">&#39;co2_capacity_tonnes&#39;</span>]<span style="color:#f92672">.</span>sum()
+        sum_of_price <span style="color:#f92672">=</span> tmp_df[<span style="color:#e6db74">&#39;price&#39;</span>]<span style="color:#f92672">.</span>sum()
+        mean_of_price <span style="color:#f92672">=</span> tmp_df[<span style="color:#e6db74">&#39;price&#39;</span>]<span style="color:#f92672">.</span>mean()
+        cycle_mean_price_samples[day] <span style="color:#f92672">=</span> mean_of_price
+        shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: random_day() <span style="color:#66d9ef">if</span> x<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x)
+        total_tons_shipped <span style="color:#f92672">=</span> total_tons_shipped <span style="color:#f92672">+</span> sum_of_capacity
+        total_price <span style="color:#f92672">=</span> total_price <span style="color:#f92672">+</span> sum_of_price
+        carbon_total_millions_metric_tons <span style="color:#f92672">=</span> carbon_total_millions_metric_tons <span style="color:#f92672">-</span> sum_of_capacity
+        <span style="color:#75715e">#print(carbon_total_millions_metric_tons)</span>
+        day_counter <span style="color:#f92672">=</span> day_counter<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">else</span>: 
+        <span style="color:#66d9ef">break</span>
+
+    
+    
+print(day_counter)
+print(total_tons_shipped)
+print(total_price)
+<span style="color:#75715e">#Drop the nan, ie empty samples</span>
+cycle_mean_price <span style="color:#f92672">=</span> cycle_mean_price_samples[np<span style="color:#f92672">.</span>logical_not(np<span style="color:#f92672">.</span>isnan(cycle_mean_price_samples))]
+<span style="color:#75715e">#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)</span>
+cycle_mean_price <span style="color:#f92672">=</span> cycle_mean_price<span style="color:#f92672">.</span>mean()
+print(cycle_mean_price)
+
+</code></pre></div><pre><code>365
+41073.187985943456
+60039059.413350895
+308098.2720296601
+</code></pre>
+<h2 id="monte-carlo-simulation-with-500-iterations" >Monte Carlo Simulation with 500 iterations
+<span>
+    <a href="#monte-carlo-simulation-with-500-iterations">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  Modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations</p>
+<p>The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+nsamples <span style="color:#f92672">=</span> <span style="color:#ae81ff">500</span>
+price_samples <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(shape<span style="color:#f92672">=</span>nsamples)
+cycle_mean_price_annual_samples <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(shape<span style="color:#f92672">=</span>nsamples)
+
+<span style="color:#66d9ef">for</span> sample <span style="color:#f92672">in</span> range(nsamples):
+
+    days <span style="color:#f92672">=</span> <span style="color:#ae81ff">365</span>
+    day_counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+    carbon_total_millions_metric_tons <span style="color:#f92672">=</span> <span style="color:#ae81ff">300000000</span> <span style="color:#75715e"># could randomize.  Need a probability distribution based on historial data. </span>
+    total_tons_shipped <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    total_price <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    cycle_mean_price_daily_samples <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(shape<span style="color:#f92672">=</span>days)
+
+
+    <span style="color:#75715e">#deduction = capacity of empty ships</span>
+    <span style="color:#66d9ef">for</span> day <span style="color:#f92672">in</span> range(days):
+        <span style="color:#66d9ef">if</span> carbon_total_millions_metric_tons <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#75715e"># must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day </span>
+            shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+            shipping_df[<span style="color:#e6db74">&#39;us_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  random_us_port() <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;us_port&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+            shipping_df[<span style="color:#e6db74">&#39;europe_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  random_europe_port() <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;europe_port&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+            shipping_df[<span style="color:#e6db74">&#39;distance&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  geo_distance(x[<span style="color:#e6db74">&#39;us_port&#39;</span>], x[<span style="color:#e6db74">&#39;europe_port&#39;</span>]) <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;distance&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+            shipping_df[<span style="color:#e6db74">&#39;price&#39;</span>] <span style="color:#f92672">=</span> shipping_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x:  price_to_transport(x[<span style="color:#e6db74">&#39;distance&#39;</span>], x[<span style="color:#e6db74">&#39;co2_capacity_tonnes&#39;</span>]) <span style="color:#66d9ef">if</span> x[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x[<span style="color:#e6db74">&#39;price&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+            <span style="color:#75715e"># query all that are = o.  Summate the capacities deduct the total </span>
+            tmp_df<span style="color:#f92672">=</span>shipping_df<span style="color:#f92672">.</span>loc[shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>]
+            sum_of_capacity <span style="color:#f92672">=</span> tmp_df[<span style="color:#e6db74">&#39;co2_capacity_tonnes&#39;</span>]<span style="color:#f92672">.</span>sum()
+            sum_of_price <span style="color:#f92672">=</span> tmp_df[<span style="color:#e6db74">&#39;price&#39;</span>]<span style="color:#f92672">.</span>sum()
+            mean_of_price <span style="color:#f92672">=</span> tmp_df[<span style="color:#e6db74">&#39;price&#39;</span>]<span style="color:#f92672">.</span>mean()
+            cycle_mean_price_daily_samples[day] <span style="color:#f92672">=</span> mean_of_price
+            shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>] <span style="color:#f92672">=</span> shipping_df[<span style="color:#e6db74">&#39;days_to_port&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: random_day() <span style="color:#66d9ef">if</span> x<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> x)
+            total_tons_shipped <span style="color:#f92672">=</span> total_tons_shipped <span style="color:#f92672">+</span> sum_of_capacity
+            total_price <span style="color:#f92672">=</span> total_price <span style="color:#f92672">+</span> sum_of_price
+            carbon_total_millions_metric_tons <span style="color:#f92672">=</span> carbon_total_millions_metric_tons <span style="color:#f92672">-</span> sum_of_capacity
+            <span style="color:#75715e">#print(carbon_total_millions_metric_tons)</span>
+            day_counter <span style="color:#f92672">=</span> day_counter<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">else</span>: 
+            <span style="color:#66d9ef">break</span>
+
+    <span style="color:#75715e">#Drop the nan, ie empty samples</span>
+    cycle_mean_price <span style="color:#f92672">=</span> cycle_mean_price_samples[np<span style="color:#f92672">.</span>logical_not(np<span style="color:#f92672">.</span>isnan(cycle_mean_price_samples))]
+    <span style="color:#75715e">#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)</span>
+    cycle_mean_price <span style="color:#f92672">=</span> cycle_mean_price<span style="color:#f92672">.</span>mean()
+    cycle_mean_price_annual_samples[sample] <span style="color:#f92672">=</span>cycle_mean_price
+        
+    
+
+    price_samples[sample] <span style="color:#f92672">=</span> total_price
+
+        
+
+</code></pre></div><h3 id="creating-the-annual-price-samples-df" >Creating the Annual Price Samples DF
+<span>
+    <a href="#creating-the-annual-price-samples-df">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">annual_price_samples_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(price_samples, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;cost_in_usd&#39;</span>])
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">annual_price_samples_df[<span style="color:#e6db74">&#39;cost_in_usd_billions&#39;</span>] <span style="color:#f92672">=</span> annual_price_samples_df<span style="color:#f92672">.</span>cost_in_usd 
+</code></pre></div><h2 id="imports" >Imports
+<span>
+    <a href="#imports">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">import</span> geopandas <span style="color:#66d9ef">as</span> gpd
+<span style="color:#f92672">import</span> folium
+<span style="color:#f92672">import</span> contextily <span style="color:#66d9ef">as</span> cx
+<span style="color:#f92672">import</span> rtree
+<span style="color:#f92672">from</span> zlib <span style="color:#f92672">import</span> crc32
+<span style="color:#f92672">import</span> hashlib
+<span style="color:#f92672">from</span> shapely.geometry <span style="color:#f92672">import</span> Point, LineString, Polygon
+<span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+<span style="color:#f92672">from</span> scipy.spatial <span style="color:#f92672">import</span> cKDTree
+<span style="color:#f92672">import</span> scipy.stats <span style="color:#66d9ef">as</span> st
+<span style="color:#f92672">from</span> shapely.geometry <span style="color:#f92672">import</span> Point
+<span style="color:#f92672">from</span> haversine <span style="color:#f92672">import</span> Unit
+<span style="color:#f92672">from</span> geopy.distance <span style="color:#f92672">import</span> distance
+
+<span style="color:#f92672">import</span> warnings
+
+warnings<span style="color:#f92672">.</span>filterwarnings(<span style="color:#e6db74">&#39;ignore&#39;</span>)
+
+</code></pre></div><pre><code>/Users/jnapolitano/venvs/finance/lib/python3.9/site-packages/geopandas/_compat.py:111: UserWarning: The Shapely GEOS version (3.10.2-CAPI-1.16.0) is incompatible with the GEOS version PyGEOS was compiled with (3.10.1-CAPI-1.16.0). Conversions between both will be slow.
+  warnings.warn(
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+</code></pre></div>
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+
+    
+        <div class="post-date dt-published">2022-05-07</div>
+    
+
+    <a class="post-hidden-url u-url" href="https://blog.jnapolitano.io/posts/carbon-shipping-projections/">https://blog.jnapolitano.io/posts/carbon-shipping-projections/</a>
+    <a href="https://blog.jnapolitano.io" class="p-name p-author post-hidden-author h-card" rel="me">Justin Napolitano</a>
+
+
+    <div class="post-taxonomies">
+        
+        
+        
+            <ul class="post-categories">
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/python/">Python</a></li>
+                
+                    
+                    <li><a href="">Statisical Analysis</a></li>
+                
+                    
+                    <li><a href="">Economic Projections</a></li>
+                
+            </ul>
+        
+        
+            <ul class="post-tags">
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/ml/">#ml</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/projections/">#projections</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/montecarlo/">#montecarlo</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/python/">#python</a></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+        <hr/>
+        
+    Warning - check your series - as none found
+
+        <hr/>
+    </article>
+
+
+
+    
+        
+        
+            <h3 class="read-next-title">Read next</h3>
+            <ul class="read-next-posts">
+                
+                <li><a href="/posts/feasibility_study_shipping_carbon/">Feasibility of Shipping Carbon Across the Atlantic</a></li>
+                
+                <li><a href="/posts/coal/">US Coal Plant Distribution</a></li>
+                
+                <li><a href="/posts/existing-gas-storage-facilities/">Existing Carbon and Gas Storage Facilities</a></li>
+                
+                <li><a href="/posts/wells-near-ports/">Potential Carbon and Hydrogen Storage Facilities Near Import/Export Ports</a></li>
+                
+                <li><a href="/posts/wells-near-pipelines/">Potential Carbon and Hydrogen Storage Wells Near Pipelines</a></li>
+                
+            </ul>
+        
+    
+
+    
+
+    
+        
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jnapolitano-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+
+
+
+    
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Justin Napolitano, 2022<br>
+            Maintained by Justin Napolitano.<br>
+            
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+
+<script>
+const STORAGE_KEY = 'user-color-scheme'
+const defaultTheme = "auto"
+
+let currentTheme
+let switchButton
+let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+const autoChangeScheme = e => {
+    currentTheme = e.matches ? 'dark' : 'light'
+    document.documentElement.setAttribute('data-theme', currentTheme)
+    changeButtonText()
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    switchButton = document.querySelector('.theme-switcher')
+    currentTheme = detectCurrentScheme()
+    if (currentTheme == 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark')
+    }
+    if (currentTheme == 'auto') {
+        autoChangeScheme(autoDefinedScheme);
+        autoDefinedScheme.addListener(autoChangeScheme);
+    }
+
+    if (switchButton) {
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    }
+  
+    showContent()
+})
+
+function detectCurrentScheme() {
+    if (localStorage.getItem(STORAGE_KEY)) {
+        return localStorage.getItem(STORAGE_KEY)
+    } 
+    if (defaultTheme) {
+        return defaultTheme
+    } 
+    if (!window.matchMedia) {
+        return 'light'
+    } 
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark'
+    }
+    return 'light'
+}
+
+function changeButtonText()
+{   
+    if (switchButton) {
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+}
+
+function switchTheme(e) {
+    if (currentTheme == 'dark') {
+        localStorage.setItem(STORAGE_KEY, 'light')
+        document.documentElement.setAttribute('data-theme', 'light')
+        currentTheme = 'light'
+    } else {
+        localStorage.setItem(STORAGE_KEY, 'dark')
+        document.documentElement.setAttribute('data-theme', 'dark')
+        currentTheme = 'dark'
+    }
+    changeButtonText()
+}
+
+function showContent() {
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = 1;
+}
+</script>   
+    </div>
+
+    <p class="h-card vcard">
+
+    <a href=https://blog.jnapolitano.io class="p-name u-url url fn" rel="me">Justin Napolitano</a> 
+
+     
+        /
+        <a class="p-email u-email email" rel="me" href="mailto:justin@jnapolitano.io">justin@jnapolitano.io</a>
+    
+
+     
+        <img class="u-photo" src="/images/me.png" />
+    
+</p> 
+</footer>
+
+        
+    </div>
+</body>
+</html>

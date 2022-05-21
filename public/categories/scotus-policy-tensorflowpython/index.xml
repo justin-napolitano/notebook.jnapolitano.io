@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SCOTUS, Policy, TensorFlow,Python on Justin&#39;s Data Blog</title>
+    <link>https://blog.jnapolitano.io/categories/scotus-policy-tensorflowpython/</link>
+    <description>Justin&#39;s Data Blog (SCOTUS, Policy, TensorFlow,Python)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 May 2022 14:40:32 +0000</lastBuildDate>
+    
+    <atom:link href="https://blog.jnapolitano.io/categories/scotus-policy-tensorflowpython/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Conduct Legal Research with AI Part 3</title>
+      <link>https://blog.jnapolitano.io/posts/ai-proof-of-concept/</link>
+      <pubDate>Wed, 18 May 2022 14:40:32 +0000</pubDate>
+      
+      <guid>https://blog.jnapolitano.io/posts/ai-proof-of-concept/</guid>
+      <description>&lt;h1 id=&#34;conduct-legal-research-with-ai-part-3&#34; &gt;Conduct Legal Research with AI: Part 3
+&lt;span&gt;
+    &lt;a href=&#34;#conduct-legal-research-with-ai-part-3&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h1&gt;&lt;p&gt;This is the third post in a series documenting the process of building an ml pipeline that will be used to train models to predict the outcomes of Supreme Court Cases.&lt;/p&gt;
+&lt;p&gt;You can find the others at:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.jnapolitano.io/neo4j_integration/&#34;&gt;blog.jnapolitano.io/neo4j_integration/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.jnapolitano.io/constitution_to_neo/&#34;&gt;blog.jnapolitano.io/constitution_to_neo/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;introduction&#34; &gt;Introduction
+&lt;span&gt;
+    &lt;a href=&#34;#introduction&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;In this post, I will be testing a sample TensorFlow pipeline against the &lt;a href=&#34;http://scdb.wustl.edu/&#34;&gt;Supreme Court Database&lt;/a&gt; maintained by the Washington University Law School in order to build a proof of concept model for a Supreme Court Graph Analysis project.&lt;/p&gt;
+&lt;h2 id=&#34;the-data-set&#34; &gt;The Data Set
+&lt;span&gt;
+    &lt;a href=&#34;#the-data-set&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The data set is fairly limited. There are only about 250 issue areas to train against. It also does not include doctrinal trees to train an algorithm to predict when the court will break from precedent.&lt;/p&gt;
+&lt;p&gt;The data records primarily the voting behavior of justices, the policy direction of the outcome, and the political ideology score of the outcome.&lt;/p&gt;
+&lt;p&gt;Policy direction and political ideology are factors coded by individuals that may be prone to error an bias. In my analysis I will test against the findings of this model to determine which factors are most powerful.&lt;/p&gt;
+&lt;h2 id=&#34;the-model&#34; &gt;The Model
+&lt;span&gt;
+    &lt;a href=&#34;#the-model&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;I tested against case centric and justice centric data orientations.&lt;/p&gt;
+&lt;h3 id=&#34;case-centric-model&#34; &gt;Case Centric Model
+&lt;span&gt;
+    &lt;a href=&#34;#case-centric-model&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The first is case centric.  The power of this model is fairly limited, as it attempts to discern the outcome of a case from the aggregate behavior of the current justices on the bench.  It essentially creates a score that is modified by each case outcome to determine if the court will vote conservatively or liberally towards a case of regarding a specific issue area.  It is important to note that the database limits each case to one overarching issue area.&lt;/p&gt;
+&lt;h4 id=&#34;case-centric-training-features&#34; &gt;Case Centric Training Features
+&lt;span&gt;
+    &lt;a href=&#34;#case-centric-training-features&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;issue&lt;/li&gt;
+&lt;li&gt;issueArea&lt;/li&gt;
+&lt;li&gt;naturalCourt&lt;/li&gt;
+&lt;li&gt;petitioner&lt;/li&gt;
+&lt;li&gt;petitionerState&lt;/li&gt;
+&lt;li&gt;respondent&lt;/li&gt;
+&lt;li&gt;jurisdiction&lt;/li&gt;
+&lt;li&gt;adminAction&lt;/li&gt;
+&lt;li&gt;adminActionState&lt;/li&gt;
+&lt;li&gt;threeJudgeFdc&lt;/li&gt;
+&lt;li&gt;caseOrigin&lt;/li&gt;
+&lt;li&gt;caseOriginState&lt;/li&gt;
+&lt;li&gt;respondentState&lt;/li&gt;
+&lt;li&gt;caseSource&lt;/li&gt;
+&lt;li&gt;caseSourceState&lt;/li&gt;
+&lt;li&gt;lawType&lt;/li&gt;
+&lt;li&gt;lawSupp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;case-centric-results&#34; &gt;Case Centric Results
+&lt;span&gt;
+    &lt;a href=&#34;#case-centric-results&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The models were able to predict the outcomes about 75 percent of the time following 1,000 epochs of training.  It is likely that factors other than previous voting behavior determine the outcome of the case.&lt;/p&gt;
+&lt;h3 id=&#34;justice-centric-model&#34; &gt;Justice Centric Model
+&lt;span&gt;
+    &lt;a href=&#34;#justice-centric-model&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The second is justice centric.  The predictive power of this model, should in theory be greater as it attempts to determine the likely vote of an individual justice against an issue area.  Again this is limited as only the overarching issue area is available in the data.  It may very well prove that justices may favor free speech in most cases, except when the military is the target.  The model could not predict that, because the data is limited.&lt;/p&gt;
+&lt;h4 id=&#34;justice-centric-training-features&#34; &gt;Justice Centric Training Features
+&lt;span&gt;
+    &lt;a href=&#34;#justice-centric-training-features&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;justice&lt;/li&gt;
+&lt;li&gt;issue&lt;/li&gt;
+&lt;li&gt;issueArea&lt;/li&gt;
+&lt;li&gt;lawType&lt;/li&gt;
+&lt;li&gt;direction&lt;/li&gt;
+&lt;li&gt;petitioner&lt;/li&gt;
+&lt;li&gt;naturalCourt&lt;/li&gt;
+&lt;li&gt;petitionerState&lt;/li&gt;
+&lt;li&gt;respondent&lt;/li&gt;
+&lt;li&gt;respondentState&lt;/li&gt;
+&lt;li&gt;jurisdiction&lt;/li&gt;
+&lt;li&gt;caseOrigin&lt;/li&gt;
+&lt;li&gt;caseOriginState&lt;/li&gt;
+&lt;li&gt;caseSource&lt;/li&gt;
+&lt;li&gt;caseSourceState&lt;/li&gt;
+&lt;li&gt;certReason&lt;/li&gt;
+&lt;li&gt;lawSupp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;justice-centric-results&#34; &gt;Justice Centric Results
+&lt;span&gt;
+    &lt;a href=&#34;#justice-centric-results&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The justice centric pipeline results in accuracy exceeding 82 percent.  This is better, but a model that could consider more factors and issue areas would likely improve the results.&lt;/p&gt;
+&lt;h2 id=&#34;next-steps&#34; &gt;Next Steps
+&lt;span&gt;
+    &lt;a href=&#34;#next-steps&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;I will integrate the models to my neo4j data set.  As of now, the graph database exceeds 50,000 individuals nodes and over 400,000 relationships.  It will allow me to train an algorithm that can determine a justices attitude towards, cases, clauses, sentences, states, petitioners, and any other feature integrated into the dataset.&lt;/p&gt;
+&lt;h2 id=&#34;the-code&#34; &gt;The Code
+&lt;span&gt;
+    &lt;a href=&#34;#the-code&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;case-centric-training-pipeline&#34; &gt;Case Centric Training Pipeline
+&lt;span&gt;
+    &lt;a href=&#34;#case-centric-training-pipeline&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I&amp;rsquo;ve included the entire model below.  Review my &lt;a href=&#34;https://docs.jnapolitano.io/parts/ml-ai/tensorflow/project-supcourt-tensorflow/docs/SupremeCourtPredictionsCase/index.html&#34;&gt;documentation site&lt;/a&gt; for more detail.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-Python&#34; data-lang=&#34;Python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#supremeCourtPrediction.py&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#a program that uses the segal and spaeth dataset to predict the outcomes of cases&lt;/span&gt;
+
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; tensorflow &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; tf
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; seaborn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; sns
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; shap
+shap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;initjs()
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os 
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; csv
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; datetime
+
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; feature_column
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow.keras &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; layers
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; sklearn.model_selection &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; train_test_split
+
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; itertools &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; permutations 
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_environmental_variables&lt;/span&gt;():
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd()
+    log_dir &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;logs/fit/&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;now()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strftime(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%Y%m&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%d&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;-%H%M%S&amp;#34;&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; cwd, log_dir
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;load_data&lt;/span&gt;(cwd):
+    data_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;citation.csv&amp;#39;&lt;/span&gt;) 
+    drop_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;drop&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;drop.txt&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(path)&lt;/span&gt;
+    dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_csv(data_path,encoding&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;unicode_escape&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(dataframe.head())&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(drop_path) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; fp:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; cnt, line &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(fp):
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#34;Dropping {} from dataframe&amp;#34;.format(line))&lt;/span&gt;
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\t&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;&amp;#34;&lt;/span&gt;)
+
+            dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop(line,axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    
+    dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fillna(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    print(dataframe)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#dataframe.issue = dataframe.astype({&amp;#39;issue&amp;#39;: &amp;#39;str&amp;#39;})&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#dataframe[issue] = dataframe[issue].astype(str)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(dataframe)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(dataframe.head())&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; dataframe
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;split_datframe&lt;/span&gt;(dataframe):
+    train, test &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; train_test_split(dataframe, test_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.2&lt;/span&gt;)
+    train, val &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; train_test_split(train, test_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.2&lt;/span&gt;)
+    print(len(train), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;train examples&amp;#39;&lt;/span&gt;)
+    print(len(val), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;validation examples&amp;#39;&lt;/span&gt;)
+    print(len(test), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;test examples&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; train, test, val
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# A utility method to create a tf.data dataset from a Pandas Dataframe&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;df_to_dataset&lt;/span&gt;(dataframe, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;):
+    dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+    labels &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;declarationUncon&amp;#39;&lt;/span&gt;)
+    ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dataset&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;from_tensor_slices((dict(dataframe), labels))
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; shuffle:
+        ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;shuffle(buffer_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;len(dataframe))
+    ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;batch(batch_size)
+    print(ds)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ds
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_input_pipeline&lt;/span&gt;(train, test, val, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;):
+    train_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(train, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;batch_size)
+    val_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(val, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;batch_size)
+    test_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(test, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;batch_size)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; train_ds, val_ds, test_ds
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_feature_layer&lt;/span&gt;(cwd): &lt;span style=&#34;color:#75715e&#34;&gt;#select the columns for analysis from dataset&lt;/span&gt;
+    feature_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;use&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features.txt&amp;#39;&lt;/span&gt;)
+    dict_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;use&amp;#39;&lt;/span&gt;)
+    feature_columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;#embedded columns&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(feature_path) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; fp:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; cnt, line &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(fp):
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#34;Adding {} to features&amp;#34;.format(line))&lt;/span&gt;
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\t&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;&amp;#34;&lt;/span&gt;)
+
+            print(cnt)   
+            print(line)
+
+            indicator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;numeric_column(line)
+            
+            &lt;span style=&#34;color:#75715e&#34;&gt;#feature_column.categorical_column_with_vocabulary_file(&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#            key = line, vocabulary_file = os.path.join(dict_path,&amp;#34;{}.txt&amp;#34;.format(line)), default_value=0)&lt;/span&gt;
+
+            print(indicator)
+            feature_columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(indicator)
+
+
+            &lt;span style=&#34;color:#75715e&#34;&gt;#feature_columns.append(feature_column.embedding_column(indicator, dimension=8))&lt;/span&gt;
+
+    
+    crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;crossed_column([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;issue&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;issueArea&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;naturalCourt&amp;#39;&lt;/span&gt;], hash_bucket_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;)
+    crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;indicator_column(crossed_feature)
+    feature_columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(crossed_feature)
+
+
+    crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;crossed_column([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;issue&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;naturalCourt&amp;#39;&lt;/span&gt;], hash_bucket_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;)
+    crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;indicator_column(crossed_feature)
+    feature_columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(crossed_feature)
+
+    crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;crossed_column([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;issueArea&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;naturalCourt&amp;#39;&lt;/span&gt;],hash_bucket_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;)
+    crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;indicator_column(crossed_feature)
+    feature_columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(crossed_feature)
+    
+   &lt;span style=&#34;color:#75715e&#34;&gt;# court_buckets = feature_column.bucketized_column(naturalCourt, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(feature_columns)&lt;/span&gt;
+    feature_layer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DenseFeatures(feature_columns)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#for item in feature_columns:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    print(item)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    print(&amp;#34;\n&amp;#34;)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; feature_layer
+
+     
+    &lt;span style=&#34;color:#75715e&#34;&gt;#crossed cols&lt;/span&gt;
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#categorical_columns &lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;understand_input_pipeline&lt;/span&gt;(train_ds):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; feature_batch, label_batch &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; train_ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;take(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Every feature:&amp;#39;&lt;/span&gt;, list(feature_batch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keys()))
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;A batch of ages:&amp;#39;, feature_batch[&amp;#39;age&amp;#39;])&lt;/span&gt;
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;A batch of targets:&amp;#39;&lt;/span&gt;, label_batch )
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_model&lt;/span&gt;(log_dir,feature_layer, train_ds, val_ds, epochs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;):
+    
+    model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Sequential([
+        feature_layer,
+        layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;, activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;),
+        layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;, activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;),
+        layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    ])
+
+    model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;compile(optimizer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;adam&amp;#39;&lt;/span&gt;,
+            loss&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;losses&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;BinaryCrossentropy(from_logits&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;),
+            metrics&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;accuracy&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mae&amp;#39;&lt;/span&gt;])
+
+    history &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit(train_ds,
+            validation_data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;val_ds,
+            epochs&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;epochs)
+
+    loss, accuracy,mae &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;evaluate(test_ds)
+    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Accuracy&amp;#34;&lt;/span&gt;, accuracy)
+    print(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary())
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; model,history
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;plot_history&lt;/span&gt;(history):
+
+    hist &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(history&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;history)
+    print(hist)
+    hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;epoch&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; history&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;epoch
+
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;figure()
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Epoch&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mean Absolute Error&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;epoch&amp;#39;&lt;/span&gt;], hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mae&amp;#39;&lt;/span&gt;],
+            label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Train Error&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;epoch&amp;#39;&lt;/span&gt;], hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;val_mae&amp;#39;&lt;/span&gt;],
+            label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Val Error&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;legend()
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;explain_kernal&lt;/span&gt;(df_train,model,train_ds):
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;# KernelExplainer is a general approach that can work with any ML framework&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Its inputs are the predictions and training data&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Summarize the training set to accelerate analysis&lt;/span&gt;
+    df_train_summary &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;kmeans(df_train&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;values, &lt;span style=&#34;color:#ae81ff&#34;&gt;25&lt;/span&gt;)
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Instantiate an explainer with the model predictions and training data summary&lt;/span&gt;
+    explainer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;KernelExplainer(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;predict, df_train)
+
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Extract Shapley values from the explainer&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#shap_values = explainer.shap_values(df_train.values)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+    cwd, log_dir &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_environmental_variables()
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(cwd)&lt;/span&gt;
+
+    df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; load_data(cwd)
+
+    train,test,val &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; split_datframe(df)
+    dataset &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(df)
+    train_ds, val_ds, test_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_input_pipeline(train,test,val,&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;)
+    understand_input_pipeline(train_ds)
+    feature_layer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_feature_layer(cwd)
+    model, model_history &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_model(log_dir,feature_layer, train_ds, val_ds)
+    plot_history(model_history)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(model.predict(train_ds))&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(model.predict)&lt;/span&gt;
+    explain_kernal(df,model,train_ds)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;the-justice-centric-training-pipeline&#34; &gt;The Justice Centric Training Pipeline
+&lt;span&gt;
+    &lt;a href=&#34;#the-justice-centric-training-pipeline&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The entire pipeline is included below.  Review the &lt;a href=&#34;https://docs.jnapolitano.io/parts/ml-ai/tensorflow/project-supcourt-tensorflow/docs/SupremeCourtPredictionsJustice/index.html&#34;&gt;documentation&lt;/a&gt; for greater detail.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#supremeCourtPrediction.py&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#a program that uses the segal and spaeth dataset to predict the outcomes of cases&lt;/span&gt;
+
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; tensorflow &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; tf
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; seaborn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; sns
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; shap
+shap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;initjs()
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os 
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; csv
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; datetime
+
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; feature_column
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow.keras &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; layers
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; sklearn.model_selection &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; train_test_split
+
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; itertools &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; permutations
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; itertools &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; combinations_with_replacement
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_environmental_variables&lt;/span&gt;():
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd()
+    log_dir &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;logs/fit/&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;now()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strftime(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%Y%m&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%d&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;-%H%M%S&amp;#34;&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; cwd, log_dir
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;load_data&lt;/span&gt;(cwd):
+    data_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;justice.csv&amp;#39;&lt;/span&gt;) 
+    drop_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;drop&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;drop.txt&amp;#39;&lt;/span&gt;)
+    target_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;targets.txt&amp;#39;&lt;/span&gt;)
+    print(data_path)
+    dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_csv(data_path,encoding&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;unicode_escape&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(dataframe.head())&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(drop_path) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; fp:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; cnt, line &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(fp):
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#34;Dropping {} from dataframe&amp;#34;.format(line))&lt;/span&gt;
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\t&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;&amp;#34;&lt;/span&gt;)
+
+            dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop(line,axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    
+    dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fillna(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    print(dataframe)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#dataframe.issue = dataframe.astype({&amp;#39;issue&amp;#39;: &amp;#39;str&amp;#39;})&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#dataframe[issue] = dataframe[issue].astype(str)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(dataframe)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(dataframe.head())&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; dataframe
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;split_datframe&lt;/span&gt;(dataframe):
+    train, test &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; train_test_split(dataframe, test_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.2&lt;/span&gt;)
+    train, val &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; train_test_split(train, test_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.2&lt;/span&gt;)
+    print(len(train), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;train examples&amp;#39;&lt;/span&gt;)
+    print(len(val), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;validation examples&amp;#39;&lt;/span&gt;)
+    print(len(test), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;test examples&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; train, test, val
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# A utility method to create a tf.data dataset from a Pandas Dataframe&lt;/span&gt;
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;df_to_dataset&lt;/span&gt;(dataframe, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;):
+    dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+    labels &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;vote&amp;#39;&lt;/span&gt;)
+    ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dataset&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;from_tensor_slices((dict(dataframe), labels))
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; shuffle:
+        ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;shuffle(buffer_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;len(dataframe))
+    ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;batch(batch_size)
+    print(ds)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ds
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_input_pipeline&lt;/span&gt;(train, test, val, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;):
+    train_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(train, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;batch_size)
+    val_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(val, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;batch_size)
+    test_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(test, shuffle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;batch_size)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; train_ds, val_ds, test_ds
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_feature_layer&lt;/span&gt;(cwd): &lt;span style=&#34;color:#75715e&#34;&gt;#select the columns for analysis from dataset&lt;/span&gt;
+    feature_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;use&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features.txt&amp;#39;&lt;/span&gt;)
+    dict_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(cwd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;data&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;features&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;use&amp;#39;&lt;/span&gt;)
+    feature_columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    feature_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#75715e&#34;&gt;#embedded columns&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(feature_path) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; fp:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; cnt, line &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(fp):
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#34;Adding {} to features&amp;#34;.format(line))&lt;/span&gt;
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\t&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+            line &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;&amp;#34;&lt;/span&gt;)
+
+            print(cnt)   
+            print(line)
+            feature_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(line)
+
+            indicator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;numeric_column(line)
+            
+            &lt;span style=&#34;color:#75715e&#34;&gt;#feature_column.categorical_column_with_vocabulary_file(&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#            key = line, vocabulary_file = os.path.join(dict_path,&amp;#34;{}.txt&amp;#34;.format(line)), default_value=0)&lt;/span&gt;
+
+            print(indicator)
+            feature_columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(indicator)
+
+
+            &lt;span style=&#34;color:#75715e&#34;&gt;#feature_columns.append(feature_column.embedding_column(indicator, dimension=8))&lt;/span&gt;
+
+    feature_comb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; combinations_with_replacement(feature_list, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;) 
+    lst &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; list(feature_comb)
+    limit &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(feature_list)
+    print(limit)
+    j &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; limit &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    lookup &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(limit):
+        lookup&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(i&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;j)
+        j &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k
+        k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; 
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(lst)):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; lookup:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            one, two &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lst[i]
+            crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;crossed_column([one, two], hash_bucket_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;)
+            crossed_feature &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; feature_column&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;indicator_column(crossed_feature)
+            feature_columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(crossed_feature)
+
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    crossed_feature = feature_column.crossed_column([&amp;#39;issue&amp;#39;, &amp;#39;naturalCourt&amp;#39;], hash_bucket_size=1000)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    crossed_feature = feature_column.indicator_column(crossed_feature)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    feature_columns.append(crossed_feature)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    crossed_feature = feature_column.crossed_column([&amp;#39;issueArea&amp;#39;, &amp;#39;naturalCourt&amp;#39;],hash_bucket_size=1000)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    crossed_feature = feature_column.indicator_column(crossed_feature)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    feature_columns.append(crossed_feature)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+   &lt;span style=&#34;color:#75715e&#34;&gt;# court_buckets = feature_column.bucketized_column(naturalCourt, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(feature_columns)&lt;/span&gt;
+    feature_layer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DenseFeatures(feature_columns)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#for item in feature_columns:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    print(item)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    print(&amp;#34;\n&amp;#34;)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; feature_layer
+
+     
+    &lt;span style=&#34;color:#75715e&#34;&gt;#crossed cols&lt;/span&gt;
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#categorical_columns &lt;/span&gt;
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;understand_input_pipeline&lt;/span&gt;(train_ds):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; feature_batch, label_batch &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; train_ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;take(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Every feature:&amp;#39;&lt;/span&gt;, list(feature_batch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keys()))
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;A batch of ages:&amp;#39;, feature_batch[&amp;#39;age&amp;#39;])&lt;/span&gt;
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;A batch of targets:&amp;#39;&lt;/span&gt;, label_batch )
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_model&lt;/span&gt;(log_dir,feature_layer, train_ds, val_ds, epochs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;):
+    
+    model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Sequential([
+        feature_layer,
+        layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;, activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;),
+        layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;, activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;),
+        layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    ])
+
+    model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;compile(optimizer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;adam&amp;#39;&lt;/span&gt;,
+            loss&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;losses&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;BinaryCrossentropy(from_logits&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;),
+            metrics&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;accuracy&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mae&amp;#39;&lt;/span&gt;])
+
+    history &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit(train_ds,
+            validation_data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;val_ds,
+            epochs&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;epochs)
+
+    loss, accuracy,mae &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;evaluate(test_ds)
+    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Accuracy&amp;#34;&lt;/span&gt;, accuracy)
+    print(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary())
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; model,history
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;plot_history&lt;/span&gt;(history):
+
+    hist &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(history&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;history)
+    print(hist)
+    hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;epoch&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; history&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;epoch
+
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;figure()
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Epoch&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mean Absolute Error&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;epoch&amp;#39;&lt;/span&gt;], hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mae&amp;#39;&lt;/span&gt;],
+            label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Train Error&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;epoch&amp;#39;&lt;/span&gt;], hist[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;val_mae&amp;#39;&lt;/span&gt;],
+            label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Val Error&amp;#39;&lt;/span&gt;)
+    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;legend()
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;explain_kernal&lt;/span&gt;(model,train_ds):
+    model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;predict(train_ds)
+    &lt;span style=&#34;color:#75715e&#34;&gt;# KernelExplainer is a general approach that can work with any ML framework&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Its inputs are the predictions and training data&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Summarize the training set to accelerate analysis&lt;/span&gt;
+    df_train_summary &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;kmeans(train_ds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;values, &lt;span style=&#34;color:#ae81ff&#34;&gt;25&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(df_train_summary)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#model.predict(df_train_summary)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Instantiate an explainer with the model predictions and training data summary&lt;/span&gt;
+    explainer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;KernelExplainer(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;predict, train_ds)
+
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Extract Shapley values from the explainer&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#shap_values = explainer.shap_values(df_train.values)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+    cwd, log_dir &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_environmental_variables()
+    print(cwd)
+
+
+    df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; load_data(cwd)
+
+    train,test,val &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; split_datframe(df)
+    dataset &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_to_dataset(df)
+    train_ds, val_ds, test_ds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_input_pipeline(train,test,val,&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;)
+    understand_input_pipeline(train_ds)
+    feature_layer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_feature_layer(cwd)
+    model, model_history &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_model(log_dir,feature_layer, train_ds, val_ds)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#plot_history(model_history)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(model.predict(train_ds))&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(model.predict)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#explain_kernal(model,train_ds)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

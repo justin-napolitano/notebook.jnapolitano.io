@@ -1,0 +1,92 @@
+{{ define "main" }}
+    {{ if .Menus }}
+        <nav class="post-navigation">
+        {{ range .Menus }}
+            <a href="{{ .URL | absLangURL }}" title="{{ .Title }}">{{ .Name }}</a>
+        {{ end }}
+        </nav>
+    {{ end }}
+
+    <article class="post h-entry">
+        <div class="post-header">
+            <header>
+                <h1 class="p-name post-title{{ if .Params.favorite }} favorite{{end}}{{ if .Params.draft }} draft{{end}}">{{ trim .Title  " " }}</h1>
+                {{ partial "post-language-switcher.html" . }}            
+
+
+                
+                {{ $image := .Resources.GetMatch "post-image.jpeg" }}
+                {{if .Params.image}}
+                    {{$image := .Resources.GetMatch .Params.image}}
+                    {{$hate := $image.Height}}
+                    {{$tmp := string 600}}
+                
+                    {{$tiny_size := printf "480x%s q90" $tmp}}
+                    {{$small_size := printf "768x%s q90" $tmp}}
+                    {{$medium_size := printf "1024x%s q90" $tmp}}
+                    {{$large_size := printf "1366x%s q90" $tmp}}
+
+                    {{ $tiny := ($image.Fill $tiny_size) }}
+                    {{ $small := ($image.Fill $small_size) }}
+                    {{ $medium := ($image.Fill $medium_size) }}
+                    {{ $large := ($image.Fill $large_size) }}
+
+                    <p><img
+                    srcset="
+                        {{- with $tiny.RelPermalink -}}{{.}} 480w{{- end -}}
+                        {{- with $small.RelPermalink -}}, {{.}} 768w{{- end -}}
+                        {{- with $medium.RelPermalink -}}, {{.}} 1024w{{- end -}}
+                        {{- with $large.RelPermalink -}}, {{.}} 1366w{{- end -}}"
+                    src="{{ .RelPermalink }}"
+                    alt="banner-image">
+                    </p>    
+                {{ end }}
+
+                {{with .Params.author}}
+                    <p>{{.}}</p>
+                {{end}}
+
+                {{with .Params.date}}
+                <p>{{.}}</p>
+                    
+                {{end}}
+
+                <hr/>
+            </header>
+        </div>
+        <div class="content e-content">
+            <h1>Table of Contents</h1>
+            {{ .TableOfContents}}
+            <hr/>
+            {{partial "series.html" . }}
+            <hr/>
+            {{ .Content }}
+        </div>
+        {{ partial "post-info.html" . }}
+        <hr/>
+        {{partial "series.html" . }}
+        <hr/>
+    </article>
+
+
+
+    {{ if gt .Site.Params.readNextPosts 0 }}
+        {{ $related := .Site.RegularPages.Related . | first .Site.Params.readNextPosts }}
+        {{ with $related }}
+            <h3 class="read-next-title">{{ i18n "readNext" }}</h3>
+            <ul class="read-next-posts">
+                {{ range . }}
+                <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                {{ end }}
+            </ul>
+        {{ end }}
+    {{ end }}
+
+    {{ if and (.Site.Params.paginationSinglePost) (ne .Type "page") }}
+        {{ partial "post-pagination.html" . }}
+    {{ end }}
+
+    {{ if not .Params.disableComments }}
+        {{ partial "comments.html" . }}
+    {{ end }}
+{{ end }}

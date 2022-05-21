@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Conduct Legal Research with AI: Part 0 - Justin&#39;s Data Blog</title>
+
+<meta name="description" content="Crawl the Library of Congress API to automate your next research project.">
+
+
+
+
+
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://blog.jnapolitano.io/favicon.png">
+
+
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
+
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="https://blog.jnapolitano.io/css/style.min.aadd6dd80ebf123717dcfe3d847163090d744aafb3d09e967f728dc0ef68bc1b.css" integrity="sha256-qt1t2A6/EjcX3P49hHFjCQ10Sq&#43;z0J6Wf3KNwO9ovBs=">
+    
+
+
+
+
+
+    
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <script src="https://blog.jnapolitano.io/js/script.min.510c781c39dbb21b4c76d85c82e2bdf4689220adbb7cd61e49e9d293e442fb42.js" type="text/javascript" charset="utf-8" integrity="sha256-UQx4HDnbshtMdthcguK99GiSIK27fNYeSenSk&#43;RC&#43;0I="></script>
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="Conduct Legal Research with AI: Part 0" />
+<meta property="og:description" content="Crawl the Library of Congress API to automate your next research project." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jnapolitano.io/posts/loc_crawler/" /><meta property="og:image" content="https://blog.jnapolitano.io/feature-image.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-16T13:40:32+00:00" />
+<meta property="article:modified_time" content="2022-05-16T13:40:32+00:00" />
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.jnapolitano.io/feature-image.png"/>
+
+<meta name="twitter:title" content="Conduct Legal Research with AI: Part 0"/>
+<meta name="twitter:description" content="Crawl the Library of Congress API to automate your next research project."/>
+
+
+
+    
+        <link rel="webmention" href="https://webmention.io/hugo-theme-anubis/webmention" />
+        
+            <link rel="pingback" href="https://webmention.io/hugo-theme-anubis/xmlrpc" />
+        
+    
+    
+        <link rel="webmention" href="https://hugo-test-blog.jnapolitano.io/webmentions/receive" />
+    
+
+
+
+
+
+
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5H9YLZK4GH"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5H9YLZK4GH', { 'anonymize_ip': false });
+}
+</script>
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <div class="header-top">
+    <h1 class="site-title">
+    <a href="/">Justin&#39;s Data Blog</a>
+</h1>
+    <ul class="social-icons">
+
+
+    
+        
+        
+        <li>
+            <a href="https://github.com/justin-napolitano" title="Github" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="mailto:justin@jnapolitano.io" title="Email" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="https://www.linkedin.com/in/justin-napolitano" title="Linkedin" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        
+        
+        <li>
+            <a href="https://twitter.com/just_napolitano" title="Twitter" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+
+
+    <li>
+            <a href="https://blog.jnapolitano.io/index.xml" title="RSS" rel="me">
+            <span class="inline-svg" >
+
+
+
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"/></svg>
+
+</span>
+
+            </a>
+        </li>
+    
+
+</ul>
+</div>
+
+    <nav>
+        
+        
+        <a class="" href="https://blog.jnapolitano.io" title="Feed">Feed</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/series/" title="">Series</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/categories/" title="">Categories</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/tags/" title="">Tags</a>
+        
+        <a class="" href="https://blog.jnapolitano.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+
+    <article class="post h-entry">
+        <div class="post-header">
+            <header>
+                <h1 class="p-name post-title">Conduct Legal Research with AI: Part 0</h1>
+                            
+
+
+                
+                
+                
+                    
+                    
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                    
+                    
+
+                    <p><img
+                    srcset="/posts/loc_crawler/post-image_huc273fe84667c9cf1b1792068d11ceb09_184819_480x600_fill_q90_box_smart1.jpeg 480w, /posts/loc_crawler/post-image_huc273fe84667c9cf1b1792068d11ceb09_184819_768x600_fill_q90_box_smart1.jpeg 768w, /posts/loc_crawler/post-image_huc273fe84667c9cf1b1792068d11ceb09_184819_1024x600_fill_q90_box_smart1.jpeg 1024w, /posts/loc_crawler/post-image_huc273fe84667c9cf1b1792068d11ceb09_184819_1366x600_fill_q90_box_smart1.jpeg 1366w"
+                    src="/posts/loc_crawler/"
+                    alt="banner-image">
+                    </p>    
+                
+
+                
+                    <p>Justin Napolitano</p>
+                
+
+                
+                <p>2022-05-16 13:40:32.169 &#43;0000 UTC</p>
+                    
+                
+
+                <hr/>
+            </header>
+        </div>
+        <div class="content e-content">
+            <h1>Table of Contents</h1>
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#creating-a-crawler">Creating a crawler</a>
+      <ul>
+        <li><a href="#the-search-result-object">The Search Result Object</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-generator">The Generator</a></li>
+    <li><a href="#the-runner-function">The Runner Function</a></li>
+    <li><a href="#putting-everything-together">Putting Everything Together</a></li>
+  </ul>
+</nav>
+            <hr/>
+            
+    Warning - check your series - as none found
+
+            <hr/>
+            <h1 id="crawling-the-library-of-congress-api" >Crawling the Library of Congress API
+<span>
+    <a href="#crawling-the-library-of-congress-api">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h1><h2 id="introduction" >Introduction
+<span>
+    <a href="#introduction">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The United States Library of Congress maintains a rest api for developers to crawl their collections.  It is an open source tool that anyone can access in order to conduct research. Check out the documenation at <a href="https://libraryofcongress.github.io/data-exploration/">https://libraryofcongress.github.io/data-exploration/</a>.</p>
+<h2 id="creating-a-crawler" >Creating a crawler
+<span>
+    <a href="#creating-a-crawler">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>I took the approach of writing a generator that produces a search result page object that can be operated upon with each iteration.</p>
+<p>The first step is to create a search result page object.</p>
+<p>The code below documents the search_result page.  It contains a number of helper functions to convert the nodes within the result to json or graphml.  The code can also be used to generate a networkx in memory graph.</p>
+<h3 id="the-search-result-object" >The Search Result Object
+<span>
+    <a href="#the-search-result-object">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">search_results_page</span>():
+
+    <span style="color:#66d9ef">def</span> __init__(self,base_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.loc.gov/collections&#34;</span>,collection <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;united-states-reports&#34;</span>,json_parameter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fo=json&#34;</span>,results_per_page <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;c=79&#34;</span>,query_param <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;?&#34;</span>,page_param <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sp=&#34;</span>,page_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>):
+        <span style="color:#75715e">#pprint(num_columns)</span>
+        self<span style="color:#f92672">.</span>search_url <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>create_search_url(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+        self<span style="color:#f92672">.</span>response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>request_data()
+        self<span style="color:#f92672">.</span>response_json <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>response_to_json()
+        <span style="color:#75715e">#self.soup_html = self.html_parse()</span>
+        self<span style="color:#f92672">.</span>next_url <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_next_url()
+        self<span style="color:#f92672">.</span>page_num <span style="color:#f92672">=</span> page_num
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_json</span>(self, file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>,file_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;.json&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        <span style="color:#66d9ef">with</span> open(output_name, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> outfile:
+            json<span style="color:#f92672">.</span>dump(self<span style="color:#f92672">.</span>response_json, outfile)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_pandas</span>(self):
+        df <span style="color:#f92672">=</span> nx<span style="color:#f92672">.</span>to_pandas_edgelist(self<span style="color:#f92672">.</span>graph)
+        <span style="color:#66d9ef">return</span>(df)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_csv</span>(self,file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>,file_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;.csv&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        df <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>to_pandas()
+        df<span style="color:#f92672">.</span>to_csv(output_name)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_graphml</span>(self,file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>, file_num<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.graphml&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        nx<span style="color:#f92672">.</span>write_graphml(self<span style="color:#f92672">.</span>graph, output_name)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_to_file</span>(self,data <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>,file_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.json&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        <span style="color:#66d9ef">with</span> open(output_name, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> outfile:
+            json<span style="color:#f92672">.</span>dump(data, outfile)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_gen_2</span>(self, data, root <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;result&#39;</span>, node_list <span style="color:#f92672">=</span> [], edge_list <span style="color:#f92672">=</span> [], previous_k <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, previous_edge <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, graph <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+        <span style="color:#75715e">#root = root </span>
+        <span style="color:#66d9ef">if</span> type(data) <span style="color:#f92672">is</span> dict:
+            <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> data<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> node_list:
+                    graph<span style="color:#f92672">.</span>add_node(k, type <span style="color:#f92672">=</span> k)
+                    <span style="color:#75715e">#node_list.append((k, {&#39;type&#39; : k}))</span>
+                    <span style="color:#75715e">#(1, 2, color=&#39;red&#39;, weight=0.84, size=300)\</span>
+                    graph<span style="color:#f92672">.</span>add_edge(root,k, relationship <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;of&#34;</span>, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span>)
+                    <span style="color:#75715e">#edge_list.append((root , k, {&#34;relationship&#34; : &#34;of&#34;}, {&#34;type&#34; : &#39;root&#39;}))</span>
+                <span style="color:#75715e">#pprint(&#39;passing_value&#39;)</span>
+                <span style="color:#75715e">#save k</span>
+                previous_k <span style="color:#f92672">=</span> k
+                previous_edge <span style="color:#f92672">=</span> (root , k)
+                self<span style="color:#f92672">.</span>node_gen_2(v,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list, previous_k <span style="color:#f92672">=</span> k, previous_edge <span style="color:#f92672">=</span> previous_edge, graph <span style="color:#f92672">=</span> graph)
+
+        <span style="color:#66d9ef">elif</span> type(data) <span style="color:#f92672">is</span> list:
+            <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data:
+                <span style="color:#75715e">#pprint(&#39;passing_data&#39;)</span>
+
+                self<span style="color:#f92672">.</span>node_gen_2(item,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list,previous_k <span style="color:#f92672">=</span> previous_k, previous_edge<span style="color:#f92672">=</span> previous_edge, graph <span style="color:#f92672">=</span> graph)
+                <span style="color:#75715e">#create_edge to k</span>
+
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e">#this item is no longer a dictionary or list</span>
+            pprint(<span style="color:#e6db74">&#39;appending_data&#39;</span>)
+            <span style="color:#75715e">#create edge to k</span>
+            <span style="color:#66d9ef">if</span> data <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+                graph<span style="color:#f92672">.</span>add_node(data,type <span style="color:#f92672">=</span> data)
+                <span style="color:#75715e">#node_list.append((data, {&#34;type&#34; : data}))</span>
+                graph<span style="color:#f92672">.</span>add_edge(previous_k, data, relationship <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;is&#34;</span>, type <span style="color:#f92672">=</span> previous_k)
+                <span style="color:#75715e">#edge_list.append((previous_k ,data,{&#39;relationship&#39;: &#34;is&#34;}, {&#39;type&#39; : data}))</span>
+                <span style="color:#75715e">#edge_list.append((root,data))</span>
+
+    <span style="color:#75715e">#flatten(hierarchak)_dict)</span>
+        <span style="color:#66d9ef">return</span> graph 
+
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_runner</span>(self,data,graph):
+        
+        node_list <span style="color:#f92672">=</span> []
+        edge_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data:
+            <span style="color:#75715e">#root = item[&#39;title&#39;]</span>
+            graph <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>node_gen_2(data <span style="color:#f92672">=</span> item, node_list <span style="color:#f92672">=</span> node_list, graph <span style="color:#f92672">=</span> graph)
+        <span style="color:#75715e">#pprint(edge_list)</span>
+        <span style="color:#66d9ef">return</span> graph
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_generator</span>(self, data, root <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;title_testing&#39;</span>, node_list <span style="color:#f92672">=</span> [], edge_list <span style="color:#f92672">=</span> [], previous_k <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, previous_edge <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#66d9ef">if</span> type(data) <span style="color:#f92672">is</span> dict:
+            <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> data<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> node_list:
+                    node_list<span style="color:#f92672">.</span>append(k)
+                    edge_list<span style="color:#f92672">.</span>append((root , k))
+                <span style="color:#75715e">#pprint(&#39;passing_value&#39;)</span>
+                <span style="color:#75715e">#save k</span>
+                previous_k <span style="color:#f92672">=</span> k
+                previous_edge <span style="color:#f92672">=</span> (root , k)
+                self<span style="color:#f92672">.</span>node_generator(v,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list, previous_k <span style="color:#f92672">=</span> k, previous_edge <span style="color:#f92672">=</span> previous_edge)
+
+        <span style="color:#66d9ef">elif</span> type(data) <span style="color:#f92672">is</span> list:
+            <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data:
+                <span style="color:#75715e">#pprint(&#39;passing_data&#39;)</span>
+
+                self<span style="color:#f92672">.</span>node_generator(item,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list,previous_k <span style="color:#f92672">=</span> previous_k, previous_edge<span style="color:#f92672">=</span> previous_edge)
+                <span style="color:#75715e">#create_edge to k</span>
+
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e">#this item is no longer a dictionary or list</span>
+            pprint(<span style="color:#e6db74">&#39;appending_data&#39;</span>)
+            <span style="color:#75715e">#create edge to k</span>
+            <span style="color:#66d9ef">if</span> data <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+                node_list<span style="color:#f92672">.</span>append(data)
+                edge_list<span style="color:#f92672">.</span>append((previous_k ,data))
+                edge_list<span style="color:#f92672">.</span>append((root,data))
+
+    <span style="color:#75715e">#flatten(hierarchak)_dict)</span>
+        <span style="color:#66d9ef">return</span> node_list, edge_list 
+        <span style="color:#75715e">#self.json_graph = self.create_json_graph()</span>
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_json_graph</span>(self):
+        <span style="color:#75715e">#graph = nx.Graph(self.response_json)</span>
+        graph <span style="color:#f92672">=</span> nx<span style="color:#f92672">.</span>from_dict_of_dicts(self<span style="color:#f92672">.</span>response_json)
+        <span style="color:#75715e">#graph = json_graph.node_link_graph(self.response_json)</span>
+        nx<span style="color:#f92672">.</span>draw(graph)
+        <span style="color:#66d9ef">return</span> graph
+        
+        <span style="color:#75715e">#self.node_list = self.node_generator`</span>
+
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_search_result_node</span>(self):
+     
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>response_json_flat:
+            <span style="color:#66d9ef">for</span> k,v <span style="color:#f92672">in</span> item<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>column_lookup_table:
+                    column_string <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>colnum_string()
+
+                    self<span style="color:#f92672">.</span>column_lookup_table[k] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>colnum_string(self<span style="color:#f92672">.</span>num_columns)
+                    self<span style="color:#f92672">.</span>num_columns <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">else</span>:
+                    <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">append_to_data_list</span>(self,rnge,d):<span style="color:#75715e">#rename to _data_list</span>
+        request_body <span style="color:#f92672">=</span> {
+            <span style="color:#e6db74">&#39;range&#39;</span>: rnge,
+            <span style="color:#e6db74">&#34;majorDimension&#34;</span>: <span style="color:#e6db74">&#34;COLUMNS&#34;</span>,
+            <span style="color:#e6db74">&#34;values&#34;</span>: [d]
+        }
+        <span style="color:#66d9ef">return</span> request_body
+        <span style="color:#75715e">#data_list.append(request_body_tmp)</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">map_column_to_range</span>(self,column_key):
+        
+        rnge <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#39;Sheet1&#39;&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!&#34;</span> <span style="color:#f92672">+</span> column_key <span style="color:#f92672">+</span> str(<span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">return</span> rnge
+                
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">colnum_string</span>(self,num_columns):
+        string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#75715e">#pprint(&#34;conlum_string&#34;)</span>
+        <span style="color:#75715e">#pprint(num_columns)</span>
+        <span style="color:#66d9ef">while</span> num_columns <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+            num_columns, remainder <span style="color:#f92672">=</span> divmod(num_columns <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">26</span>)
+            string <span style="color:#f92672">=</span> chr(<span style="color:#ae81ff">65</span> <span style="color:#f92672">+</span> remainder) <span style="color:#f92672">+</span> string
+            <span style="color:#75715e">#pprint(string)</span>
+        <span style="color:#66d9ef">return</span> string
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">map_columns_to_lookup_table</span>(self):
+
+        <span style="color:#75715e">#print(&#39;first_map_columns_print&#39;)</span>
+        <span style="color:#75715e">#num_columns_tmp = self.num_columns</span>
+        <span style="color:#75715e">#pprint(num_columns_tmp)</span>
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>response_json_flat:
+            <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> item<span style="color:#f92672">.</span>keys():
+                num_columns_tmp <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num_columns
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>column_lookup_table:
+                    <span style="color:#75715e">#print(&#39;second_map_Columns_print&#39;)</span>
+                    <span style="color:#75715e">#pprint(num_columns_tmp)</span>
+                    self<span style="color:#f92672">.</span>column_lookup_table[k] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>colnum_string(num_columns <span style="color:#f92672">=</span> num_columns_tmp)
+                    self<span style="color:#f92672">.</span>num_columns <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num_columns <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+       
+                    <span style="color:#75715e">#append range to request... </span>
+                    <span style="color:#75715e">#append collumn to batch lookup</span>
+                
+
+                <span style="color:#66d9ef">else</span>:
+                    <span style="color:#66d9ef">continue</span>
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">column_request_list_generator</span>(self):
+        request_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> k,v <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>column_lookup_table<span style="color:#f92672">.</span>items():
+            rnge <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>map_column_to_range(k)
+            request_body <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>append_to_data_list(rnge,v)
+            <span style="color:#75715e">#pprint(request_body)</span>
+            request_list<span style="color:#f92672">.</span>append(request_body)
+        <span style="color:#66d9ef">return</span> request_list
+
+
+
+
+
+        <span style="color:#75715e">#return column_lookup_table</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_next_url</span>(self):
+        <span style="color:#66d9ef">return</span> (self<span style="color:#f92672">.</span>response_json[<span style="color:#e6db74">&#39;pagination&#39;</span>][<span style="color:#e6db74">&#39;next&#39;</span>])
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_search_url</span>(self,base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num):
+        url_sep <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/&#34;</span>
+        page_param <span style="color:#f92672">=</span> page_param <span style="color:#f92672">+</span>(str(page_num))
+        query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&amp;&#34;</span><span style="color:#f92672">.</span>join([json_parameter,results_per_page,page_param])
+        query <span style="color:#f92672">=</span> query_param <span style="color:#f92672">+</span> query
+        search_url <span style="color:#f92672">=</span> url_sep<span style="color:#f92672">.</span>join([base_url,collection,query])
+        <span style="color:#75715e">#pprint(search_url)</span>
+        
+        <span style="color:#66d9ef">return</span> search_url
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">say_hello</span>(self):
+        pprint(self<span style="color:#f92672">.</span>base_url)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">request_data</span>(self):
+        headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;User-Agent&#39;</span>:<span style="color:#e6db74">&#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9&#39;</span>,
+                    <span style="color:#e6db74">&#39;Accept-Encoding&#39;</span>: <span style="color:#e6db74">&#39;identity&#39;</span>
+                }
+        <span style="color:#66d9ef">return</span> requests<span style="color:#f92672">.</span>get(self<span style="color:#f92672">.</span>search_url,headers<span style="color:#f92672">=</span>headers)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">response_to_json</span>(self):
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>json()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">html_parse</span>(self):
+        soup<span style="color:#f92672">=</span>BeautifulSoup(self<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>content,<span style="color:#e6db74">&#39;lxml&#39;</span>)
+        <span style="color:#75715e">#pprint(soup)</span>
+        <span style="color:#66d9ef">return</span> soup
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">flatten_result</span>(self):
+        flat_result_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>response_json[<span style="color:#e6db74">&#39;results&#39;</span>]:
+            flat_json <span style="color:#f92672">=</span> flatten(item)
+            flat_result_list<span style="color:#f92672">.</span>append(flat_json)
+        <span style="color:#66d9ef">return</span> flat_result_list
+
+</code></pre></div><h2 id="the-generator" >The Generator
+<span>
+    <a href="#the-generator">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The generator yields a search result page if the pagination link included in the response is valid.</p>
+<p>Depending on your use case you could pass the page_num and collection you would like to crawl.</p>
+<p>The api is limited to 80 results per minute.  The sleep function limits calls to the desired rate.  The amount of results returned can be passed to the search result page_object.  Review the code above to see which values can be passed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">search_result_generator</span>(condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>):
+    <span style="color:#75715e">#column_lookup_table = {}</span>
+    <span style="color:#75715e">#pprint(num_columns)</span>
+    page_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    column_lookup_table <span style="color:#f92672">=</span> {}
+    <span style="color:#66d9ef">while</span> condition <span style="color:#f92672">==</span><span style="color:#66d9ef">True</span>:
+        <span style="color:#75715e">#pprint(num_columns)</span>
+        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">61</span>)
+        search_results_page_object <span style="color:#f92672">=</span> create_search_results_page_object(page_num <span style="color:#f92672">=</span> page_num)
+        <span style="color:#66d9ef">if</span> search_results_page_object<span style="color:#f92672">.</span>next_url <span style="color:#f92672">!=</span> <span style="color:#66d9ef">None</span>:
+            condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+            page_num <span style="color:#f92672">=</span> page_num <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>            
+            <span style="color:#66d9ef">yield</span> (search_results_page_object)
+        <span style="color:#66d9ef">else</span>:
+            condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+            <span style="color:#66d9ef">yield</span> (search_results_page_object)
+</code></pre></div><h2 id="the-runner-function" >The Runner Function
+<span>
+    <a href="#the-runner-function">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>To initiate the crawl simply run the algorithm below.  It writes each result page to json.</p>
+<p>As a follow up project, I will post how to integrate the data returned into a neo4j database.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> obj <span style="color:#f92672">in</span> search_result_generator():   
+        page_num <span style="color:#f92672">=</span> obj<span style="color:#f92672">.</span>page_num
+        <span style="color:#66d9ef">with</span> cd(<span style="color:#e6db74">&#34;output_2&#34;</span>):
+            <span style="color:#75715e">#print(&#39;hahaha&#39;)</span>
+            obj<span style="color:#f92672">.</span>to_json(file_num <span style="color:#f92672">=</span> page_num)
+            <span style="color:#75715e">#obj.write_graphml(file_num= page_num)</span>
+            <span style="color:#75715e">#obj.to_pandas()</span>
+            <span style="color:#75715e">#obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)</span>
+            <span style="color:#75715e">#obj.to_csv()</span>
+        write_last_page_num(page_num)
+        print(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> Search Results Crawled&#34;</span><span style="color:#f92672">.</span>format(page_num))
+
+</code></pre></div><h2 id="putting-everything-together" >Putting Everything Together
+<span>
+    <a href="#putting-everything-together">
+        <svg viewBox="0 0 28 23" height="100%" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/></svg>
+    </a>
+</span>
+</h2><p>The code below is the entire program as it stands.  There is built in functionality to upload the results to a google sheet if that is what you desire using an extension of the google api.   That code can be found at <a href="https://github.com/justin-napolitano/GoogleAPI">https://github.com/justin-napolitano/GoogleAPI</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#library_of_congress_scraper.py</span>
+<span style="color:#f92672">from</span> __future__ <span style="color:#f92672">import</span> print_function
+<span style="color:#f92672">from</span> bs4 <span style="color:#f92672">import</span> BeautifulSoup
+<span style="color:#f92672">import</span> requests
+<span style="color:#f92672">import</span> lxml.etree <span style="color:#66d9ef">as</span> etree
+<span style="color:#f92672">import</span> xml.etree.ElementTree <span style="color:#66d9ef">as</span> ET
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> time
+<span style="color:#f92672">import</span> random
+<span style="color:#f92672">import</span> math
+<span style="color:#f92672">from</span> pprint <span style="color:#f92672">import</span> pprint
+<span style="color:#75715e">#import load_vars as lv</span>
+<span style="color:#f92672">import</span> html
+<span style="color:#f92672">import</span> yaml
+<span style="color:#f92672">from</span> yaml <span style="color:#f92672">import</span> Loader, Dumper
+<span style="color:#f92672">import</span> glob
+<span style="color:#f92672">import</span> datetime
+<span style="color:#f92672">import</span> os.path
+<span style="color:#f92672">from</span> googleapiclient.discovery <span style="color:#f92672">import</span> build
+<span style="color:#f92672">from</span> google_auth_oauthlib.flow <span style="color:#f92672">import</span> InstalledAppFlow
+<span style="color:#f92672">from</span> google.auth.transport.requests <span style="color:#f92672">import</span> Request
+<span style="color:#f92672">from</span> google.oauth2.credentials <span style="color:#f92672">import</span> Credentials
+<span style="color:#f92672">from</span> google.oauth2 <span style="color:#f92672">import</span> service_account
+<span style="color:#f92672">from</span> googleapiclient.http <span style="color:#f92672">import</span> MediaIoBaseDownload, MediaFileUpload
+<span style="color:#f92672">from</span> flatten_json <span style="color:#f92672">import</span> flatten
+<span style="color:#f92672">import</span> networkx <span style="color:#66d9ef">as</span> nx
+<span style="color:#f92672">import</span> matplotlib
+<span style="color:#f92672">from</span> networkx.readwrite <span style="color:#f92672">import</span> json_graph
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">import</span> tracemalloc
+<span style="color:#f92672">import</span> os
+<span style="color:#75715e">#from ratelimiter import RateLimiter</span>
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">cd</span>:
+    <span style="color:#e6db74">&#34;&#34;&#34;Context manager for changing the current working directory&#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">def</span> __init__(self, newPath):
+        self<span style="color:#f92672">.</span>newPath <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>expanduser(newPath)
+
+    <span style="color:#66d9ef">def</span> __enter__(self):
+        self<span style="color:#f92672">.</span>savedPath <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+        os<span style="color:#f92672">.</span>chdir(self<span style="color:#f92672">.</span>newPath)
+
+    <span style="color:#66d9ef">def</span> __exit__(self, etype, value, traceback):
+        os<span style="color:#f92672">.</span>chdir(self<span style="color:#f92672">.</span>savedPath)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">search_results_page</span>():
+
+    <span style="color:#66d9ef">def</span> __init__(self,base_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.loc.gov/collections&#34;</span>,collection <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;united-states-reports&#34;</span>,json_parameter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fo=json&#34;</span>,results_per_page <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;c=79&#34;</span>,query_param <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;?&#34;</span>,page_param <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sp=&#34;</span>,page_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>):
+        <span style="color:#75715e">#pprint(num_columns)</span>
+        self<span style="color:#f92672">.</span>search_url <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>create_search_url(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+        self<span style="color:#f92672">.</span>response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>request_data()
+        self<span style="color:#f92672">.</span>response_json <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>response_to_json()
+        <span style="color:#75715e">#self.soup_html = self.html_parse()</span>
+        self<span style="color:#f92672">.</span>next_url <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_next_url()
+        self<span style="color:#f92672">.</span>page_num <span style="color:#f92672">=</span> page_num
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_json</span>(self, file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>,file_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;.json&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        <span style="color:#66d9ef">with</span> open(output_name, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> outfile:
+            json<span style="color:#f92672">.</span>dump(self<span style="color:#f92672">.</span>response_json, outfile)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_pandas</span>(self):
+        df <span style="color:#f92672">=</span> nx<span style="color:#f92672">.</span>to_pandas_edgelist(self<span style="color:#f92672">.</span>graph)
+        <span style="color:#66d9ef">return</span>(df)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_csv</span>(self,file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>,file_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;.csv&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        df <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>to_pandas()
+        df<span style="color:#f92672">.</span>to_csv(output_name)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_graphml</span>(self,file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>, file_num<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.graphml&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        nx<span style="color:#f92672">.</span>write_graphml(self<span style="color:#f92672">.</span>graph, output_name)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_to_file</span>(self,data <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;result_&#39;</span>,file_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, extension <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.json&#34;</span>):
+        output_name <span style="color:#f92672">=</span> file_name <span style="color:#f92672">+</span> str(file_num)
+        output_name <span style="color:#f92672">=</span> output_name <span style="color:#f92672">+</span> extension
+        <span style="color:#66d9ef">with</span> open(output_name, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> outfile:
+            json<span style="color:#f92672">.</span>dump(data, outfile)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_gen_2</span>(self, data, root <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;result&#39;</span>, node_list <span style="color:#f92672">=</span> [], edge_list <span style="color:#f92672">=</span> [], previous_k <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, previous_edge <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, graph <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+        <span style="color:#75715e">#root = root </span>
+        <span style="color:#66d9ef">if</span> type(data) <span style="color:#f92672">is</span> dict:
+            <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> data<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> node_list:
+                    graph<span style="color:#f92672">.</span>add_node(k, type <span style="color:#f92672">=</span> k)
+                    <span style="color:#75715e">#node_list.append((k, {&#39;type&#39; : k}))</span>
+                    <span style="color:#75715e">#(1, 2, color=&#39;red&#39;, weight=0.84, size=300)\</span>
+                    graph<span style="color:#f92672">.</span>add_edge(root,k, relationship <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;of&#34;</span>, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span>)
+                    <span style="color:#75715e">#edge_list.append((root , k, {&#34;relationship&#34; : &#34;of&#34;}, {&#34;type&#34; : &#39;root&#39;}))</span>
+                <span style="color:#75715e">#pprint(&#39;passing_value&#39;)</span>
+                <span style="color:#75715e">#save k</span>
+                previous_k <span style="color:#f92672">=</span> k
+                previous_edge <span style="color:#f92672">=</span> (root , k)
+                self<span style="color:#f92672">.</span>node_gen_2(v,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list, previous_k <span style="color:#f92672">=</span> k, previous_edge <span style="color:#f92672">=</span> previous_edge, graph <span style="color:#f92672">=</span> graph)
+
+        <span style="color:#66d9ef">elif</span> type(data) <span style="color:#f92672">is</span> list:
+            <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data:
+                <span style="color:#75715e">#pprint(&#39;passing_data&#39;)</span>
+
+                self<span style="color:#f92672">.</span>node_gen_2(item,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list,previous_k <span style="color:#f92672">=</span> previous_k, previous_edge<span style="color:#f92672">=</span> previous_edge, graph <span style="color:#f92672">=</span> graph)
+                <span style="color:#75715e">#create_edge to k</span>
+
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e">#this item is no longer a dictionary or list</span>
+            pprint(<span style="color:#e6db74">&#39;appending_data&#39;</span>)
+            <span style="color:#75715e">#create edge to k</span>
+            <span style="color:#66d9ef">if</span> data <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+                graph<span style="color:#f92672">.</span>add_node(data,type <span style="color:#f92672">=</span> data)
+                <span style="color:#75715e">#node_list.append((data, {&#34;type&#34; : data}))</span>
+                graph<span style="color:#f92672">.</span>add_edge(previous_k, data, relationship <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;is&#34;</span>, type <span style="color:#f92672">=</span> previous_k)
+                <span style="color:#75715e">#edge_list.append((previous_k ,data,{&#39;relationship&#39;: &#34;is&#34;}, {&#39;type&#39; : data}))</span>
+                <span style="color:#75715e">#edge_list.append((root,data))</span>
+
+    <span style="color:#75715e">#flatten(hierarchak)_dict)</span>
+        <span style="color:#66d9ef">return</span> graph 
+
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_runner</span>(self,data,graph):
+        
+        node_list <span style="color:#f92672">=</span> []
+        edge_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data:
+            <span style="color:#75715e">#root = item[&#39;title&#39;]</span>
+            graph <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>node_gen_2(data <span style="color:#f92672">=</span> item, node_list <span style="color:#f92672">=</span> node_list, graph <span style="color:#f92672">=</span> graph)
+        <span style="color:#75715e">#pprint(edge_list)</span>
+        <span style="color:#66d9ef">return</span> graph
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_generator</span>(self, data, root <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;title_testing&#39;</span>, node_list <span style="color:#f92672">=</span> [], edge_list <span style="color:#f92672">=</span> [], previous_k <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, previous_edge <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>):
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#66d9ef">if</span> type(data) <span style="color:#f92672">is</span> dict:
+            <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> data<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> node_list:
+                    node_list<span style="color:#f92672">.</span>append(k)
+                    edge_list<span style="color:#f92672">.</span>append((root , k))
+                <span style="color:#75715e">#pprint(&#39;passing_value&#39;)</span>
+                <span style="color:#75715e">#save k</span>
+                previous_k <span style="color:#f92672">=</span> k
+                previous_edge <span style="color:#f92672">=</span> (root , k)
+                self<span style="color:#f92672">.</span>node_generator(v,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list, previous_k <span style="color:#f92672">=</span> k, previous_edge <span style="color:#f92672">=</span> previous_edge)
+
+        <span style="color:#66d9ef">elif</span> type(data) <span style="color:#f92672">is</span> list:
+            <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data:
+                <span style="color:#75715e">#pprint(&#39;passing_data&#39;)</span>
+
+                self<span style="color:#f92672">.</span>node_generator(item,root <span style="color:#f92672">=</span> root, node_list <span style="color:#f92672">=</span> node_list,edge_list <span style="color:#f92672">=</span> edge_list,previous_k <span style="color:#f92672">=</span> previous_k, previous_edge<span style="color:#f92672">=</span> previous_edge)
+                <span style="color:#75715e">#create_edge to k</span>
+
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e">#this item is no longer a dictionary or list</span>
+            pprint(<span style="color:#e6db74">&#39;appending_data&#39;</span>)
+            <span style="color:#75715e">#create edge to k</span>
+            <span style="color:#66d9ef">if</span> data <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+                node_list<span style="color:#f92672">.</span>append(data)
+                edge_list<span style="color:#f92672">.</span>append((previous_k ,data))
+                edge_list<span style="color:#f92672">.</span>append((root,data))
+
+    <span style="color:#75715e">#flatten(hierarchak)_dict)</span>
+        <span style="color:#66d9ef">return</span> node_list, edge_list 
+        <span style="color:#75715e">#self.json_graph = self.create_json_graph()</span>
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_json_graph</span>(self):
+        <span style="color:#75715e">#graph = nx.Graph(self.response_json)</span>
+        graph <span style="color:#f92672">=</span> nx<span style="color:#f92672">.</span>from_dict_of_dicts(self<span style="color:#f92672">.</span>response_json)
+        <span style="color:#75715e">#graph = json_graph.node_link_graph(self.response_json)</span>
+        nx<span style="color:#f92672">.</span>draw(graph)
+        <span style="color:#66d9ef">return</span> graph
+        
+        <span style="color:#75715e">#self.node_list = self.node_generator`</span>
+
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_search_result_node</span>(self):
+     
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>response_json_flat:
+            <span style="color:#66d9ef">for</span> k,v <span style="color:#f92672">in</span> item<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>column_lookup_table:
+                    column_string <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>colnum_string()
+
+                    self<span style="color:#f92672">.</span>column_lookup_table[k] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>colnum_string(self<span style="color:#f92672">.</span>num_columns)
+                    self<span style="color:#f92672">.</span>num_columns <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">else</span>:
+                    <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">append_to_data_list</span>(self,rnge,d):<span style="color:#75715e">#rename to _data_list</span>
+        request_body <span style="color:#f92672">=</span> {
+            <span style="color:#e6db74">&#39;range&#39;</span>: rnge,
+            <span style="color:#e6db74">&#34;majorDimension&#34;</span>: <span style="color:#e6db74">&#34;COLUMNS&#34;</span>,
+            <span style="color:#e6db74">&#34;values&#34;</span>: [d]
+        }
+        <span style="color:#66d9ef">return</span> request_body
+        <span style="color:#75715e">#data_list.append(request_body_tmp)</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">map_column_to_range</span>(self,column_key):
+        
+        rnge <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#39;Sheet1&#39;&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!&#34;</span> <span style="color:#f92672">+</span> column_key <span style="color:#f92672">+</span> str(<span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">return</span> rnge
+                
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">colnum_string</span>(self,num_columns):
+        string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#75715e">#pprint(&#34;conlum_string&#34;)</span>
+        <span style="color:#75715e">#pprint(num_columns)</span>
+        <span style="color:#66d9ef">while</span> num_columns <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+            num_columns, remainder <span style="color:#f92672">=</span> divmod(num_columns <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">26</span>)
+            string <span style="color:#f92672">=</span> chr(<span style="color:#ae81ff">65</span> <span style="color:#f92672">+</span> remainder) <span style="color:#f92672">+</span> string
+            <span style="color:#75715e">#pprint(string)</span>
+        <span style="color:#66d9ef">return</span> string
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">map_columns_to_lookup_table</span>(self):
+
+        <span style="color:#75715e">#print(&#39;first_map_columns_print&#39;)</span>
+        <span style="color:#75715e">#num_columns_tmp = self.num_columns</span>
+        <span style="color:#75715e">#pprint(num_columns_tmp)</span>
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>response_json_flat:
+            <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> item<span style="color:#f92672">.</span>keys():
+                num_columns_tmp <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num_columns
+                <span style="color:#66d9ef">if</span> k <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>column_lookup_table:
+                    <span style="color:#75715e">#print(&#39;second_map_Columns_print&#39;)</span>
+                    <span style="color:#75715e">#pprint(num_columns_tmp)</span>
+                    self<span style="color:#f92672">.</span>column_lookup_table[k] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>colnum_string(num_columns <span style="color:#f92672">=</span> num_columns_tmp)
+                    self<span style="color:#f92672">.</span>num_columns <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num_columns <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+       
+                    <span style="color:#75715e">#append range to request... </span>
+                    <span style="color:#75715e">#append collumn to batch lookup</span>
+                
+
+                <span style="color:#66d9ef">else</span>:
+                    <span style="color:#66d9ef">continue</span>
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">column_request_list_generator</span>(self):
+        request_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> k,v <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>column_lookup_table<span style="color:#f92672">.</span>items():
+            rnge <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>map_column_to_range(k)
+            request_body <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>append_to_data_list(rnge,v)
+            <span style="color:#75715e">#pprint(request_body)</span>
+            request_list<span style="color:#f92672">.</span>append(request_body)
+        <span style="color:#66d9ef">return</span> request_list
+
+
+
+
+
+        <span style="color:#75715e">#return column_lookup_table</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_next_url</span>(self):
+        <span style="color:#66d9ef">return</span> (self<span style="color:#f92672">.</span>response_json[<span style="color:#e6db74">&#39;pagination&#39;</span>][<span style="color:#e6db74">&#39;next&#39;</span>])
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_search_url</span>(self,base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num):
+        url_sep <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/&#34;</span>
+        page_param <span style="color:#f92672">=</span> page_param <span style="color:#f92672">+</span>(str(page_num))
+        query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&amp;&#34;</span><span style="color:#f92672">.</span>join([json_parameter,results_per_page,page_param])
+        query <span style="color:#f92672">=</span> query_param <span style="color:#f92672">+</span> query
+        search_url <span style="color:#f92672">=</span> url_sep<span style="color:#f92672">.</span>join([base_url,collection,query])
+        <span style="color:#75715e">#pprint(search_url)</span>
+        
+        <span style="color:#66d9ef">return</span> search_url
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">say_hello</span>(self):
+        pprint(self<span style="color:#f92672">.</span>base_url)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">request_data</span>(self):
+        headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;User-Agent&#39;</span>:<span style="color:#e6db74">&#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9&#39;</span>,
+                    <span style="color:#e6db74">&#39;Accept-Encoding&#39;</span>: <span style="color:#e6db74">&#39;identity&#39;</span>
+                }
+        <span style="color:#66d9ef">return</span> requests<span style="color:#f92672">.</span>get(self<span style="color:#f92672">.</span>search_url,headers<span style="color:#f92672">=</span>headers)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">response_to_json</span>(self):
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>json()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">html_parse</span>(self):
+        soup<span style="color:#f92672">=</span>BeautifulSoup(self<span style="color:#f92672">.</span>response<span style="color:#f92672">.</span>content,<span style="color:#e6db74">&#39;lxml&#39;</span>)
+        <span style="color:#75715e">#pprint(soup)</span>
+        <span style="color:#66d9ef">return</span> soup
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">flatten_result</span>(self):
+        flat_result_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>response_json[<span style="color:#e6db74">&#39;results&#39;</span>]:
+            flat_json <span style="color:#f92672">=</span> flatten(item)
+            flat_result_list<span style="color:#f92672">.</span>append(flat_json)
+        <span style="color:#66d9ef">return</span> flat_result_list
+
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">search_result</span>():
+    
+    <span style="color:#66d9ef">def</span> __init__(self,dict_item,num_columns,colnum_string):
+        self<span style="color:#f92672">.</span>key <span style="color:#f92672">=</span> dict_item<span style="color:#f92672">.</span>key()
+        self<span style="color:#f92672">.</span>value <span style="color:#f92672">=</span> dict_item<span style="color:#f92672">.</span>value()
+        self<span style="color:#f92672">.</span>column_string <span style="color:#f92672">=</span> colnum_string
+        self<span style="color:#f92672">.</span>index <span style="color:#f92672">=</span> num_columns
+        self<span style="color:#f92672">.</span>range <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>create_column_range_string()
+        self<span style="color:#f92672">.</span>request_body <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>create_column_request()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_column_request</span>(self):
+        request_body <span style="color:#f92672">=</span> {
+            <span style="color:#e6db74">&#39;range&#39;</span>: self<span style="color:#f92672">.</span>range,
+            <span style="color:#e6db74">&#34;majorDimension&#34;</span>: <span style="color:#e6db74">&#34;COLUMNS&#34;</span>,
+            <span style="color:#e6db74">&#34;values&#34;</span>: [self<span style="color:#f92672">.</span>value]
+        }
+        <span style="color:#66d9ef">return</span> request_body
+
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_column_range_string</span>(self):
+
+        rnge <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#39;Sheet1&#39;&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!&#34;</span> <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>column_string <span style="color:#f92672">+</span> str(<span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">return</span> rnge
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">colnum_string</span>(self, num_columns):
+        string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#66d9ef">while</span> num_columns <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+            num_columns, remainder <span style="color:#f92672">=</span> divmod(num_columns <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">26</span>)
+            string <span style="color:#f92672">=</span> chr(<span style="color:#ae81ff">65</span> <span style="color:#f92672">+</span> remainder) <span style="color:#f92672">+</span> string
+        <span style="color:#66d9ef">return</span> string
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">google_drive</span>:
+    <span style="color:#66d9ef">def</span> __init__(self,creds):
+        self<span style="color:#f92672">.</span>service <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_drive_service(creds)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test</span>(self):
+        pprint(<span style="color:#e6db74">&#34;hello I exist&#34;</span>)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_drive_service</span>(self, creds):
+        <span style="color:#e6db74">&#34;&#34;&#34;Shows basic usage of the Drive v3 API.
+</span><span style="color:#e6db74">        Prints the names and ids of the first 10 files the user has access to.
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        SCOPES <span style="color:#f92672">=</span> []
+        <span style="color:#75715e">#creds = None</span>
+        <span style="color:#75715e"># The file token.json stores the user&#39;s access and refresh tokens, and is</span>
+        <span style="color:#75715e"># created automatically when the authorization flow completes for the first</span>
+        <span style="color:#75715e"># time.</span>
+
+        service <span style="color:#f92672">=</span> build(<span style="color:#e6db74">&#39;drive&#39;</span>, <span style="color:#e6db74">&#39;v3&#39;</span>, credentials<span style="color:#f92672">=</span>creds)
+
+        <span style="color:#75715e"># Call the Drive v3 API</span>
+        results <span style="color:#f92672">=</span> service<span style="color:#f92672">.</span>files()<span style="color:#f92672">.</span>list(
+            pageSize<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, fields<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nextPageToken, files(id, name)&#34;</span>)<span style="color:#f92672">.</span>execute()
+        items <span style="color:#f92672">=</span> results<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;files&#39;</span>, [])
+
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> items:
+            print(<span style="color:#e6db74">&#39;No files found.&#39;</span>)
+        <span style="color:#66d9ef">else</span>:
+            print(<span style="color:#e6db74">&#39;Files:&#39;</span>)
+            <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> items:
+                print(<span style="color:#e6db74">u</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{0}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">{1}</span><span style="color:#e6db74">)&#39;</span><span style="color:#f92672">.</span>format(item[<span style="color:#e6db74">&#39;name&#39;</span>], item[<span style="color:#e6db74">&#39;id&#39;</span>]))
+
+        <span style="color:#66d9ef">return</span> service
+    
+    
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_folder</span>(self,title):
+        drive_service <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>service
+        file_metadata <span style="color:#f92672">=</span> {
+            <span style="color:#e6db74">&#39;name&#39;</span>: <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(title),
+            <span style="color:#e6db74">&#39;mimeType&#39;</span>: <span style="color:#e6db74">&#39;application/vnd.google-apps.folder&#39;</span>
+        }
+        file <span style="color:#f92672">=</span> drive_service<span style="color:#f92672">.</span>files()<span style="color:#f92672">.</span>create(body<span style="color:#f92672">=</span>file_metadata,
+                                            fields<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;id&#39;</span>)<span style="color:#f92672">.</span>execute()
+        print(<span style="color:#e6db74">&#39;Folder ID: </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> file<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;id&#39;</span>))
+
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_spreadsheet_to_folder</span>(self ,folder_id,title):
+        drive_service <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>service
+    
+        file_metadata <span style="color:#f92672">=</span> {
+        <span style="color:#e6db74">&#39;name&#39;</span>: <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(title),
+        <span style="color:#e6db74">&#39;parents&#39;</span>: [folder_id],
+        <span style="color:#e6db74">&#39;mimeType&#39;</span>: <span style="color:#e6db74">&#39;application/vnd.google-apps.spreadsheet&#39;</span>,
+        }
+
+        res <span style="color:#f92672">=</span> drive_service<span style="color:#f92672">.</span>files()<span style="color:#f92672">.</span>create(body<span style="color:#f92672">=</span>file_metadata)<span style="color:#f92672">.</span>execute()
+        <span style="color:#75715e">#print(res)</span>
+
+        <span style="color:#66d9ef">return</span> res
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">google_sheet</span>():
+
+    <span style="color:#66d9ef">def</span> __init__(self,creds):
+        self<span style="color:#f92672">.</span>service <span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>get_sheet_service(creds)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_sheet_service</span>(self,creds):
+        service <span style="color:#f92672">=</span> build(<span style="color:#e6db74">&#39;sheets&#39;</span>, <span style="color:#e6db74">&#39;v4&#39;</span>, credentials<span style="color:#f92672">=</span>creds)
+        <span style="color:#66d9ef">return</span> service<span style="color:#f92672">.</span>spreadsheets()
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">google_creds</span>():
+
+    <span style="color:#66d9ef">def</span> __init__(self,creds_path):
+
+        self<span style="color:#f92672">.</span>creds <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_creds(creds_path)
+   
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_creds</span>(self,creds_path):
+
+        creds <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+        <span style="color:#75715e"># The file token.json stores the user&#39;s access and refresh tokens, and is</span>
+        <span style="color:#75715e"># created automatically when the authorization flow completes for the first</span>
+        <span style="color:#75715e"># time.</span>
+        <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(<span style="color:#e6db74">&#39;token.json&#39;</span>):
+            creds <span style="color:#f92672">=</span> Credentials<span style="color:#f92672">.</span>from_authorized_user_file(<span style="color:#e6db74">&#39;token.json&#39;</span>, SCOPES)
+        <span style="color:#75715e"># If there are no (valid) credentials available, let the user log in.</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> creds <span style="color:#f92672">or</span> <span style="color:#f92672">not</span> creds<span style="color:#f92672">.</span>valid:
+            <span style="color:#66d9ef">if</span> creds <span style="color:#f92672">and</span> creds<span style="color:#f92672">.</span>expired <span style="color:#f92672">and</span> creds<span style="color:#f92672">.</span>refresh_token:
+                creds<span style="color:#f92672">.</span>refresh(Request())
+                print(<span style="color:#e6db74">&#34;no creds&#34;</span>)
+            <span style="color:#66d9ef">else</span>:
+                creds <span style="color:#f92672">=</span> service_account<span style="color:#f92672">.</span>Credentials<span style="color:#f92672">.</span>from_service_account_file(creds_path)
+                <span style="color:#75715e">#creds = ServiceAccountCredentials.from_json_keyfile_name(&#39;add_json_file_here.json&#39;, SCOPES)</span>
+                <span style="color:#75715e">#flow = InstalledAppFlow.from_client_secrets_file(</span>
+                <span style="color:#75715e">#    &#39;credentials.json&#39;, SCOPES)</span>
+                <span style="color:#75715e">#creds = flow.run_local_server(port=0)</span>
+            <span style="color:#75715e"># Save the credentials for the next run</span>
+            <span style="color:#75715e">#with open(&#39;token.json&#39;, &#39;w&#39;) as token:</span>
+            <span style="color:#75715e">#    token.write(creds.to_json())</span>
+        <span style="color:#66d9ef">return</span> creds
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">config</span>():
+
+    <span style="color:#66d9ef">def</span> __init__(self,file_path):
+        <span style="color:#75715e">#self.yaml_stream = file(&#34;config.yaml&#34;, &#39;r&#39;)</span>
+        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>load_config(file_path)
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_config</span>(self,file_path):
+        <span style="color:#75715e">#print(&#34;test&#34;)</span>
+        stream <span style="color:#f92672">=</span> open(file_path, <span style="color:#e6db74">&#39;r&#39;</span>)
+        data <span style="color:#f92672">=</span> yaml<span style="color:#f92672">.</span>load(stream,Loader <span style="color:#f92672">=</span> Loader)
+        <span style="color:#75715e">#pprint(data)</span>
+        <span style="color:#66d9ef">return</span> data
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_google_credentials_object</span>(creds_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;credentials.json&#39;</span>):
+    google_credentials_object <span style="color:#f92672">=</span> google_creds(creds_path)
+    <span style="color:#66d9ef">return</span> google_credentials_object
+    
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_config_object</span>(file_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;config.yaml&#39;</span>):
+    config_object <span style="color:#f92672">=</span> config(file_path)
+    <span style="color:#66d9ef">return</span> config_object
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">search_result_generator</span>(condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>):
+    <span style="color:#75715e">#column_lookup_table = {}</span>
+    <span style="color:#75715e">#pprint(num_columns)</span>
+    page_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    column_lookup_table <span style="color:#f92672">=</span> {}
+    <span style="color:#66d9ef">while</span> condition <span style="color:#f92672">==</span><span style="color:#66d9ef">True</span>:
+        <span style="color:#75715e">#pprint(num_columns)</span>
+        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">61</span>)
+        search_results_page_object <span style="color:#f92672">=</span> create_search_results_page_object(page_num <span style="color:#f92672">=</span> page_num)
+        <span style="color:#66d9ef">if</span> search_results_page_object<span style="color:#f92672">.</span>next_url <span style="color:#f92672">!=</span> <span style="color:#66d9ef">None</span>:
+            condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+            page_num <span style="color:#f92672">=</span> page_num <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>            
+            <span style="color:#66d9ef">yield</span> (search_results_page_object)
+        <span style="color:#66d9ef">else</span>:
+            condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+            <span style="color:#66d9ef">yield</span> (search_results_page_object)
+        
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_search_results_page_object</span>(base_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.loc.gov/collections&#34;</span>,collection <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;united-states-reports&#34;</span>,json_parameter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fo=json&#34;</span>,results_per_page <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;c=70&#34;</span>,query_param <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;?&#34;</span>,page_param <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sp=&#34;</span>,page_num <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>):
+    <span style="color:#75715e">#search = search_results(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)</span>
+    <span style="color:#75715e">#pprint(search.search_url)</span>
+    <span style="color:#75715e">#pprint(num_columns)</span>
+    <span style="color:#66d9ef">return</span> search_results_page(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_google_drive_object</span>(google_creds):
+    drive_service_object <span style="color:#f92672">=</span> google_drive(google_creds)
+    <span style="color:#66d9ef">return</span> drive_service_object
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_google_sheet_object</span>(google_creds):
+    sheet_service_object <span style="color:#f92672">=</span> google_sheet(google_creds)
+    <span style="color:#66d9ef">return</span> sheet_service_object
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_new_google_sheet</span>(google_drive_object,folder_id,title):
+    sheet_meta_data <span style="color:#f92672">=</span> google_drive_object<span style="color:#f92672">.</span>add_spreadsheet_to_folder(folder_id, title)
+    <span style="color:#66d9ef">return</span> sheet_meta_data
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">flatten_result</span>(result_json):
+    flat_json <span style="color:#f92672">=</span> flatten(result_json)
+    <span style="color:#66d9ef">return</span> flat_json
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_last_page_num</span>(page_num):
+    <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;last_page_num.txt&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        f<span style="color:#f92672">.</span>write(str(page_num))
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    tracemalloc<span style="color:#f92672">.</span>start()
+    <span style="color:#75715e">#rate_limiter = RateLimiter(max_calls=1, period=60)</span>
+    <span style="color:#75715e">#cd to output</span>
+    <span style="color:#75715e">#result = create_search_results_page_object()</span>
+    <span style="color:#75715e">#with cd(&#34;output&#34;):</span>
+    <span style="color:#75715e">#    result.write_to_file(data = result.dict_of_dicts, file_num = 1)</span>
+
+    <span style="color:#66d9ef">for</span> obj <span style="color:#f92672">in</span> search_result_generator():   
+        page_num <span style="color:#f92672">=</span> obj<span style="color:#f92672">.</span>page_num
+        <span style="color:#66d9ef">with</span> cd(<span style="color:#e6db74">&#34;output_2&#34;</span>):
+            <span style="color:#75715e">#print(&#39;hahaha&#39;)</span>
+            obj<span style="color:#f92672">.</span>to_json(file_num <span style="color:#f92672">=</span> page_num)
+            <span style="color:#75715e">#obj.write_graphml(file_num= page_num)</span>
+            <span style="color:#75715e">#obj.to_pandas()</span>
+            <span style="color:#75715e">#obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)</span>
+            <span style="color:#75715e">#obj.to_csv()</span>
+        write_last_page_num(page_num)
+        print(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> Search Results Crawled&#34;</span><span style="color:#f92672">.</span>format(page_num))
+
+
+    
+    snapshot <span style="color:#f92672">=</span> tracemalloc<span style="color:#f92672">.</span>take_snapshot()
+    top_stats <span style="color:#f92672">=</span> snapshot<span style="color:#f92672">.</span>statistics(<span style="color:#e6db74">&#39;lineno&#39;</span>)
+    print(<span style="color:#e6db74">&#34;[ Top 10 ]&#34;</span>)
+    <span style="color:#66d9ef">for</span> stat <span style="color:#f92672">in</span> top_stats[:<span style="color:#ae81ff">10</span>]:
+        print(stat)
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    main()
+
+        
+        
+
+    
+</code></pre></div>
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+
+    
+        <div class="post-date dt-published">2022-05-16</div>
+    
+
+    <a class="post-hidden-url u-url" href="https://blog.jnapolitano.io/posts/loc_crawler/">https://blog.jnapolitano.io/posts/loc_crawler/</a>
+    <a href="https://blog.jnapolitano.io" class="p-name p-author post-hidden-author h-card" rel="me">Justin Napolitano</a>
+
+
+    <div class="post-taxonomies">
+        
+        
+        
+            <ul class="post-categories">
+                
+                    
+                    <li><a href="">Legal Research</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/research/">Research</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/scotus/">SCOTUS</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/neo4j/">Neo4j</a></li>
+                
+                    
+                    <li><a href="">Behavioral Modeling</a></li>
+                
+                    
+                    <li><a href="">Graph Database</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/categories/automation/">Automation</a></li>
+                
+                    
+                    <li><a href="">REST API</a></li>
+                
+                    
+                    <li><a href="">Library of Congress</a></li>
+                
+            </ul>
+        
+        
+            <ul class="post-tags">
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/python/">#python</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/legal/">#legal</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/neo4j/">#neo4j</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/graphdb/">#graphDB</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/scotus/">#scotus</a></li>
+                
+                    
+                    <li><a href="https://blog.jnapolitano.io/tags/oop/">#oop</a></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+        <hr/>
+        
+    Warning - check your series - as none found
+
+        <hr/>
+    </article>
+
+
+
+    
+        
+        
+            <h3 class="read-next-title">Read next</h3>
+            <ul class="read-next-posts">
+                
+                <li><a href="/posts/masterpiece/">Voting Behavior, Textual Analysis, and the Spirit of the Law</a></li>
+                
+                <li><a href="/posts/feasibility_study_shipping_carbon/">Feasibility of Shipping Carbon Across the Atlantic</a></li>
+                
+                <li><a href="/posts/carbon-shipping-projections/">Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States</a></li>
+                
+                <li><a href="/posts/coal/">US Coal Plant Distribution</a></li>
+                
+                <li><a href="/posts/existing-gas-storage-facilities/">Existing Carbon and Gas Storage Facilities</a></li>
+                
+            </ul>
+        
+    
+
+    
+
+    
+        
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jnapolitano-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+
+
+
+    
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Justin Napolitano, 2022<br>
+            Maintained by Justin Napolitano.<br>
+            
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+
+<script>
+const STORAGE_KEY = 'user-color-scheme'
+const defaultTheme = "auto"
+
+let currentTheme
+let switchButton
+let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+const autoChangeScheme = e => {
+    currentTheme = e.matches ? 'dark' : 'light'
+    document.documentElement.setAttribute('data-theme', currentTheme)
+    changeButtonText()
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    switchButton = document.querySelector('.theme-switcher')
+    currentTheme = detectCurrentScheme()
+    if (currentTheme == 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark')
+    }
+    if (currentTheme == 'auto') {
+        autoChangeScheme(autoDefinedScheme);
+        autoDefinedScheme.addListener(autoChangeScheme);
+    }
+
+    if (switchButton) {
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    }
+  
+    showContent()
+})
+
+function detectCurrentScheme() {
+    if (localStorage.getItem(STORAGE_KEY)) {
+        return localStorage.getItem(STORAGE_KEY)
+    } 
+    if (defaultTheme) {
+        return defaultTheme
+    } 
+    if (!window.matchMedia) {
+        return 'light'
+    } 
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark'
+    }
+    return 'light'
+}
+
+function changeButtonText()
+{   
+    if (switchButton) {
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+}
+
+function switchTheme(e) {
+    if (currentTheme == 'dark') {
+        localStorage.setItem(STORAGE_KEY, 'light')
+        document.documentElement.setAttribute('data-theme', 'light')
+        currentTheme = 'light'
+    } else {
+        localStorage.setItem(STORAGE_KEY, 'dark')
+        document.documentElement.setAttribute('data-theme', 'dark')
+        currentTheme = 'dark'
+    }
+    changeButtonText()
+}
+
+function showContent() {
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = 1;
+}
+</script>   
+    </div>
+
+    <p class="h-card vcard">
+
+    <a href=https://blog.jnapolitano.io class="p-name u-url url fn" rel="me">Justin Napolitano</a> 
+
+     
+        /
+        <a class="p-email u-email email" rel="me" href="mailto:justin@jnapolitano.io">justin@jnapolitano.io</a>
+    
+
+     
+        <img class="u-photo" src="/images/me.png" />
+    
+</p> 
+</footer>
+
+        
+    </div>
+</body>
+</html>
