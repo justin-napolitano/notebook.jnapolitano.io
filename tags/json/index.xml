@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>json on Justin&#39;s Data Blog</title>
+    <link>https://blog.jnapolitano.io/tags/json/</link>
+    <description>Justin&#39;s Data Blog (json)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 May 2022 14:40:32 +0000</lastBuildDate>
+    
+    <atom:link href="https://blog.jnapolitano.io/tags/json/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Conduct Legal Research with AI: Part 1</title>
+      <link>https://blog.jnapolitano.io/posts/neo4j_integration/</link>
+      <pubDate>Mon, 16 May 2022 14:40:32 +0000</pubDate>
+      
+      <guid>https://blog.jnapolitano.io/posts/neo4j_integration/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34; &gt;Introduction
+&lt;span&gt;
+    &lt;a href=&#34;#introduction&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;In a previous &lt;a href=&#34;https://blog.jnapolitano.io/loc_crawler/&#34;&gt;post&lt;/a&gt;, I detailed the process of crawling the Library of Congress API to generate json files that could be intergrated into you DB of choice.&lt;/p&gt;
+&lt;p&gt;In this discussion, we will integrate JSON data into a Neo4j graph database.&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34; &gt;Overview
+&lt;span&gt;
+    &lt;a href=&#34;#overview&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The process is fairly straightforward.  The most difficult part is wrangling your json data into the right format for integration.&lt;/p&gt;
+&lt;p&gt;The main function first instantiates the database config informormation.  It then gets the cwd from a context manager.  We then import the files to be integrated.  A master subject table is created to record only unique subjects to avoid duplicates.  Finally, a json pipeline extracts the data from json, transforms it to integrate into neo4j, and finally we upload using the neomodels api.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+    neo_applified &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; instantiate_neo_model_api()
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_cwd()
+    file_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_files(cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cwd)
+    master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_master_subject_table()
+    json_pipeline(file_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;file_list, master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;master_subject_table)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;instantiate-neo-model-api&#34; &gt;Instantiate Neo Model Api
+&lt;span&gt;
+    &lt;a href=&#34;#instantiate-neo-model-api&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;I extended the neo model api with a few helper functions.  The repo is found at &lt;a href=&#34;https://github.com/justin-napolitano/neo4jAPI&#34;&gt;https://github.com/justin-napolitano/neo4jAPI&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can also review the snapshot below.&lt;/p&gt;
+&lt;p&gt;We will be calling the initation function to set the config information, update, create Case, and Create Subject classes during this review.&lt;/p&gt;
+&lt;p&gt;create subject calls the custom subject class and returns an object that can later be integrated into the db with the .save() function.&lt;/p&gt;
+&lt;p&gt;Create case does exactly the same.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; dataclasses &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; dataclass
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; datetime &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; date
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; shelve &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Shelf
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; neomodel &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (config, StructuredNode, StringProperty, IntegerProperty,
+    UniqueIdProperty, RelationshipTo, BooleanProperty, EmailProperty, Relationship, db)
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; pprint &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pprint
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;neoAPI&lt;/span&gt;():
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,uri,user,psw):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;db_init &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;instantiate_neo_model_session(uri,user,psw)    
+        
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;instantiate_neo_model_session&lt;/span&gt;(uri,user,psw):
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#config.DATABASE_URL = &amp;#39;neo4j+s://{}:{}@{}&amp;#39;.format(user, psw, uri)&lt;/span&gt;
+        config&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DATABASE_URL &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bolt://neo4j:beautiful@localhost:7687&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#config.DATABASE_URL = uri&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;standard_query&lt;/span&gt;():
+        results, meta &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; db&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cypher_query(query, params)
+        people &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [Person&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;inflate(row[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; row &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; results]
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_case_node&lt;/span&gt;(date, dates, group,name, pdf, shelf_id, subject, title, url, subject_relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Case(date&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;date, dates&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;dates, group&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;group,name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;name, pdf&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pdf, shelf_id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shelf_id, subject&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;subject, title&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;title, url&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;url)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_city_node&lt;/span&gt;(name):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; City(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name)
+        
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_country_node&lt;/span&gt;(code,name):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Country(code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; code, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_state_node&lt;/span&gt;(code,name):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; State(code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; code, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_realtor_search_url_node&lt;/span&gt;(url):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Realtor_Search_URL(url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url, is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, is_parent&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, searched &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;)
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_root_node&lt;/span&gt;(url, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;realtor.com&amp;#39;&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Root(is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;,name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name,is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url)
+        uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_child_node&lt;/span&gt;(url, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;realtor.com&amp;#39;&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Child(is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;,name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name,is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_parent_node&lt;/span&gt;(url, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;realtor.com&amp;#39;&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Parent(is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;,name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name,is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_sibling_node&lt;/span&gt;(url, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;realtor.com&amp;#39;&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Sibling(is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;,name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name,is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url)
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_relationship&lt;/span&gt;(source,target):
+      
+        
+        rel &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; source&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;connect(target)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; rel
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#34;{}&amp;#34;+&amp;#34;.connect&amp;#34; + &amp;#34;{}&amp;#34;.format(source,target))&lt;/span&gt;
+        
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_subject_node&lt;/span&gt;(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;,):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Subject(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt;(obj):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; db&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;transaction:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; obj&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;save()
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subject&lt;/span&gt;(StructuredNode):
+    uuid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Case&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    date &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    dates &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    group &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    pdf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;) 
+    shelf_id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    subject &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#primary_topic = StringProperty(unique_index=True, required=True)&lt;/span&gt;
+    title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    subject_relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Subject&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SUBJECT&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Processed&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;NotProcessed&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;City&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    state &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;State&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_STATE_OF&amp;#39;&lt;/span&gt;)
+    country &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Country&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_COUNTRY_OF&amp;#39;&lt;/span&gt;)
+    
+    
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Country&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;State&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    country &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Country&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_COUNTRY_OF&amp;#39;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Root&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;)
+    url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty()
+    processed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Processed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PROCESSED&amp;#34;&lt;/span&gt;)
+    NotProcessed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NotProcessed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NOT_PROCESSED&amp;#34;&lt;/span&gt;)
+    sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sibling&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SIBLING&amp;#34;&lt;/span&gt;)
+    child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Child&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CHILD&amp;#34;&lt;/span&gt;)
+    parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Parent&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PARENT&amp;#34;&lt;/span&gt;)
+    root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Root&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_ROOT&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Child&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty()
+    processed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Processed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PROCESSED&amp;#34;&lt;/span&gt;)
+    NotProcessed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NotProcessed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NOT_PROCESSED&amp;#34;&lt;/span&gt;)
+    sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sibling&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SIBLING&amp;#34;&lt;/span&gt;)
+    child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Child&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CHILD&amp;#34;&lt;/span&gt;)
+    parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Parent&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PARENT&amp;#34;&lt;/span&gt;)
+    root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Root&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_ROOT&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Parent&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty()
+    is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    processed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Processed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PROCESSED&amp;#34;&lt;/span&gt;)
+    NotProcessed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NotProcessed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NOT_PROCESSED&amp;#34;&lt;/span&gt;)
+    sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sibling&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SIBLING&amp;#34;&lt;/span&gt;)
+    child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Child&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CHILD&amp;#34;&lt;/span&gt;)
+    parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Parent&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PARENT&amp;#34;&lt;/span&gt;)
+    root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Root&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_ROOT&amp;#34;&lt;/span&gt;)
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Sibling&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty()
+    processed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Processed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PROCESSED&amp;#34;&lt;/span&gt;)
+    NotProcessed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NotProcessed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NOT_PROCESSED&amp;#34;&lt;/span&gt;)
+    sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sibling&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SIBLING&amp;#34;&lt;/span&gt;)
+    child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Child&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CHILD&amp;#34;&lt;/span&gt;)
+    parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Parent&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PARENT&amp;#34;&lt;/span&gt;)
+    root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Root&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_ROOT&amp;#34;&lt;/span&gt;)
+    
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Realtor_com&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    is_realtor_com &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty()
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Realtor_Search_URL&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    searched &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    is_sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; BooleanProperty(unique_index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#state = Relationship(&amp;#39;State&amp;#39;, &amp;#39;OF&amp;#39;)&lt;/span&gt;
+    state &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;State&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_STATE_OF&amp;#39;&lt;/span&gt;)
+    city &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;City&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_CITY_OF&amp;#39;&lt;/span&gt;)
+    root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Root&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_ROOT&amp;#39;&lt;/span&gt;)
+    child &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Child&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CHILD&amp;#34;&lt;/span&gt;)
+    parent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Parent&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PARENT&amp;#34;&lt;/span&gt;)
+    sibling &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Sibling&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SIBLING&amp;#34;&lt;/span&gt;)
+    realtor_com &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Realtor_com&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_REALTOR.COM_URL&amp;#34;&lt;/span&gt;)
+    processed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Processed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_PROCESSED&amp;#34;&lt;/span&gt;)
+    NotProcessed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NotProcessed&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NOT_PROCESSED&amp;#34;&lt;/span&gt;)
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Person&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    full_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    email &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; EmailProperty()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;get-files&#34; &gt;Get Files
+&lt;span&gt;
+    &lt;a href=&#34;#get-files&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The get_files function returns a list of files within the input directory.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_files&lt;/span&gt;(cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd(), input_directory &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;input&amp;#39;&lt;/span&gt;):
+    
+    path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([cwd,input_directory])
+    file_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [f &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; f &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; glob&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;glob(path &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;**/*.json&amp;#34;&lt;/span&gt;, recursive&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)]
+  
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; file_list
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;create-master-subject-file&#34; &gt;Create Master Subject File
+&lt;span&gt;
+    &lt;a href=&#34;#create-master-subject-file&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;Create maseter subject table generates an empty dataframe that will record every unique subject experienced in the data.&lt;/p&gt;
+&lt;p&gt;I will improve upon this later, by uploading a master file that will be saved following each modification.  This would enable resuming the process following an error or fault.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_master_subject_table&lt;/span&gt;():
+    table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame()
+    table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(table)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;json-pipeline-function&#34; &gt;Json Pipeline function
+&lt;span&gt;
+    &lt;a href=&#34;#json-pipeline-function&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The json pipeline function is the runner for the etl job.  It loads each file into dataframe, manipulates the data accordingly, and updates the neo4j database.&lt;/p&gt;
+&lt;p&gt;When I refactor the code, I will most likely create an object that calls static functions to generate then desired output.&lt;/p&gt;
+&lt;p&gt;I may also seperate the case, subject, and relationship pipeline into seperate classes in order to avoid shadowing functions within functions.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;json_pipeline&lt;/span&gt;(file_list, master_subject_table):
+    case_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; file &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; file_list:
+        
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; load_json_data(file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;file)
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;results&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data[0])&lt;/span&gt;
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#filtered_data = filter_json_data(json_data = data, filter = filter)&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Creating the case nodes transaction nodes and df&lt;/span&gt;
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; clean_json_data(data)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; stringify_json_values(data)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pandify_case_data(case_data)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nodify_case_data(case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data)
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Creating the subject nodes transaction nodes and df&lt;/span&gt;
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; slice_subject_data(data)
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; identify_unique_subjects(subject_list)
+        subject_lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_subject_lookup_table(subject_list)
+        master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; integrate_to_master_table(subject_lookup_table,master_subject_table)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table.duplicated())&lt;/span&gt;
+        case_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_counter &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; len(case_data)
+
+        master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nodify_subjects(master_subject_table)
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(case_data)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table[&amp;#39;transaction&amp;#39;])&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#lets save data to the database&lt;/span&gt;
+
+        master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_subjects_to_db(master_subject_table)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_cases_to_db(case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data)
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Create Relationships&lt;/span&gt;
+
+        relationship_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_relationship_table(case_data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;case_data, master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;master_subject_table)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;case-pipeline&#34; &gt;Case Pipeline
+&lt;span&gt;
+    &lt;a href=&#34;#case-pipeline&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Creating the case nodes transaction nodes and df&lt;/span&gt;
+data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; clean_json_data(data)
+case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; stringify_json_values(data)
+case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pandify_case_data(case_data)
+case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nodify_case_data(case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To create the case nodes four functions are called.&lt;/p&gt;
+&lt;h4 id=&#34;clean-json-data&#34; &gt;Clean Json Data
+&lt;span&gt;
+    &lt;a href=&#34;#clean-json-data&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The first is clean_json_data which is actually unnecessary.  The only operation that is required is moving the pdf froma list to a dicktionary key.  It should and will be refactored.  As it stands now, I am leaving iut as an artifact of a previous workflow.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;clean_json_data&lt;/span&gt;(filtered_data):
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Select the keys that I want from the dictionary&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# filter appropriatly into a df &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# write df to file&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(type(filtered_data))&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(filtered_data)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; filtered_data:
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#creat a dictionary of columns and values for each row.  Combine them all into a df when we are done&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# each dictionary must be a row.... which makes perfect sense, but they can not be nested... &lt;/span&gt;
+        item &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;item&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        resources &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;resources&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;index&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        language &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;language&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        online_format&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;online_format&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        original_format &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;original_format&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        kind &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;type&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        image_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;image_url&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        hassegments &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hassegments&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        extract_timestamp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;extract_timestamp&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        timestampe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;timestamp&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        mimetype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mime_type&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+            pdf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; resources[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pdf&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;: 
+            pdf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;noPdf&amp;#34;&lt;/span&gt;
+        data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;pdf&amp;#34;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pdf
+        data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;search_index&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; index
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;stringify-json-data&#34; &gt;Stringify Json Data
+&lt;span&gt;
+    &lt;a href=&#34;#stringify-json-data&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The Second is Stringify_json_data.  The imporatance of this function is that it creates strings from lists in order to properly integrate into the neo4j databse.  Iterables are permitted, however they can not be searched.  For my use case, I decided to create csv strings instead that can later be parsed if necessary.&lt;/p&gt;
+&lt;p&gt;This function also moves the subject list to a dedicated key in the dictionary.  This is important because it is used to generate the subject tables.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;stringify_json_values&lt;/span&gt;(data):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; dict &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dict[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; key &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; dict:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; type(dict[key]) &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; list:
+                tmp_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; (dict[key]):
+                    item &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-&amp;#34;&lt;/span&gt;)
+                    tmp_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(item)
+                dict[key] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_list
+
+                dict[key] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;,&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(dict[key])
+        dict[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject_list&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; subject_list
+
+                
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;pandify-case-data&#34; &gt;Pandify Case Data
+&lt;span&gt;
+    &lt;a href=&#34;#pandify-case-data&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The next function creates a pandas dataframe from a list of dictionaries.  Thankfully this is easy to accommplish.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pandify_case_data&lt;/span&gt;(data):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#case_df = pd.concat(data, sort=False)&lt;/span&gt;
+    df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(data)
+    df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;nodify-case-data&#34; &gt;Nodify Case Data
+&lt;span&gt;
+    &lt;a href=&#34;#nodify-case-data&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;Nodify creates transaction objects that can be saved to the neo4j databse.  I call the neomodel api to generate the results and save them into a dataframe that is used to apply the upload with a lambda function.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_case_data&lt;/span&gt;(case_data):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#non_submitted_nodes = case_data[case_data.notna()]&lt;/span&gt;
+    non_submitted_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data[case_data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;notna()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;any(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)]
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    case_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; non_submitted_nodes&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_case_node(date &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;date&amp;#39;&lt;/span&gt;], dates&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dates&amp;#39;&lt;/span&gt;],group &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;group&amp;#39;&lt;/span&gt;], name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;id&amp;#39;&lt;/span&gt;], pdf&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pdf&amp;#39;&lt;/span&gt;], shelf_id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;shelf_id&amp;#39;&lt;/span&gt;], subject&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;], title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;title&amp;#39;&lt;/span&gt;], url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;url&amp;#39;&lt;/span&gt;], subject_relationship&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;), axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+    case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_nodes
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; case_data
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;the-subject-pipeline&#34; &gt;The Subject Pipeline
+&lt;span&gt;
+    &lt;a href=&#34;#the-subject-pipeline&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The subject pipeline slices the subject data from the current search result page.&lt;/p&gt;
+&lt;p&gt;It then identifies the unique subjects&lt;/p&gt;
+&lt;p&gt;The subject_lookup_table is a dataframe containing the subjects returned by subject list.  They are unique only to the result page.&lt;/p&gt;
+&lt;p&gt;The master_subject_table is then updated by the integrate_to_master_table function that identifes new subjects to integrate into the master table.&lt;/p&gt;
+&lt;p&gt;finally, the nodify subject function creates transaction objects to be uploaded to the neo4j db.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Creating the subject nodes transaction nodes and df&lt;/span&gt;
+    subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; slice_subject_data(data)
+    subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; identify_unique_subjects(subject_list)
+    subject_lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_subject_lookup_table(subject_list)
+    master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; integrate_to_master_table(subject_lookup_table,master_subject_table)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table.duplicated())&lt;/span&gt;
+
+    master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nodify_subjects(master_subject_table)
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;slice_subject_data&#34; &gt;slice_subject_data
+&lt;span&gt;
+    &lt;a href=&#34;#slice_subject_data&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slice_subject_data&lt;/span&gt;(data):
+    subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; case &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; subject_list &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; case[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject_list&amp;#39;&lt;/span&gt;]
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(subject_list)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; subject_list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;identify-unique-subjects&#34; &gt;Identify Unique Subjects
+&lt;span&gt;
+    &lt;a href=&#34;#identify-unique-subjects&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;identify_unique_subjects&lt;/span&gt;(subject_list):
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;# insert the list to the set&lt;/span&gt;
+    list_set &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set(subject_list)
+    &lt;span style=&#34;color:#75715e&#34;&gt;# convert the set to the list&lt;/span&gt;
+    unique_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (list(list_set))
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; unique_list
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;create-subject-lookup-table&#34; &gt;Create Subject Lookup Table
+&lt;span&gt;
+    &lt;a href=&#34;#create-subject-lookup-table&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_subject_lookup_table&lt;/span&gt;(subject_list):
+    lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(subject_list, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;])
+    lookup_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    lookup_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; lookup_table
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;nodify-subject&#34; &gt;Nodify Subject
+&lt;span&gt;
+    &lt;a href=&#34;#nodify-subject&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_subjects&lt;/span&gt;(master_subject_table):
+    non_submitted_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; master_subject_table[master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isna()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;any(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+    &lt;span style=&#34;color:#75715e&#34;&gt;#df[df.isna().any(axis=1)]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_subject_node(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x))
+    master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(non_submitted_nodes)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;uploading-case-and-subject-data&#34; &gt;Uploading Case and Subject data
+&lt;span&gt;
+    &lt;a href=&#34;#uploading-case-and-subject-data&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;With the transaction object dataframes created, we can then update the data to the database.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_subjects_to_db(master_subject_table)
+case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_cases_to_db(case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;submit-subjects&#34; &gt;Submit Subjects
+&lt;span&gt;
+    &lt;a href=&#34;#submit-subjects&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;This function selects the subject nodes from the master table that have not been uploaded to the neo4j database.&lt;/p&gt;
+&lt;p&gt;It identifies na in the submitted collumn in order to slice non-submitted nodes.&lt;/p&gt;
+&lt;p&gt;If that table can be created we upload all of the df with the update function from the neoapi.  It simply calls the db and calls save() on the object.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;submit_subjects_to_db&lt;/span&gt;(master_subject_table):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#unsubmitted = master_subject_table[master_subject_table.notna()]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#non_submitted_nodes=master_subject_table[[master_subject_table[&amp;#39;submitted&amp;#39;] == np.nan]]&lt;/span&gt;
+    non_submitted_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; master_subject_table[master_subject_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isna()]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; non_submitted_nodes&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;empty:   
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+         &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+        non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(x))
+        non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;#test = non_submitted_nodes.iloc[32][&amp;#39;transaction&amp;#39;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#return_obj = neo.neoAPI.update(test)&lt;/span&gt;
+        master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(non_submitted_nodes)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;submit-cases&#34; &gt;Submit Cases
+&lt;span&gt;
+    &lt;a href=&#34;#submit-cases&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;Initially i had copy and pasted the subject submission function. I realized that the checks were unnecessary.   I am assuming that each result is unique.  Therefore, every case is uploaded.  If it proves that there are duplicates in the database, the neo4j cypher language would permit me to prune those duplicate edges.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;submit_cases_to_db&lt;/span&gt;(case_data):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#unsubmitted = master_subject_table[master_subject_table.notna()]&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;### in theory none of the cases wouldhave been submitted becasue i am pulling them from file.  There is no need to check.. Just submit&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#non_submitted_nodes = case_data[case_data[&amp;#39;submitted&amp;#39;].isna()].copy()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;##pprint(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#if non_submitted_nodes.empty:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    return case_data&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#else:&lt;/span&gt;
+    case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(x))
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Assume all are submitted..&lt;/span&gt;
+    case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#test = non_submitted_nodes.iloc[32][&amp;#39;transaction&amp;#39;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#return_obj = neo.neoAPI.update(test)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#case_data.update(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; case_data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;submit-the-relationships&#34; &gt;Submit the Relationships
+&lt;span&gt;
+    &lt;a href=&#34;#submit-the-relationships&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The final step is to relate the cases to the subject nodes.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;relationship_list= create_relationship_table(case_data=case_data, master_subject_table=master_subject_table)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is accomplished by calling the relationship function declared in the Case class declared in the neomodel api.&lt;/p&gt;
+&lt;p&gt;View the reference below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Case&lt;/span&gt;(StructuredNode):
+    uid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    date &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    dates &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    group &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    pdf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;) 
+    shelf_id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    subject &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#primary_topic = StringProperty(unique_index=True, required=True)&lt;/span&gt;
+    title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    subject_relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Subject&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SUBJECT&amp;#34;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;create-relationship-table&#34; &gt;Create Relationship Table
+&lt;span&gt;
+    &lt;a href=&#34;#create-relationship-table&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;To create the relationships the case_data and the master_subject_table are necessary.&lt;/p&gt;
+&lt;p&gt;for every case a relationship is created to every subject within its subject list.&lt;/p&gt;
+&lt;p&gt;It is important to note, that in order for this function to work correctly, the cases and subjects must first be submitted to the database.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_relationship_table&lt;/span&gt;(case_data, master_subject_table):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(case_data[])&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#test = master_subject_table[&amp;#39;subject&amp;#39;]&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# select &lt;/span&gt;
+    relationship_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; row &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(case_data)):
+        unique_dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (master_subject_table[master_subject_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isin(case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject_list&amp;#39;&lt;/span&gt;][row])])
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(unique_dataframe)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; subject_row &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(unique_dataframe)):
+            case &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;iloc[row][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]
+            subject &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; unique_dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;iloc[subject_row][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]
+            &lt;span style=&#34;color:#75715e&#34;&gt;#create relationship&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(case)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(subject)&lt;/span&gt;
+            relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(case&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;subject_relationship,subject)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(relationship)&lt;/span&gt;
+            relationship_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(relationship)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; relationship_list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;putting-everything-together&#34; &gt;Putting Everything Together
+&lt;span&gt;
+    &lt;a href=&#34;#putting-everything-together&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#realtor_graph.py&lt;/span&gt;
+
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#from neo4j_connect_2 import NeoSandboxApp&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#import neo4j_connect_2 as neo&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#import GoogleServices as google&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#from pyspark.sql import SparkSession&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#from pyspark.sql.functions import struct&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; cgitb &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; lookup
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; code
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; dbm &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; dumb
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; doctest &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; master
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; hmac &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; trans_36
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; mimetypes
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; platform &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; node
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; pprint &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pprint
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; pty &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; master_open
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; re &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; sub
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; unittest.util &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; unorderable_list_difference
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; urllib.parse &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; non_hierarchical
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; neomodel &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (config, StructuredNode, StringProperty, IntegerProperty,
+    UniqueIdProperty, RelationshipTo, BooleanProperty, EmailProperty, Relationship,db)
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;span style=&#34;color:#75715e&#34;&gt;#import NeoNodes as nn&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#import GoogleServices&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; neo4jClasses
+&lt;span style=&#34;color:#75715e&#34;&gt;#import sparkAPI as spark&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; neoModelAPI &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; neo
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; glob
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; json
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;span style=&#34;color:#75715e&#34;&gt;#from neoModelAPI import NeoNodes as nn&lt;/span&gt;
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DataUploadFunctions&lt;/span&gt;():
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;upload_df&lt;/span&gt;(self,df):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#df.apply(lambda x: pprint(str(x) + str(type(x))))&lt;/span&gt;
+        
+        node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;  df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(x))
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(node_list)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;  node_list
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;map_to_df&lt;/span&gt;(self,df1,df2,lookup_value :str, lookup_key: str):
+        df1[lookup_value] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df1[lookup_key]
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df1.columns)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df1)&lt;/span&gt;
+        
+        val  &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df1[lookup_value]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(dict(zip(df2[lookup_key],  df2[lookup_value])))
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; val
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;set_relationships&lt;/span&gt;(self,source_node, target_node):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(self.df.columns)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(source_node)&lt;/span&gt;
+        rel &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(source &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; source_node ,target &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; target_node)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; rel
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DataPipelineFunctions&lt;/span&gt;():
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_df_to_csv&lt;/span&gt;(self,df,path: str):
+        cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd()
+        path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([cwd,path])
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(path,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; f:
+            df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_csv(path, index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;)
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; path
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_city_nodes&lt;/span&gt;(self,df):
+        city_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;city_name&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_city_node(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x))
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; city_nodes
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_url_nodes&lt;/span&gt;(self,df):
+        url_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;root_realtor_url&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_realtor_search_url_node(url&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x))
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; url_nodes
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_root_nodes&lt;/span&gt;(self,df):
+        root_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;root_realtor_url&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_root_node(url&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x))
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; root_nodes
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_country_nodes&lt;/span&gt;(self,df):
+        country_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_country_node(code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;country_code, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;country_name),axis &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; country_nodes
+        
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;return_unique_country_df&lt;/span&gt;(self,df):
+        df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop_duplicates(subset&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_name&amp;#39;&lt;/span&gt;])&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+        df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;difference([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_node&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_node&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_name&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_code&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_name&amp;#39;&lt;/span&gt;]), &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_state_nodes&lt;/span&gt;(self,df):
+        state_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_state_node(code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_code, name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_name),axis &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; state_nodes    
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;return_unique_state_df&lt;/span&gt;(self,df):
+        df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop_duplicates(subset&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_name&amp;#39;&lt;/span&gt;])&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+        df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;columns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;difference([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_node&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_node&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_code&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_name&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_name&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_code&amp;#39;&lt;/span&gt;]), &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df)&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rename_columns&lt;/span&gt;(self,df, mapper &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;city&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;city_name&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_code&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;realtor_url&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;root_realtor_url&amp;#39;&lt;/span&gt;}):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;rename(columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mapper)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;add_country_code&lt;/span&gt;(self,country_code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;USA&amp;#34;&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; country_code
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;add_country_name&lt;/span&gt;(self,country_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;United States of America&amp;#34;&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; country_name
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;upload_df&lt;/span&gt;(self,df):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#df.apply(lambda x: pprint(str(x) + str(type(x))))&lt;/span&gt;
+        
+        node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;  df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(x))
+        pprint(node_list)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;  node_list
+        &lt;span style=&#34;color:#75715e&#34;&gt;#df[&amp;#39;server_node&amp;#39;] =  node_list&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df)&lt;/span&gt;
+        
+        
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;set_url_relationships&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(self.df.columns)&lt;/span&gt;
+        update_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(source &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;url_node&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;city,target &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;city_node), axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        pprint(update_list)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; update_list
+        &lt;span style=&#34;color:#75715e&#34;&gt;#rel = self.df.url.connect(self.df.city)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;set_city_relationships&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(self.df.columns)&lt;/span&gt;
+        update_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(source &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;city_node&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;country,target &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;country_node), axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        update_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(source &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;city_node&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state,target &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_node), axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        pprint(update_list)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#rel = self.df.url.connect(self.df.city)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;set_state_relationships&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(self.df.columns)&lt;/span&gt;
+        neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(source &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unique_state_nodes&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_node[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;country,target &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unique_state_nodes&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;country_node[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;])
+        &lt;span style=&#34;color:#75715e&#34;&gt;#update_list = self.unique_state_nodes.apply(lambda x: neo.neoAPI.create_relationship(source = x.state_node.country,target = x.country_node.name), axis=1)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(update_list)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#rel = self.df.url.connect(self.df.city)&lt;/span&gt;
+
+
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by_state&lt;/span&gt;(self):
+        grouped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;groupby(by &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;state_name&amp;#34;&lt;/span&gt;)
+        
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;load_data_to_pandas_df&lt;/span&gt;(self,file_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; file_path &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open (file_path) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; file:
+                df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_json(file)
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_city_column&lt;/span&gt;(self):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;city_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;city&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x : neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_city_node(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x))
+        
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df.city_nodes)&lt;/span&gt;
+
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_states_column&lt;/span&gt;(self):
+
+        unique_states &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop_duplicates(subset&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state&amp;#39;&lt;/span&gt;])&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(state_dict)&lt;/span&gt;
+
+        unique_states[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; unique_states&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_state_node(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_name, code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state), axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(unique_states)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.df[&amp;#39;state_nodes&amp;#39;] = unique_states[&amp;#39;state_nodes&amp;#39;] where unique_states[state_name] = self.df_stateName&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;state_node&amp;#34;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_name&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.df[&amp;#39;state_node&amp;#39;] =&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(self.df[&amp;#39;state_name&amp;#39;].map(unique_states))&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_node&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(dict(zip(unique_states&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_name,  unique_states&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;state_node)))
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(self.df)&lt;/span&gt;
+
+        
+     
+        &lt;span style=&#34;color:#75715e&#34;&gt;#mask = dfd[&amp;#39;a&amp;#39;].str.startswith(&amp;#39;o&amp;#39;)&lt;/span&gt;
+        
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.df[&amp;#39;state_nodes&amp;#39;] = self.df.apply(lambda x: neo.create_state_node(name = x.state_name, code = x.state) if x not in states_dict else states_dict[x], axis=1)&lt;/span&gt;
+        
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_url_column&lt;/span&gt;(self):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;url_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;realtor_url&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x : neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_url_node(url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x, searched&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;))
+
+
+    
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_cwd&lt;/span&gt;():
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd()
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; cwd
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_files&lt;/span&gt;(cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd(), input_directory &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;input&amp;#39;&lt;/span&gt;):
+    
+    path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([cwd,input_directory])
+    file_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [f &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; f &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; glob&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;glob(path &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;**/*.json&amp;#34;&lt;/span&gt;, recursive&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)]
+  
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; file_list
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;instantiate_neo_model_api&lt;/span&gt;():
+    uri &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;7a92f171.databases.neo4j.io&amp;#34;&lt;/span&gt;
+    user &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;neo4j&amp;#34;&lt;/span&gt;
+    psw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;RF4Gr2IJTNhHlW6HOrLDqz_I2E2Upyh7o8paTwfnCxg&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;instantiate_neo_model_session(uri&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;uri,user&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;user,psw&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;psw)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;prepare_data_pipeline&lt;/span&gt;():
+    pipeline_functions &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; DataPipelineFunctions()
+    master_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;load_data_to_pandas_df()
+    master_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_name&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_country_name()
+    master_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_code&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_country_code()
+    master_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;rename_columns(master_df)
+    master_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;city_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_city_nodes(master_df)
+    master_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;url_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_url_nodes(master_df)
+    master_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;root_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_root_nodes(master_df)
+
+    
+    master_df_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write_df_to_csv(master_df,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;master_df.csv&amp;#39;&lt;/span&gt;)
+
+    
+
+    
+    state_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;return_unique_state_df(master_df)
+    state_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_state_nodes(state_df)
+    state_df_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write_df_to_csv(state_df,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_df.csv&amp;#39;&lt;/span&gt;)
+    
+
+    country_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;return_unique_country_df(master_df)
+    country_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_node&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_country_nodes(country_df)
+    country_df_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pipeline_functions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write_df_to_csv(country_df,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country.csv&amp;#39;&lt;/span&gt;)
+
+
+    
+
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#upload nodes&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;master_df&amp;#34;&lt;/span&gt; : master_df, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;state_df&amp;#39;&lt;/span&gt; : state_df, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;country_df&amp;#39;&lt;/span&gt;: country_df}
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;load_json_data&lt;/span&gt;(file):
+    f &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; open (file, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;r&amp;#34;&lt;/span&gt;)
+  
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Reading from file&lt;/span&gt;
+    data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; json&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loads(f&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read())
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; data
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;json_pipeline&lt;/span&gt;(file_list, master_subject_table):
+    case_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; file &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; file_list:
+        
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; load_json_data(file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;file)
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;results&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data[0])&lt;/span&gt;
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#filtered_data = filter_json_data(json_data = data, filter = filter)&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Creating the case nodes transaction nodes and df&lt;/span&gt;
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; clean_json_data(data)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; stringify_json_values(data)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pandify_case_data(case_data)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nodify_case_data(case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data)
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Creating the subject nodes transaction nodes and df&lt;/span&gt;
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; slice_subject_data(data)
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; identify_unique_subjects(subject_list)
+        subject_lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_subject_lookup_table(subject_list)
+        master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; integrate_to_master_table(subject_lookup_table,master_subject_table)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table.duplicated())&lt;/span&gt;
+        case_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_counter &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; len(case_data)
+
+        master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nodify_subjects(master_subject_table)
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(case_data)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table[&amp;#39;transaction&amp;#39;])&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#lets save data to the database&lt;/span&gt;
+
+        master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_subjects_to_db(master_subject_table)
+        case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_cases_to_db(case_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data)
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Create Relationships&lt;/span&gt;
+
+        relationship_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_relationship_table(case_data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;case_data, master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;master_subject_table)
+    
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;submit_cases_to_db&lt;/span&gt;(case_data):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#unsubmitted = master_subject_table[master_subject_table.notna()]&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;### in theory none of the cases wouldhave been submitted becasue i am pulling them from file.  There is no need to check.. Just submit&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#non_submitted_nodes = case_data[case_data[&amp;#39;submitted&amp;#39;].isna()].copy()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;##pprint(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#if non_submitted_nodes.empty:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    return case_data&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#else:&lt;/span&gt;
+    case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(x))
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Assume all are submitted..&lt;/span&gt;
+    case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#test = non_submitted_nodes.iloc[32][&amp;#39;transaction&amp;#39;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#return_obj = neo.neoAPI.update(test)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#case_data.update(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; case_data
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Relationships must need to be created following saving to the df&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#relationships = create_relationship_table(case_data, master_subject_table)&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;submit_subjects_to_db&lt;/span&gt;(master_subject_table):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#unsubmitted = master_subject_table[master_subject_table.notna()]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#non_submitted_nodes=master_subject_table[[master_subject_table[&amp;#39;submitted&amp;#39;] == np.nan]]&lt;/span&gt;
+    non_submitted_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; master_subject_table[master_subject_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isna()]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; non_submitted_nodes&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;empty:   
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+         &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+        non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(x))
+        non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;#test = non_submitted_nodes.iloc[32][&amp;#39;transaction&amp;#39;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#return_obj = neo.neoAPI.update(test)&lt;/span&gt;
+        master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(non_submitted_nodes)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tester&lt;/span&gt;():
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello Dolly&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_relationship_table&lt;/span&gt;(case_data, master_subject_table):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(case_data[])&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#test = master_subject_table[&amp;#39;subject&amp;#39;]&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# select &lt;/span&gt;
+    relationship_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; row &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(case_data)):
+        unique_dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (master_subject_table[master_subject_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isin(case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject_list&amp;#39;&lt;/span&gt;][row])])
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(unique_dataframe)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; subject_row &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(unique_dataframe)):
+            case &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;iloc[row][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]
+            subject &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; unique_dataframe&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;iloc[subject_row][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]
+            &lt;span style=&#34;color:#75715e&#34;&gt;#create relationship&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(case)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(subject)&lt;/span&gt;
+            relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_relationship(case&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;subject_relationship,subject)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(relationship)&lt;/span&gt;
+            relationship_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(relationship)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; relationship_list
+
+
+
+
+        
+    &lt;span style=&#34;color:#75715e&#34;&gt;#create relationship between the case and each uid in the unique_data_frame_transaction_list &lt;/span&gt;
+    pprint(unique_dataframe)
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;## Creating the realation table&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Thoughts&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# pass subject and case table&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# case_subject list collumn&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# where that list is in the master table&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#return  the subjects &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# make a connection to between each subject and the case in the returned tableuid in the table&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# return a transaction list &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# with the list commit a transaction for eachn &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#case_data= filter_case_data(data)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_case_data&lt;/span&gt;(case_data):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#non_submitted_nodes = case_data[case_data.notna()]&lt;/span&gt;
+    non_submitted_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_data[case_data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;notna()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;any(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)]
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    case_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; non_submitted_nodes&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_case_node(date &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;date&amp;#39;&lt;/span&gt;], dates&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dates&amp;#39;&lt;/span&gt;],group &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;group&amp;#39;&lt;/span&gt;], name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;id&amp;#39;&lt;/span&gt;], pdf&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pdf&amp;#39;&lt;/span&gt;], shelf_id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;shelf_id&amp;#39;&lt;/span&gt;], subject&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;], title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;title&amp;#39;&lt;/span&gt;], url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;url&amp;#39;&lt;/span&gt;], subject_relationship&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;), axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+    case_data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; case_nodes
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; case_data
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;filter_case_data&lt;/span&gt;(data):
+    pprint(data[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;])
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodify_subjects&lt;/span&gt;(master_subject_table):
+    non_submitted_nodes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; master_subject_table[master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isna()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;any(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+    &lt;span style=&#34;color:#75715e&#34;&gt;#df[df.isna().any(axis=1)]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(non_submitted_nodes)&lt;/span&gt;
+    non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; non_submitted_nodes[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x :neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_subject_node(name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x))
+    master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update(non_submitted_nodes)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;integrate_to_master_table&lt;/span&gt;(subject_lookup_table, master_subject_table):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#check_if subject in list is in subject of the table&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# if so drop it from the temp table&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# append what is left to the master table &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(subject_lookup_table)&lt;/span&gt;
+    test &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; master_subject_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]
+    unique_dataframe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (subject_lookup_table[&lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt;subject_lookup_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isin(test)])
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(unique_dataframe)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#duplicate_list = (master_subject_table[~master_subject_table[&amp;#39;subject&amp;#39;].isin(subject_lookup_table[&amp;#39;subject&amp;#39;])])&lt;/span&gt;
+    master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;concat([master_subject_table,unique_dataframe])
+    &lt;span style=&#34;color:#75715e&#34;&gt;#master_subject_table.update(unique_dataframe)&lt;/span&gt;
+    master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;reset_index(inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, drop&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(master_subject_table.duplicated())&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; master_subject_table
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_subject_lookup_table&lt;/span&gt;(subject_list):
+    lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(subject_list, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;])
+    lookup_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    lookup_table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; lookup_table
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;identify_unique_subjects&lt;/span&gt;(subject_list):
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;# insert the list to the set&lt;/span&gt;
+    list_set &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set(subject_list)
+    &lt;span style=&#34;color:#75715e&#34;&gt;# convert the set to the list&lt;/span&gt;
+    unique_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (list(list_set))
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; unique_list
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slice_subject_data&lt;/span&gt;(data):
+    subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; case &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; subject_list &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; case[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject_list&amp;#39;&lt;/span&gt;]
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(subject_list)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; subject_list
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pandify_case_data&lt;/span&gt;(data):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#case_df = pd.concat(data, sort=False)&lt;/span&gt;
+    df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(data)
+    df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df
+        
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;stringify_json_values&lt;/span&gt;(data):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; dict &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+        subject_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dict[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; key &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; dict:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; type(dict[key]) &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; list:
+                tmp_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; (dict[key]):
+                    item &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-&amp;#34;&lt;/span&gt;)
+                    tmp_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(item)
+                dict[key] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_list
+
+                dict[key] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;,&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(dict[key])
+        dict[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject_list&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; subject_list
+
+                
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; data
+                
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;clean_json_data&lt;/span&gt;(filtered_data):
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Select the keys that I want from the dictionary&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# filter appropriatly into a df &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# write df to file&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#print(type(filtered_data))&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(filtered_data)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; filtered_data:
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#creat a dictionary of columns and values for each row.  Combine them all into a df when we are done&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# each dictionary must be a row.... which makes perfect sense, but they can not be nested... &lt;/span&gt;
+        item &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;item&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        resources &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;resources&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;index&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        language &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;language&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        online_format&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;online_format&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        original_format &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;original_format&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        kind &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;type&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        image_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;image_url&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        hassegments &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hassegments&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        extract_timestamp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;extract_timestamp&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        timestampe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;timestamp&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        mimetype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pop(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mime_type&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+            pdf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; resources[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pdf&amp;#39;&lt;/span&gt;]
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;: 
+            pdf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;noPdf&amp;#34;&lt;/span&gt;
+        data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;pdf&amp;#34;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pdf
+        data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;search_index&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; index
+    
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# convert to strings maybe move into another function to be called.  Actually will definitely move to a nother function &lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; filtered_data
+    &lt;span style=&#34;color:#75715e&#34;&gt;#uid = UniqueIdProperty()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;##date = date&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#dates = dates&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#group = group&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#id = id &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pdf = pdf &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#shelf_id = shelf_id&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#subject = subject&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#primary_topic = primary_topic&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#title = title&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#url = url&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#description = description&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#source_collection = source_collection&lt;/span&gt;
+
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;filter_json_data&lt;/span&gt;(json_data, filter):
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Using dict()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Extracting specific keys from dictionary&lt;/span&gt;
+
+    filter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;contributor&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;date&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dates&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;digitized&amp;#39;&lt;/span&gt;]
+    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dict((k, json_data[k]) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; filter &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; json_data)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_master_subject_table&lt;/span&gt;():
+    table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame()
+    table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subject&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    table[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;submitted&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(table)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+    neo_applified &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; instantiate_neo_model_api()
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_cwd()
+    file_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_files(cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cwd)
+    master_subject_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_master_subject_table()
+    json_pipeline(file_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;file_list, master_subject_table&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;master_subject_table)
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;#neo_sandbox_app = instantiate_neo_sandbox_app()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#google_creds = load_google_creds()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#sheets_app = instantiate_sheets_app(google_creds.credentials)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#drive_app = instantiate_drive_app(google_creds.credentials)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#googleAPI = instantiate_google_API()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#sparkAPI = instantiate_spark_API()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#neoAPI = NeoAPI()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#nodified_df = pandas_functions.nodify_dataframe()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#test()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#google_api = googleServices.GoogleAPI()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;###neo_model_api = instantiate_neo_model_api()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;###df_pipeline_dictionary = prepare_data_pipeline()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#final_df_dictionary = upload_data_pipeline_to_neo(df_pipeline_dictionary)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#for k,v in final_df_dictionary.items():&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    cwd = os.getcwd()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    path = str(k) +&amp;#34;Final&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    path = os.sep.join([cwd,path])&lt;/span&gt;
+
+     &lt;span style=&#34;color:#75715e&#34;&gt;#   with open(path, &amp;#34;w&amp;#34;) as file:&lt;/span&gt;
+     &lt;span style=&#34;color:#75715e&#34;&gt;#       v.to_csv(path, index=False)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#prepared_dfs = prepare_pandas_df()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(prepared_df)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#upload_df_to_db(df = prepared_df, neo_model_api = neo_model_api)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

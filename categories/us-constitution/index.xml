@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>US Constitution on Justin&#39;s Data Blog</title>
+    <link>https://blog.jnapolitano.io/categories/us-constitution/</link>
+    <description>Justin&#39;s Data Blog (US Constitution)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 17 May 2022 18:40:32 +0000</lastBuildDate>
+    
+    <atom:link href="https://blog.jnapolitano.io/categories/us-constitution/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Conduct Legal Research with AI: Part 2</title>
+      <link>https://blog.jnapolitano.io/posts/constitution_to_neo/</link>
+      <pubDate>Tue, 17 May 2022 18:40:32 +0000</pubDate>
+      
+      <guid>https://blog.jnapolitano.io/posts/constitution_to_neo/</guid>
+      <description>&lt;h1 id=&#34;integrating-the-constitution-to-neo4j&#34; &gt;Integrating the Constitution to Neo4j
+&lt;span&gt;
+    &lt;a href=&#34;#integrating-the-constitution-to-neo4j&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h1&gt;&lt;p&gt;I am currenlty building a graph database of Supreme Court cases in neo4j to model the behavior and decison making of the court.&lt;/p&gt;
+&lt;p&gt;In this post, I include the classes that I will be using to create individual nodes for the articles, sections, clauses, and subclauses of the Consititution.&lt;/p&gt;
+&lt;p&gt;Later, these will be related to cases and subjecst in order to train a tensorflow algorithm to recommend case law by issue area and to predict the outcome of cases.&lt;/p&gt;
+&lt;h2 id=&#34;workflow&#34; &gt;Workflow
+&lt;span&gt;
+    &lt;a href=&#34;#workflow&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The basic workflow requires creating a node and then submitting it to the neo4j db.   My previous posts have documented this process in detail.  Review &lt;a href=&#34;https://blog.jnapolitano.io/neo4j_integration/&#34;&gt;blog.jnapolitano.io/neo4j_integration/&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;h2 id=&#34;neomodel-api-classes&#34; &gt;Neomodel Api Classes
+&lt;span&gt;
+    &lt;a href=&#34;#neomodel-api-classes&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The neomodel classes below generate the nodes to be integrated into the database.&lt;/p&gt;
+&lt;h3 id=&#34;article-class&#34; &gt;Article Class
+&lt;span&gt;
+    &lt;a href=&#34;#article-class&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt;(StructuredNode):
+    uuid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    topic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    citation &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    clause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Clause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_ARTICLE_OF&amp;#34;&lt;/span&gt;)
+    sub_clause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Subclause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_ARTICLE_OF&amp;#34;&lt;/span&gt;)
+    case &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Case&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_ARTICLE_OF&amp;#39;&lt;/span&gt;)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;section-class&#34; &gt;Section Class
+&lt;span&gt;
+    &lt;a href=&#34;#section-class&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Section&lt;/span&gt;(StructuredNode):
+    uuid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    topic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    article &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Article&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SECTION_OF&amp;#34;&lt;/span&gt;)
+    citation &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    clause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Clause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SECTION_OF&amp;#34;&lt;/span&gt;)
+    sub_clause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Subclause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_SECTION_OF&amp;#34;&lt;/span&gt;)
+    case &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Case&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_SECTION_OF&amp;#39;&lt;/span&gt;)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;clause-class&#34; &gt;Clause Class
+&lt;span&gt;
+    &lt;a href=&#34;#clause-class&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Clause&lt;/span&gt;(StructuredNode):
+    uuid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    topic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    citation &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    article &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Article&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CLAUSE_OF&amp;#34;&lt;/span&gt;)
+    sibling_clause&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Clause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CLAUSE_OF&amp;#34;&lt;/span&gt;)
+    sub_clause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Subclause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IS_CLAUSE_OF&amp;#34;&lt;/span&gt;)
+    case &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Case&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_CLAUSE_OF&amp;#39;&lt;/span&gt;)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;subclause-class&#34; &gt;Subclause Class
+&lt;span&gt;
+    &lt;a href=&#34;#subclause-class&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subclause&lt;/span&gt;(StructuredNode):
+    uuid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UniqueIdProperty()
+    name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    topic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    citation &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StringProperty(unique_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+    article &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Article&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;IS_SUBCLAUSE_OF&amp;#39;&amp;#34;&lt;/span&gt;)
+    clause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Article&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;IS_SUBCLAUSE_OF&amp;#39;&amp;#34;&lt;/span&gt;)
+    sibling_clause&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Clause&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;IS_SUBCLAUSE_OF&amp;#39;&amp;#34;&lt;/span&gt;)
+    case &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Relationship(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Case&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IS_SUBCLAUSE_OF&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#sub_clause = Relationship(&amp;#34;Subclause&amp;#34;, &amp;#34;IS_SUBCLAUSE_OF&amp;#34;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;sample-application&#34; &gt;Sample Application
+&lt;span&gt;
+    &lt;a href=&#34;#sample-application&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The application below creates a dataframe with node objects that will be uploaded to the neo4j database.  In order to accomplish an upload the .save() function must be called on the object.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; platform &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; node
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; pprint &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pprint
+&lt;span style=&#34;color:#75715e&#34;&gt;#from neomodel import (config, StructuredNode, StringProperty, IntegerProperty,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#    UniqueIdProperty, RelationshipTo, BooleanProperty, EmailProperty, Relationship,db)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;span style=&#34;color:#75715e&#34;&gt;#import NeoNodes as nn&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#import GoogleServices&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#import sparkAPI as spark&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; neoModelAPI &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; neo
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; glob
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; json
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; shutil
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;instantiate_neo_model_api&lt;/span&gt;():
+    uri &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;7a92f171.databases.neo4j.io&amp;#34;&lt;/span&gt;
+    user &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;neo4j&amp;#34;&lt;/span&gt;
+    psw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;RF4Gr2IJTNhHlW6HOrLDqz_I2E2Upyh7o8paTwfnCxg&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;instantiate_neo_model_session(uri&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;uri,user&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;user,psw&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;psw)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_cwd&lt;/span&gt;():
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd()
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; cwd
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_files&lt;/span&gt;(cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd(), input_directory &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;article_data&amp;#39;&lt;/span&gt;):
+    
+    path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([cwd,input_directory])
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(path)&lt;/span&gt;
+    file_list&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [f &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; f &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; glob&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;glob(path &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;**/*.csv&amp;#34;&lt;/span&gt;, recursive&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)]
+  
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; file_list
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_df&lt;/span&gt;(file_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; a_file &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; file_list:
+            df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_csv(a_file )
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; df
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;raise&lt;/span&gt;
+       
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_transaction_df&lt;/span&gt;(df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):  
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(justice_df)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(df.columns)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#   df.apply(lambda x: print(x), axis =1)&lt;/span&gt;
+        df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;transaction&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: neo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;neoAPI&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_section_node(name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;section&amp;#39;&lt;/span&gt;],  
+        topic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;topic&amp;#39;&lt;/span&gt;], 
+        citation &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;citation&amp;#39;&lt;/span&gt;]),
+        axis &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        )
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(df)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;:
+    
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;raise&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_transaction_to_file&lt;/span&gt;(df, cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd(),import_directory &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;merge_articles&amp;#39;&lt;/span&gt;, file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;article_transaction_df&amp;#39;&lt;/span&gt;):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+        outfile &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([cwd,import_directory,file_name])
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(outfile)&lt;/span&gt;
+        df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_csv(outfile)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; outfile
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;raise&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;send_closing_message&lt;/span&gt;(df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, outfile&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+    size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shutil&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_terminal_size((&lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;))
+    columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; size[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+
+    seperator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; columns
+    df_message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Your Final df looks like: &amp;#34;&lt;/span&gt;
+    outfile_message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;You will find the data at: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(outfile)
+    pprint(seperator)
+    pprint(df_message)
+    pprint(df)
+    pprint(seperator)
+    pprint(outfile_message)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+    
+
+
+    
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+    &lt;span style=&#34;color:#75715e&#34;&gt;#neo_applified = instantiate_neo_model_api()&lt;/span&gt;
+    cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_cwd()
+    file_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_files(cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cwd, input_directory &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sections_data&amp;#39;&lt;/span&gt;)
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(file_list)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#master_subject_table = create_master_subject_table()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#json_pipeline(file_list=file_list, master_subject_table=master_subject_table)&lt;/span&gt;
+    df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_df(file_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_list)
+    df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_transaction_df(df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df)
+    outfile &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; write_transaction_to_file(df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df , cwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cwd, file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sections_transaction_df.csv&amp;#39;&lt;/span&gt;)
+    messaged &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; send_closing_message(df, outfile)
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(justice_df)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

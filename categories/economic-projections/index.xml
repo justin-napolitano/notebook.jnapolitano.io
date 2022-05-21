@@ -1,0 +1,1681 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Economic Projections on Justin&#39;s Data Blog</title>
+    <link>https://blog.jnapolitano.io/categories/economic-projections/</link>
+    <description>Justin&#39;s Data Blog (Economic Projections)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 07 May 2022 18:40:32 +0000</lastBuildDate>
+    
+    <atom:link href="https://blog.jnapolitano.io/categories/economic-projections/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Feasibility of Shipping Carbon Across the Atlantic</title>
+      <link>https://blog.jnapolitano.io/posts/feasibility_study_shipping_carbon/</link>
+      <pubDate>Sat, 07 May 2022 18:40:32 +0000</pubDate>
+      
+      <guid>https://blog.jnapolitano.io/posts/feasibility_study_shipping_carbon/</guid>
+      <description>&lt;h1 id=&#34;feasibility-of-shipping-carbon-across-the-atlantic&#34; &gt;Feasibility of Shipping Carbon Across the Atlantic
+&lt;span&gt;
+    &lt;a href=&#34;#feasibility-of-shipping-carbon-across-the-atlantic&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h1&gt;&lt;h2 id=&#34;methodology&#34; &gt;Methodology
+&lt;span&gt;
+    &lt;a href=&#34;#methodology&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;Please review the my &lt;a href=&#34;https://blog.jnapolitano.io/carbon-shipping-projections/&#34;&gt;previous post&lt;/a&gt; which details the design of my model.&lt;/p&gt;
+&lt;p&gt;The major difference in this report is the sampling of the mean price per voyage.&lt;/p&gt;
+&lt;p&gt;The conversion error has been corrected.&lt;/p&gt;
+&lt;h2 id=&#34;findings&#34; &gt;Findings
+&lt;span&gt;
+    &lt;a href=&#34;#findings&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;distance-of-transport&#34; &gt;Distance of Transport
+&lt;span&gt;
+    &lt;a href=&#34;#distance-of-transport&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The standard deviation in mean price per voyage was found to be less than 0.  This suggests that the distance of travel within Europe is marginal.  The major obstacle is crossing the Atlantic to access the Gulf of Mexico.  It is possible that an import/export port located in the Chesapeake, New England, Willmington, or Savannah could reduce the cost of navigating through the Caribbean to access Gulf based ports.&lt;/p&gt;
+&lt;p&gt;This would present a secondary problem piping the co2 to the interior of the Country to access the spent wells located in the Rust Belt.&lt;/p&gt;
+&lt;h3 id=&#34;price-of-transport&#34; &gt;Price of Transport
+&lt;span&gt;
+    &lt;a href=&#34;#price-of-transport&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The price of transport is fixed at $12.00 USD per 100 km per tonne as suggested by this &lt;a href=&#34;https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf&#34;&gt;source&lt;/a&gt;.  A rough estimate for the total cost per tonne from London to Houston is about USD $936.00. For reference the cost to transport standard freight from China to the United States ranges from $5,000 to $8,000 USD in total per tonne; or $5.00 to $8.00 USD per kilo in total.&lt;/p&gt;
+&lt;h3 id=&#34;industrial-applications&#34; &gt;Industrial Applications
+&lt;span&gt;
+    &lt;a href=&#34;#industrial-applications&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;Another study must be completed to calculate value of super critical CO2 to industrial applications in order to attempt to justify shipping CO2 such large distances.  Shipping large quantities of CO2 to  store is most likely unreasonable, however, at only about $316,665 USD average cost per voyage it is a reasonable figure if proper incentives are in place.&lt;/p&gt;
+&lt;h3 id=&#34;carbon-storage&#34; &gt;Carbon Storage
+&lt;span&gt;
+    &lt;a href=&#34;#carbon-storage&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;Based on this model, it is somewhat reasonable to transport CO2, especially if the US incentivises companies that do so.  Nonetheless, at $50-$60 carbon tax credits per tonne captured (verify this data), it would be unfeasible to account for the estimated 936 per tonne cost of shipping across the Atlantic under current programs.&lt;/p&gt;
+&lt;h2 id=&#34;limitations-of-the-model&#34; &gt;Limitations of the Model
+&lt;span&gt;
+    &lt;a href=&#34;#limitations-of-the-model&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;accounting-for-the-return-trip-to-port&#34; &gt;Accounting for the Return Trip to Port
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-the-return-trip-to-port&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;It is important to note that I did not account for the differential costs for the return trip to a european port.  Though, the cost of shipping per ton was fixed at 12.00 USD, doubling distance of travel may double pricing. That said, it would be unlikely for ships to return to port empty. I would expect tankers to be refilled with LNG for return.  Nonetheless, this is a slight methodological issue that should be improved upon.&lt;/p&gt;
+&lt;h3 id=&#34;cost-to-transport&#34; &gt;Cost to Transport
+&lt;span&gt;
+    &lt;a href=&#34;#cost-to-transport&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The cost to transport per 100 km is fixed at 12.00 USD as suggested by this &lt;a href=&#34;https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf&#34;&gt;source&lt;/a&gt;.  It accounts for the cost of liquification, shipping costs, and port fees.  The source however, was published in 2004.  The costs may have been reduced by technological advance and demand for super critical CO2.&lt;/p&gt;
+&lt;h3 id=&#34;volumes-of-transport&#34; &gt;Volumes of Transport
+&lt;span&gt;
+    &lt;a href=&#34;#volumes-of-transport&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I simply converted the volumes of standard LNG ships to liquifed CO2.  There may be data available for tankers dedicated to carbon, but I was not aware of any when performing this analysis.  Tankers may also not completely dedicate their capacity to CO2.  Armed with a proper probability distribution, I could improve the model by randomly choosing volumes based on historical data.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34; &gt;Conclusion
+&lt;span&gt;
+    &lt;a href=&#34;#conclusion&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;It is unlikely that CO2 will be shipped to the United States simply for storage unless companies are incentivized to do so. A transatlantic trade may develop, but I would assume in order to meet demands for the industrial applications of super critical CO2.&lt;/p&gt;
+&lt;h2 id=&#34;mean-voyage-data-analysis&#34; &gt;Mean Voyage Data Analysis
+&lt;span&gt;
+    &lt;a href=&#34;#mean-voyage-data-analysis&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;mean_price_per_cycle_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;describe()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div style=&#34;overflow-x:auto;&#34;&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&lt;pre&gt;&lt;code&gt;.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/style&gt;&lt;/p&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;Voyage Cost USD&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;count&lt;/th&gt;
+      &lt;td&gt;5.000000e+02&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;mean&lt;/th&gt;
+      &lt;td&gt;3.166652e+05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;std&lt;/th&gt;
+      &lt;td&gt;1.165319e-10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;min&lt;/th&gt;
+      &lt;td&gt;3.166652e+05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;25%&lt;/th&gt;
+      &lt;td&gt;3.166652e+05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;50%&lt;/th&gt;
+      &lt;td&gt;3.166652e+05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;75%&lt;/th&gt;
+      &lt;td&gt;3.166652e+05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;max&lt;/th&gt;
+      &lt;td&gt;3.166652e+05&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;calculating-the-confidence-interval-for-mean-voyage&#34; &gt;Calculating the Confidence Interval For Mean Voyage
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-the-confidence-interval-for-mean-voyage&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The data is nearly normal.  I could test for normality, but that would be beyond the scope of this analysis.  Also, by design the Monte Carlo model should produce a normal distribution with sufficient samples.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+st&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;norm&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;interval(alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.90&lt;/span&gt;, loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(mean_price_per_cycle_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Voyage Cost USD&amp;#39;&lt;/span&gt;]), scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;st&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sem(mean_price_per_cycle_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Voyage Cost USD&amp;#39;&lt;/span&gt;]))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;(316665.2057796428, 316665.2057796428)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It is safe to assume that 90 percent of the time we would see an annual cost 316,665 dollars USD with the assumptions of the model taken into account.  As the price per 100 km is fixed, the standard deviations is minimal.  The distances as well to port seem to be fairly consistent.  The cost of transport through Europe is minimal.&lt;/p&gt;
+&lt;h3 id=&#34;histogram-of-mean-voyage-price-samples&#34; &gt;Histogram of Mean Voyage Price Samples
+&lt;span&gt;
+    &lt;a href=&#34;#histogram-of-mean-voyage-price-samples&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The price does not deviate.  It is so concentrated in fact, that I worry that the model is not correctly randomizing European ports of origin.  If the model is operating correctly, then it is apparent that the Atlantic is the only barrier to trade.  Partners such as the UK, France, Portugal, The Netherlands, Spain, or any other nation relatively close to the United States are equally unlikely.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;mean_price_per_cycle_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;hist(grid&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, bins&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;, rwidth&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;,
+                   color&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#607c8e&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mean Price Distribution Per Voyage&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mean Voyage Price USD&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Frequency&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;grid(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;y&amp;#39;&lt;/span&gt;, alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.75&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;shipping_carbon_feasibility_files/shipping_carbon_feasibility_8_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;annual-data-analysis&#34; &gt;Annual Data Analysis
+&lt;span&gt;
+    &lt;a href=&#34;#annual-data-analysis&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;This is a reprint of the findings from &lt;a href=&#34;https://blog.jnapolitano.io/carbon-shipping-projections/&#34;&gt;my previous report&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;describe()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div style=&#34;overflow-x:auto;&#34;&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&lt;pre&gt;&lt;code&gt;.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/style&gt;&lt;/p&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;cost_in_usd&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;count&lt;/th&gt;
+      &lt;td&gt;5.000000e+02&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;mean&lt;/th&gt;
+      &lt;td&gt;5.744043e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;std&lt;/th&gt;
+      &lt;td&gt;1.160779e+06&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;min&lt;/th&gt;
+      &lt;td&gt;5.408210e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;25%&lt;/th&gt;
+      &lt;td&gt;5.660839e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;50%&lt;/th&gt;
+      &lt;td&gt;5.737843e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;75%&lt;/th&gt;
+      &lt;td&gt;5.819101e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;max&lt;/th&gt;
+      &lt;td&gt;6.092949e+07&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;calculating-the-confidence-interval&#34; &gt;Calculating the Confidence Interval
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-the-confidence-interval&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The data is nearly normal.  I could test for normality, but that would be beyond the scope of this analysis.  Also, by design the Monte Carlo model should produce a normal distribution with sufficient samples.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+st&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;norm&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;interval(alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.90&lt;/span&gt;, loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(annual_price_samples_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;]), scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;st&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sem(annual_price_samples_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;]))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;(57355047.61667279, 57525821.6547037)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It is safe to assume that 90 percent of the time we would see an annual cost of 57.36 to 57.52 million dollars USD with the assumptions of the model taken into account.&lt;/p&gt;
+&lt;h3 id=&#34;histogram-of-annual-price-distribution&#34; &gt;Histogram of Annual Price Distribution
+&lt;span&gt;
+    &lt;a href=&#34;#histogram-of-annual-price-distribution&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;hist(grid&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, bins&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;, rwidth&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;,
+                   color&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#607c8e&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Annual Price Distribution for Shipping Carbon&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Annual Price in USD&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Frequency&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;grid(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;y&amp;#39;&lt;/span&gt;, alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.75&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;shipping_carbon_feasibility_files/shipping_carbon_feasibility_15_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;data-imports-and-manipulation&#34; &gt;Data Imports and Manipulation
+&lt;span&gt;
+    &lt;a href=&#34;#data-imports-and-manipulation&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;the-shipping-dataframe&#34; &gt;The Shipping Dataframe
+&lt;span&gt;
+    &lt;a href=&#34;#the-shipping-dataframe&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The shipping dataframe is the basis of the simulation.  It is used to tabulate total cost and to record the values of variables.&lt;/p&gt;
+&lt;h4 id=&#34;capacity-distribution-and-number-of-ships-calculation&#34; &gt;Capacity Distribution and Number of Ships Calculation
+&lt;span&gt;
+    &lt;a href=&#34;#capacity-distribution-and-number-of-ships-calculation&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Capacity range&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 40,000 m3 71,500 to 210,000&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#Susanna Dorigoni, Luigi Mazzei, Federico Pontoni, and Antonio Sileo&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#IEFE – Centre for Research on Energy and Environmental Economics and Policy,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#Università Bocconi, Milan, Italy&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# I&amp;#39;m sure a better report is available but this is a start&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# cubic meters unit&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;### a rough estimate of global suplly dedicated to co2 shipping&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# I will probably need a better metric but this is a good start that can be modified later when necessary&lt;/span&gt;
+
+ships &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(&lt;span style=&#34;color:#ae81ff&#34;&gt;63&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;.25&lt;/span&gt;)
+ships
+
+
+conversion_factor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2.21&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2.65&lt;/span&gt;
+conversion_factor
+
+lower_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(&lt;span style=&#34;color:#ae81ff&#34;&gt;40000&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor)
+upper_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(&lt;span style=&#34;color:#ae81ff&#34;&gt;210000&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor)
+
+median &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;137564&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor
+standard_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;6.63&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor  &lt;span style=&#34;color:#75715e&#34;&gt;#file:///Users/jnapolitano/Downloads/LNG_Shipping_a_Descriptive_Analysis.pdf&lt;/span&gt;
+
+cap_range &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; range(lower_bound, upper_bound)
+
+cap_distribution &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;normal(loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;median , scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;standard_dev, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ships)
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;the-shipping-df&#34; &gt;The Shipping Df
+&lt;span&gt;
+    &lt;a href=&#34;#the-shipping-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;shipping_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(cap_distribution, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_cubic_meters&amp;#39;&lt;/span&gt;])
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;us_port&amp;#34;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_per_day&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_cubic_meters&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;544.66&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;## Verify this factor.  It seems to high&lt;/span&gt;
+shipping_df
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div style=&#34;overflow-x:auto;&#34;&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&lt;pre&gt;&lt;code&gt;.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/style&gt;&lt;/p&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;co2_capacity_cubic_meters&lt;/th&gt;
+      &lt;th&gt;days_to_port&lt;/th&gt;
+      &lt;th&gt;europe_port&lt;/th&gt;
+      &lt;th&gt;us_port&lt;/th&gt;
+      &lt;th&gt;distance&lt;/th&gt;
+      &lt;th&gt;price&lt;/th&gt;
+      &lt;th&gt;cost_per_day&lt;/th&gt;
+      &lt;th&gt;co2_capacity_tonnes&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;114720.479228&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.627693&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;114722.019258&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.630520&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;114717.260040&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.621782&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;114715.555903&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.618654&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;114711.076224&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.610429&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;114717.940270&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.623031&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;114721.291722&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.629185&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;114723.060928&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.632433&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;114724.416053&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.634921&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;114730.832971&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.646702&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;10&lt;/th&gt;
+      &lt;td&gt;114727.128385&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.639901&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;11&lt;/th&gt;
+      &lt;td&gt;114723.001878&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.632325&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;12&lt;/th&gt;
+      &lt;td&gt;114715.038614&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.617704&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;13&lt;/th&gt;
+      &lt;td&gt;114721.502327&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.629571&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;14&lt;/th&gt;
+      &lt;td&gt;114722.089811&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.630650&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;the-european-ports-df&#34; &gt;The European Ports Df
+&lt;span&gt;
+    &lt;a href=&#34;#the-european-ports-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+gisfilepath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/Users/jnapolitano/Projects/data/energy/PORT_2013_SH/Data/PORT_PT_2013.shp&amp;#34;&lt;/span&gt;
+
+
+ports_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gpd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_file(gisfilepath)
+
+ports_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ports_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_crs(epsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3857&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;filtered-wells-dataframe&#34; &gt;Filtered Wells DataFrame
+&lt;span&gt;
+    &lt;a href=&#34;#filtered-wells-dataframe&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;## Importing our DataFrames&lt;/span&gt;
+
+gisfilepath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/Users/jnapolitano/Projects/data/energy/filtered-wells.geojson&amp;#34;&lt;/span&gt;
+
+
+filtered_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gpd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_file(gisfilepath)
+
+filtered_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; filtered_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_crs(epsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3857&lt;/span&gt;)
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;getting-map-conditions-for-us-port-filtering&#34; &gt;Getting Map Conditions for Us Port Filtering
+&lt;span&gt;
+    &lt;a href=&#34;#getting-map-conditions-for-us-port-filtering&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;map_conditions &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; filtered_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;TERMID&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unique()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tolist()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;us-ports-dataframes&#34; &gt;US Ports Dataframes
+&lt;span&gt;
+    &lt;a href=&#34;#us-ports-dataframes&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;## Importing our DataFrames&lt;/span&gt;
+
+gisfilepath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/Users/jnapolitano/Projects/data/energy/Liquified_Natural_Gas_Import_Exports_and_Terminals.geojson&amp;#34;&lt;/span&gt;
+
+
+terminal_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gpd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_file(gisfilepath)
+
+terminal_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_crs(epsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3857&lt;/span&gt;)
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop(terminal_df[terminal_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;STATUS&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SUSPENDED&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, inplace &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;rename(columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NAME&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TERMINAL_NAME&amp;#34;&lt;/span&gt;})
+terminal_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;TERMINAL_GEO&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; terminal_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;geometry&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;port_terminals_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;query(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;TERMID in @map_conditions&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_mmta&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CURRENTCAP&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor
+port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_metric_tons&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_mmta&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1000000&lt;/span&gt;
+port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;available&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;random-distribution-distance-and-pricing-functions&#34; &gt;Random Distribution, Distance and Pricing Functions
+&lt;span&gt;
+    &lt;a href=&#34;#random-distribution-distance-and-pricing-functions&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;accounting-for-random-days-at-sea&#34; &gt;Accounting for Random Days at Sea
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-random-days-at-sea&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;As days at sea is variable I created a range between 20 and 40 days to account for a round trip to every major port in Europe.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;random_day&lt;/span&gt;():
+    lower_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;
+    upper_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;
+
+    median &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;
+    standard_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+    days_range &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; range(lower_bound, upper_bound)
+
+    days_distribution &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;normal(loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;median , scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;standard_dev, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ships)
+
+
+    days_randomized &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choice(days_distribution, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (days_randomized[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;astype(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;int64))
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;accounting-for-random-european-ports&#34; &gt;Accounting for Random European Ports
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-random-european-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I randomized the port selection process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual LNG ports.  A better data set could be substituded directly into the function.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;random_europe_port&lt;/span&gt;():
+    &lt;span style=&#34;color:#75715e&#34;&gt;#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#select indices from the dataframe that are valid.  ie capacity has not yet been met.  &lt;/span&gt;
+    ports_randomized &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choice(ports_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    index_location &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ports_randomized[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ports_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;geometry[index_location]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;accounting-for-random-us-ports&#34; &gt;Accounting for Random US Ports
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-random-us-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I was able to filter import/export ports in the United States in to a dataset of about 15.  Like the European dataset, I randomized selection.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;random_us_port&lt;/span&gt;():
+    &lt;span style=&#34;color:#75715e&#34;&gt;#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  &lt;/span&gt;
+
+    ports_randomized &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choice(port_terminals_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    index_location &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ports_randomized[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; port_terminals_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;geometry[index_location]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;calculating-distance-between-ports&#34; &gt;Calculating Distance Between Ports
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-distance-between-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I calculated the shortest distance between ports based on their geographic locations with the shapley.distance function.  It returns distance in meters.  I divide by 1000 to convert into Km.   The algorithm could be improved by using official shipping data to randomize a distribution of distances between ports.  Unfortunately, I do not have that data available to me.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;geo_distance&lt;/span&gt;(dist1,dist2):
+    &lt;span style=&#34;color:#75715e&#34;&gt;# return distance in km&lt;/span&gt;
+    distance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dist1&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;distance(dist2)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(distance)
+
+    
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;calculating-price-of-transport&#34; &gt;Calculating Price of Transport
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-price-of-transport&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The cost of transport accounts for port fees, liquification, and transport.   Unfortunately, my data is from a paper published in 2004.  I would like to find a more recent paper.   I did not convert the value of 2004 USD to 2022 because I am not sure of the validity of the conversion factors available online.  I would need a better source to correctly model the true cost of transport.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf&#34;&gt;source&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;price_to_transport&lt;/span&gt;(distance,tonnes):
+    price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (distance&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; tonnes
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; price
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;calculating-cost-per-day&#34; &gt;Calculating Cost Per Day
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-cost-per-day&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cost_per_day&lt;/span&gt;(price,distance):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; price&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;distance
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;costs-per-annum-algorithm&#34; &gt;Costs Per Annum Algorithm
+&lt;span&gt;
+    &lt;a href=&#34;#costs-per-annum-algorithm&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The algorithm I used calculates the daily status of ships transporting CO2 across the Atlantic from a random European port to a random port in the United States.  It will run for 365 iterations or until the total carbon capacity of the US ports is reached.  This value could and probably should be dynamically allocated via a similiar algorithm, but I do not yet have historical probability distributions of carbon imports to determime a valid price allocation function.&lt;/p&gt;
+&lt;p&gt;When the daily counter reaches zero for a tanker:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The capacity is refilled to full.&lt;/li&gt;
+&lt;li&gt;A random us port is assigned.&lt;/li&gt;
+&lt;li&gt;A random European port is assigned.&lt;/li&gt;
+&lt;li&gt;The distance between ports is calculated.&lt;/li&gt;
+&lt;li&gt;The cost of transport over that distance is calculated per 100 km.&lt;/li&gt;
+&lt;li&gt;The total shipping price of that cycle is tabulated.&lt;/li&gt;
+&lt;li&gt;The total tonnage of that cycle is tabulated.&lt;/li&gt;
+&lt;li&gt;The mean price per voyage is tabulated&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+days &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;365&lt;/span&gt;
+day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; 
+carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;300000000&lt;/span&gt;
+total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+cycle_mean_price_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;days)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#deduction = capacity of empty ships&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; day &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(days):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+        &lt;span style=&#34;color:#75715e&#34;&gt;# must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day &lt;/span&gt;
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_us_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_europe_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  geo_distance(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  price_to_transport(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;],x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#calculate cost per day for fun...&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# query all that are = o.  Summate the capacities deduct the total &lt;/span&gt;
+        tmp_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+        sum_of_capacity &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+        sum_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+        mean_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+        cycle_mean_price_samples[day] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mean_of_price
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: random_day() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x)
+        total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_capacity
+        total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_price &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_price
+        carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; sum_of_capacity
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(carbon_total_millions_metric_tons)&lt;/span&gt;
+        day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; day_counter&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;: 
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;break&lt;/span&gt;
+
+    
+    
+print(day_counter)
+print(total_tons_shipped)
+print(total_price)
+&lt;span style=&#34;color:#75715e&#34;&gt;#Drop the nan, ie empty samples&lt;/span&gt;
+cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price_samples[np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;logical_not(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isnan(cycle_mean_price_samples))]
+&lt;span style=&#34;color:#75715e&#34;&gt;#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)&lt;/span&gt;
+cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+print(cycle_mean_price)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;365
+41072.53151865029
+62067313.75358563
+316665.2057796429
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;monte-carlo-simulation-with-500-iterations&#34; &gt;Monte Carlo Simulation with 500 Iterations
+&lt;span&gt;
+    &lt;a href=&#34;#monte-carlo-simulation-with-500-iterations&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  Modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations&lt;/p&gt;
+&lt;p&gt;The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+nsamples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;
+price_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;nsamples)
+cycle_mean_price_annual_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;nsamples)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; sample &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(nsamples):
+
+    days &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;365&lt;/span&gt;
+    day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; 
+    carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;300000000&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# could randomize.  Need a probability distribution based on historial data. &lt;/span&gt;
+    total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    cycle_mean_price_daily_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;days)
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#deduction = capacity of empty ships&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; day &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(days):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+            &lt;span style=&#34;color:#75715e&#34;&gt;# must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day &lt;/span&gt;
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_us_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_europe_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  geo_distance(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  price_to_transport(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;], x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            &lt;span style=&#34;color:#75715e&#34;&gt;# query all that are = o.  Summate the capacities deduct the total &lt;/span&gt;
+            tmp_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+            sum_of_capacity &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+            sum_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+            mean_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+            cycle_mean_price_daily_samples[day] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mean_of_price
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: random_day() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x)
+            total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_capacity
+            total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_price &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_price
+            carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; sum_of_capacity
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(carbon_total_millions_metric_tons)&lt;/span&gt;
+            day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; day_counter&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;: 
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;break&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Drop the nan, ie empty samples&lt;/span&gt;
+    cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price_samples[np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;logical_not(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isnan(cycle_mean_price_samples))]
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)&lt;/span&gt;
+    cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+    cycle_mean_price_annual_samples[sample] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;cycle_mean_price
+        
+    
+
+    price_samples[sample] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_price
+
+        
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;creating-the-annual-price-samples-df&#34; &gt;Creating the Annual Price Samples DF
+&lt;span&gt;
+    &lt;a href=&#34;#creating-the-annual-price-samples-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(price_samples, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; annual_price_samples_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cost_in_usd
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;creating-the-mean-price-per-round-trip-df&#34; &gt;Creating the Mean Price Per Round Trip Df
+&lt;span&gt;
+    &lt;a href=&#34;#creating-the-mean-price-per-round-trip-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;mean_price_per_cycle_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(cycle_mean_price_annual_samples, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Voyage Cost USD&amp;#39;&lt;/span&gt;])
+mean_price_per_cycle_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Voyage Cost USD&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mean_price_per_cycle_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Voyage Cost USD&amp;#39;&lt;/span&gt;] 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;imports&#34; &gt;Imports
+&lt;span&gt;
+    &lt;a href=&#34;#imports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; geopandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; gpd
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; folium
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; contextily &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; cx
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; rtree
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; zlib &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; crc32
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; hashlib
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; shapely.geometry &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Point, LineString, Polygon
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; scipy.spatial &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; cKDTree
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; scipy.stats &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; st
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; shapely.geometry &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Point
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; haversine &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Unit
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; geopy.distance &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; distance
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; warnings
+
+warnings&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;filterwarnings(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ignore&amp;#39;&lt;/span&gt;)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;/Users/jnapolitano/venvs/finance/lib/python3.9/site-packages/geopandas/_compat.py:111: UserWarning: The Shapely GEOS version (3.10.2-CAPI-1.16.0) is incompatible with the GEOS version PyGEOS was compiled with (3.10.1-CAPI-1.16.0). Conversions between both will be slow.
+  warnings.warn(
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to the United States</title>
+      <link>https://blog.jnapolitano.io/posts/carbon-shipping-projections/</link>
+      <pubDate>Sat, 07 May 2022 18:40:32 +0000</pubDate>
+      
+      <guid>https://blog.jnapolitano.io/posts/carbon-shipping-projections/</guid>
+      <description>&lt;h1 id=&#34;a-monte-carlo-projection-of-the-annual-cost-of-shipping-carbon-from-europe-to-us-ports&#34; &gt;A Monte Carlo Projection of the Annual Cost of Shipping Carbon from Europe to US Ports
+&lt;span&gt;
+    &lt;a href=&#34;#a-monte-carlo-projection-of-the-annual-cost-of-shipping-carbon-from-europe-to-us-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h1&gt;&lt;h2 id=&#34;revision&#34; &gt;Revision
+&lt;span&gt;
+    &lt;a href=&#34;#revision&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;An earlier version of this report had reported values that were erroneously elevated by a decimal error in the meters to km conversion of distances between ports.  I apologize for unintentionally publishing misleading information.&lt;/p&gt;
+&lt;p&gt;Situations like this one, are why I always publish with code.  Transparency is the key to rigor.&lt;/p&gt;
+&lt;h2 id=&#34;introduction&#34; &gt;Introduction
+&lt;span&gt;
+    &lt;a href=&#34;#introduction&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;I produced an earlier &lt;a href=&#34;https://blog.jnapolitano.io/wells-near-ports/&#34;&gt;report&lt;/a&gt; that identified potential ports that may be suitable terminals for carbon imports into the United States for storage or industrial applications.&lt;/p&gt;
+&lt;p&gt;Following that report, I became interested in what could be the annual economic value of shipping CO2.  In this report, I analyze the results of a Monte Carlo simulation I developed in Python (documented at the end of this page) that projects the annual cost of shipping carbon across the Atlantic from Europe to the United States.&lt;/p&gt;
+&lt;h2 id=&#34;methodology&#34; &gt;Methodology
+&lt;span&gt;
+    &lt;a href=&#34;#methodology&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;modeling-dynamic-variables&#34; &gt;Modeling Dynamic Variables
+&lt;span&gt;
+    &lt;a href=&#34;#modeling-dynamic-variables&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;To account for dynamic variables I designed a Monte Carlo simulation that randomly selected variables across normal distributions bounded by minima and maxima.&lt;/p&gt;
+&lt;p&gt;The current simulation includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Variable shipping distances&lt;/li&gt;
+&lt;li&gt;Variable shipping capacity&lt;/li&gt;
+&lt;li&gt;Variable ports of origin&lt;/li&gt;
+&lt;li&gt;Variable terminal ports&lt;/li&gt;
+&lt;li&gt;Variable round trip shipping duration&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Fixed variables include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cost of Transport per ton (though this will be converted to a random distribution as soon as I find a better data source)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;modeling-the-shipping-infrastructure&#34; &gt;Modeling the Shipping Infrastructure
+&lt;span&gt;
+    &lt;a href=&#34;#modeling-the-shipping-infrastructure&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;h4 id=&#34;source&#34; &gt;Source
+&lt;span&gt;
+    &lt;a href=&#34;#source&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;Susanna Dorigoni, Luigi Mazzei, Federico Pontoni, and Antonio Sileo
+IEFE – Centre for Research on Energy and Environmental Economics and Policy,
+Università Bocconi, Milan, Italy&lt;/p&gt;
+&lt;h4 id=&#34;modeling-the-capacity-of-tankers&#34; &gt;Modeling the Capacity of Tankers
+&lt;span&gt;
+    &lt;a href=&#34;#modeling-the-capacity-of-tankers&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;To complete this analysis, I converted values found for lng shipping to super critical co2.  To do this,  I converted LNG capacties to super critical Co2 with the following conversion factors:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 tonne co2 super critical = 2.64812 meter cubed super critical co&lt;/li&gt;
+&lt;li&gt;1 tonnes LNG = 2.21 m3 LNG (liquid)&lt;/li&gt;
+&lt;li&gt;1 tonne co2 super critical = 544.66 m^3 gaseous&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The capacity range:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The lower bound of the distribution is 33358 cubic meteres&lt;/li&gt;
+&lt;li&gt;The upper bound is 175132&lt;/li&gt;
+&lt;li&gt;The median provided is 114723&lt;/li&gt;
+&lt;li&gt;The standard deviation is 5 (surprisingly homogeneous)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;modeling-the-number-of-tankers&#34; &gt;Modeling the Number of Tankers
+&lt;span&gt;
+    &lt;a href=&#34;#modeling-the-number-of-tankers&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The number of tankers in the Atlantic basin dedicated to LNG transort recorded in 2008 was 63.  I calculated a rough estimate of 25 percent of these being used to transport carbon annually.  A better source is needed to accurately model.  If ships are used to transport both lng and carbon a random distribution designed according to a CO2 carrying probability distribution would suitably model the data.&lt;/p&gt;
+&lt;p&gt;A total of 15 tankers were modeled in this example.&lt;/p&gt;
+&lt;h2 id=&#34;findings&#34; &gt;Findings
+&lt;span&gt;
+    &lt;a href=&#34;#findings&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;Carbon capture is likely a billion dollar industry at scale.&lt;/p&gt;
+&lt;p&gt;Across 500 iterations of modeling we see about $57.5 million dollars worth of economic activity annualy.&lt;/p&gt;
+&lt;h3 id=&#34;the-take-away&#34; &gt;The Take Away
+&lt;span&gt;
+    &lt;a href=&#34;#the-take-away&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The Carbon capture and storage economiy is likely a billion dollar economy at scale.  In just reviewing shipping super critical CO2 from Europe to the United States, a $57.5 million USD annual industry could develop as nations move towards a net carbon zero economy.&lt;/p&gt;
+&lt;h2 id=&#34;limitations-of-the-model&#34; &gt;Limitations of the Model
+&lt;span&gt;
+    &lt;a href=&#34;#limitations-of-the-model&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The model as it is presented in this report is unconstrained.  A more accurate portrayal of what would be possible with current systems in place could be designed with better data.  It is also important to note that I have not included incentives into the model.  It is entirely possible that government subsidies could prove the carbon shipping industry to be more expansive than presented here.&lt;/p&gt;
+&lt;h2 id=&#34;data-analysis&#34; &gt;Data Analysis
+&lt;span&gt;
+    &lt;a href=&#34;#data-analysis&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;describe()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div style=&#34;overflow-x:auto;&#34;&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&lt;pre&gt;&lt;code&gt;.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/style&gt;&lt;/p&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;cost_in_usd&lt;/th&gt;
+      &lt;th&gt;cost_in_usd_billions&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;count&lt;/th&gt;
+      &lt;td&gt;5.000000e+02&lt;/td&gt;
+      &lt;td&gt;5.000000e+02&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;mean&lt;/th&gt;
+      &lt;td&gt;5.744345e+07&lt;/td&gt;
+      &lt;td&gt;5.744345e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;std&lt;/th&gt;
+      &lt;td&gt;1.191639e+06&lt;/td&gt;
+      &lt;td&gt;1.191639e+06&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;min&lt;/th&gt;
+      &lt;td&gt;5.351741e+07&lt;/td&gt;
+      &lt;td&gt;5.351741e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;25%&lt;/th&gt;
+      &lt;td&gt;5.663254e+07&lt;/td&gt;
+      &lt;td&gt;5.663254e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;50%&lt;/th&gt;
+      &lt;td&gt;5.740286e+07&lt;/td&gt;
+      &lt;td&gt;5.740286e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;75%&lt;/th&gt;
+      &lt;td&gt;5.827798e+07&lt;/td&gt;
+      &lt;td&gt;5.827798e+07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;max&lt;/th&gt;
+      &lt;td&gt;6.081661e+07&lt;/td&gt;
+      &lt;td&gt;6.081661e+07&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;calculating-the-confidence-interval&#34; &gt;Calculating the Confidence Interval
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-the-confidence-interval&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The data is nearly normal.  I could test for normality, but that would be beyond the scope of this analysis.  Also, by design the Monte Carlo model should produce a normal distribution with sufficient samples.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+st&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;norm&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;interval(alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.90&lt;/span&gt;, loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(annual_price_samples_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;]), scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;st&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sem(annual_price_samples_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;]))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;(57355794.336350285, 57531108.50357006)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It is safe to assume that 90 percent of the time we would see an annual cost of $57,355,794 to $57,531,109 USD with the assumptions of the model taken into account.&lt;/p&gt;
+&lt;h3 id=&#34;monte-carlo-histogram&#34; &gt;Monte Carlo Histogram
+&lt;span&gt;
+    &lt;a href=&#34;#monte-carlo-histogram&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;hist(grid&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;, bins&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;, rwidth&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;,
+                   color&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#607c8e&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Annual Price Distribution for Shipping Carbon&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Annual Price in Billions USD&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Frequency&amp;#39;&lt;/span&gt;)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;grid(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;y&amp;#39;&lt;/span&gt;, alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.75&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;shipping_projections_files/shipping_projections_10_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;data-imports-and-manipulation&#34; &gt;Data Imports and Manipulation
+&lt;span&gt;
+    &lt;a href=&#34;#data-imports-and-manipulation&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;the-shipping-dataframe&#34; &gt;The Shipping Dataframe
+&lt;span&gt;
+    &lt;a href=&#34;#the-shipping-dataframe&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;The shipping dataframe is the basis of the simulation.  It is used to tabulate total cost and to record the values of variables.&lt;/p&gt;
+&lt;h4 id=&#34;capacity-distribution-and-number-of-ships-calculation&#34; &gt;Capacity Distribution and Number of Ships Calculation
+&lt;span&gt;
+    &lt;a href=&#34;#capacity-distribution-and-number-of-ships-calculation&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Capacity range&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 40,000 m3 71,500 to 210,000&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#Susanna Dorigoni, Luigi Mazzei, Federico Pontoni, and Antonio Sileo&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#IEFE – Centre for Research on Energy and Environmental Economics and Policy,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#Università Bocconi, Milan, Italy&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# I&amp;#39;m sure a better report is available but this is a start&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# cubic meters unit&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;### a rough estimate of global suplly dedicated to co2 shipping&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# I will probably need a better metric but this is a good start that can be modified later when necessary&lt;/span&gt;
+
+ships &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(&lt;span style=&#34;color:#ae81ff&#34;&gt;63&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;.25&lt;/span&gt;)
+ships
+
+
+conversion_factor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2.21&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2.65&lt;/span&gt;
+conversion_factor
+
+lower_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(&lt;span style=&#34;color:#ae81ff&#34;&gt;40000&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor)
+upper_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(&lt;span style=&#34;color:#ae81ff&#34;&gt;210000&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor)
+
+median &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;137564&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor
+standard_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;6.63&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor  &lt;span style=&#34;color:#75715e&#34;&gt;#file:///Users/jnapolitano/Downloads/LNG_Shipping_a_Descriptive_Analysis.pdf&lt;/span&gt;
+
+cap_range &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; range(lower_bound, upper_bound)
+
+cap_distribution &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;normal(loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;median , scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;standard_dev, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ships)
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;the-shipping-df&#34; &gt;The Shipping Df
+&lt;span&gt;
+    &lt;a href=&#34;#the-shipping-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;shipping_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(cap_distribution, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_cubic_meters&amp;#39;&lt;/span&gt;])
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;us_port&amp;#34;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_per_day&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_cubic_meters&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;544.66&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;## Verify this factor.  It seems to high&lt;/span&gt;
+shipping_df
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div style=&#34;overflow-x:auto;&#34;&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&lt;pre&gt;&lt;code&gt;.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/style&gt;&lt;/p&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;co2_capacity_cubic_meters&lt;/th&gt;
+      &lt;th&gt;days_to_port&lt;/th&gt;
+      &lt;th&gt;europe_port&lt;/th&gt;
+      &lt;th&gt;us_port&lt;/th&gt;
+      &lt;th&gt;distance&lt;/th&gt;
+      &lt;th&gt;price&lt;/th&gt;
+      &lt;th&gt;cost_per_day&lt;/th&gt;
+      &lt;th&gt;co2_capacity_tonnes&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;114719.277384&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.625486&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;114719.302198&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.625532&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;114717.986907&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.623117&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;114720.952261&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.628561&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;114720.134738&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.627060&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;114727.030286&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.639721&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;114721.222398&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.629057&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;114724.259547&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.634634&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;114729.358745&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.643996&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;114727.005543&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.639675&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;10&lt;/th&gt;
+      &lt;td&gt;114722.946362&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.632223&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;11&lt;/th&gt;
+      &lt;td&gt;114726.394450&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.638553&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;12&lt;/th&gt;
+      &lt;td&gt;114720.412603&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.627571&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;13&lt;/th&gt;
+      &lt;td&gt;114726.647417&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.639018&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;14&lt;/th&gt;
+      &lt;td&gt;114717.266732&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;210.621795&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;the-european-ports-df&#34; &gt;The European Ports Df
+&lt;span&gt;
+    &lt;a href=&#34;#the-european-ports-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+gisfilepath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/Users/jnapolitano/Projects/data/energy/PORT_2013_SH/Data/PORT_PT_2013.shp&amp;#34;&lt;/span&gt;
+
+
+ports_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gpd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_file(gisfilepath)
+
+ports_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ports_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_crs(epsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3857&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;filtered-wells-dataframe&#34; &gt;Filtered Wells DataFrame
+&lt;span&gt;
+    &lt;a href=&#34;#filtered-wells-dataframe&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;## Importing our DataFrames&lt;/span&gt;
+
+gisfilepath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/Users/jnapolitano/Projects/data/energy/filtered-wells.geojson&amp;#34;&lt;/span&gt;
+
+
+filtered_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gpd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_file(gisfilepath)
+
+filtered_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; filtered_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_crs(epsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3857&lt;/span&gt;)
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;getting-map-conditions-for-us-port-filtering&#34; &gt;Getting Map Conditions for Us Port Filtering
+&lt;span&gt;
+    &lt;a href=&#34;#getting-map-conditions-for-us-port-filtering&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;map_conditions &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; filtered_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;TERMID&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unique()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tolist()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;us-ports-dataframes&#34; &gt;US Ports Dataframes
+&lt;span&gt;
+    &lt;a href=&#34;#us-ports-dataframes&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;## Importing our DataFrames&lt;/span&gt;
+
+gisfilepath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/Users/jnapolitano/Projects/data/energy/Liquified_Natural_Gas_Import_Exports_and_Terminals.geojson&amp;#34;&lt;/span&gt;
+
+
+terminal_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gpd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_file(gisfilepath)
+
+terminal_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_crs(epsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3857&lt;/span&gt;)
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;drop(terminal_df[terminal_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;STATUS&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SUSPENDED&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, inplace &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;rename(columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;NAME&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TERMINAL_NAME&amp;#34;&lt;/span&gt;})
+terminal_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;TERMINAL_GEO&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; terminal_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;geometry&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;port_terminals_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; terminal_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;query(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;TERMID in @map_conditions&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_mmta&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CURRENTCAP&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; conversion_factor
+port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_metric_tons&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_mmta&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1000000&lt;/span&gt;
+port_terminals_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;available&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;random-distribution-distance-and-pricing-functions&#34; &gt;Random Distribution, Distance and Pricing Functions
+&lt;span&gt;
+    &lt;a href=&#34;#random-distribution-distance-and-pricing-functions&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;accounting-for-random-days-at-sea&#34; &gt;Accounting for Random Days at Sea
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-random-days-at-sea&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;As days at sea is variable I created a range between 20 and 40 days to account for a round trip to every major port in Europe.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;random_day&lt;/span&gt;():
+    lower_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;
+    upper_bound &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;
+
+    median &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;
+    standard_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+    days_range &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; range(lower_bound, upper_bound)
+
+    days_distribution &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;normal(loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;median , scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;standard_dev, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ships)
+
+
+    days_randomized &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choice(days_distribution, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (days_randomized[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;astype(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;int64))
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;accounting-for-random-european-ports&#34; &gt;Accounting for Random European Ports
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-random-european-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I randomized the port selection process with the following function.  The data provided by EuroStat did not filter according to type of port.  Nonetheless, the distance recorded should be very similiar to those of actual LNG ports.  A better data set could be substituded directly into the function.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;random_europe_port&lt;/span&gt;():
+    &lt;span style=&#34;color:#75715e&#34;&gt;#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  &lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#select indices from the dataframe that are valid.  ie capacity has not yet been met.  &lt;/span&gt;
+    ports_randomized &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choice(ports_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    index_location &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ports_randomized[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ports_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;geometry[index_location]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;accounting-for-random-us-ports&#34; &gt;Accounting for Random US Ports
+&lt;span&gt;
+    &lt;a href=&#34;#accounting-for-random-us-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I was able to filter import/export ports in the United States in to a dataset of about 15.  Like the European dataset, I randomized selection.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;random_us_port&lt;/span&gt;():
+    &lt;span style=&#34;color:#75715e&#34;&gt;#select a random number along the index of the ports df.  Return the value of hte geometry at the index.  &lt;/span&gt;
+
+    ports_randomized &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choice(port_terminals_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    index_location &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ports_randomized[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; port_terminals_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;geometry[index_location]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;calculating-distance-between-ports&#34; &gt;Calculating Distance Between Ports
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-distance-between-ports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;p&gt;I calculated the shortest distance between ports based on their geographic locations with the shapley.distance function.  It returns distance in meters.  I divide by 1000 to convert into Km.   The algorithm could be improved by using official shipping data to randomize a distribution of distances between ports.  Unfortunately, I do not have that data available to me.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;geo_distance&lt;/span&gt;(dist1,dist2):
+    &lt;span style=&#34;color:#75715e&#34;&gt;# return distance in km&lt;/span&gt;
+    distance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dist1&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;distance(dist2)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(distance)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;calculating-price-of-transport&#34; &gt;Calculating Price of Transport
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-price-of-transport&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h4&gt;&lt;p&gt;The cost of transport accounts for port fees, liquification, and transport.   Unfortunately, my data is from a paper published in 2004.  I would like to find a more recent paper.   I did not convert the value of 2004 USD to 2022 because I am not sure of the validity of the conversion factors available online.  I would need a better source to correctly model the true cost of transport.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://ieaghg.org/docs/General_Docs/Reports/PH4-30%20Ship%20Transport.pdf&#34;&gt;source&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;price_to_transport&lt;/span&gt;(distance,tonnes):
+    price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (distance&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; tonnes
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; price
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;calculating-cost-per-day&#34; &gt;Calculating Cost Per Day
+&lt;span&gt;
+    &lt;a href=&#34;#calculating-cost-per-day&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cost_per_day&lt;/span&gt;(price,distance):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; price&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;distance
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;costs-per-annum-algorithm&#34; &gt;Costs Per Annum Algorithm
+&lt;span&gt;
+    &lt;a href=&#34;#costs-per-annum-algorithm&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The algorithm I used calculates the daily status of ships transporting CO2 across the Atlantic from a random European port to a random port in the United States.  It will run for 365 iterations or until the total carbon capacity of the US ports is reached.  This value could and probably should be dynamically allocated via a similiar algorithm, but I do not yet have historical probability distributions of carbon imports to determime a valid price allocation function.&lt;/p&gt;
+&lt;p&gt;When the daily counter reaches zero for a tanker:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The capacity is refilled to full.&lt;/li&gt;
+&lt;li&gt;A random us port is assigned.&lt;/li&gt;
+&lt;li&gt;A random European port is assigned.&lt;/li&gt;
+&lt;li&gt;The distance between ports is calculated.&lt;/li&gt;
+&lt;li&gt;The cost of transport over that distance is calculated per 100 km.&lt;/li&gt;
+&lt;li&gt;The total shipping price of that cycle is tabulated.&lt;/li&gt;
+&lt;li&gt;The total tonnage of that cycle is tabulated.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+days &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;365&lt;/span&gt;
+day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; 
+carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;300000000&lt;/span&gt;
+total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+cycle_mean_price_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;days)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#deduction = capacity of empty ships&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; day &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(days):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+        &lt;span style=&#34;color:#75715e&#34;&gt;# must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day &lt;/span&gt;
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_us_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_europe_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  geo_distance(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  price_to_transport(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;],x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#calculate cost per day for fun...&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# query all that are = o.  Summate the capacities deduct the total &lt;/span&gt;
+        tmp_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+        sum_of_capacity &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+        sum_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+        mean_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+        cycle_mean_price_samples[day] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mean_of_price
+        shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: random_day() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x)
+        total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_capacity
+        total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_price &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_price
+        carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; sum_of_capacity
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(carbon_total_millions_metric_tons)&lt;/span&gt;
+        day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; day_counter&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;: 
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;break&lt;/span&gt;
+
+    
+    
+print(day_counter)
+print(total_tons_shipped)
+print(total_price)
+&lt;span style=&#34;color:#75715e&#34;&gt;#Drop the nan, ie empty samples&lt;/span&gt;
+cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price_samples[np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;logical_not(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isnan(cycle_mean_price_samples))]
+&lt;span style=&#34;color:#75715e&#34;&gt;#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)&lt;/span&gt;
+cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+print(cycle_mean_price)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;365
+41073.187985943456
+60039059.413350895
+308098.2720296601
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;monte-carlo-simulation-with-500-iterations&#34; &gt;Monte Carlo Simulation with 500 iterations
+&lt;span&gt;
+    &lt;a href=&#34;#monte-carlo-simulation-with-500-iterations&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The annual rate of shipping can be variable according to shifting dynamics. I account for that by modeling the per annum algorithm 500 times.  Modeling would improve as n increases, but for the sake of time I limited the computation to 500 iterations&lt;/p&gt;
+&lt;p&gt;The only difference between this algorithm and the previous one is an extra for loop.  The algorithmic efficiency is surprisingly good as the I was able to vectorize tabulations with lambda functions across the dataframes.  On my laptop, I was able to complete the algorithm in about 16 minutes of run time.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+nsamples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;
+price_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;nsamples)
+cycle_mean_price_annual_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;nsamples)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; sample &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(nsamples):
+
+    days &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;365&lt;/span&gt;
+    day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; 
+    carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;300000000&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# could randomize.  Need a probability distribution based on historial data. &lt;/span&gt;
+    total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    cycle_mean_price_daily_samples &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;days)
+
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#deduction = capacity of empty ships&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; day &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(days):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+            &lt;span style=&#34;color:#75715e&#34;&gt;# must use apply to account for multiple 0 conditions.  If i simply vectorized the function across the dataframe in a single call i would assign the the same values each day &lt;/span&gt;
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_us_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  random_europe_port() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  geo_distance(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us_port&amp;#39;&lt;/span&gt;], x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;europe_port&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x:  price_to_transport(x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distance&amp;#39;&lt;/span&gt;], x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+            &lt;span style=&#34;color:#75715e&#34;&gt;# query all that are = o.  Summate the capacities deduct the total &lt;/span&gt;
+            tmp_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shipping_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+            sum_of_capacity &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;co2_capacity_tonnes&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+            sum_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()
+            mean_of_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tmp_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;price&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+            cycle_mean_price_daily_samples[day] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mean_of_price
+            shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shipping_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;days_to_port&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;apply(&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; x: random_day() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; x)
+            total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_tons_shipped &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_capacity
+            total_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_price &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; sum_of_price
+            carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; carbon_total_millions_metric_tons &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; sum_of_capacity
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(carbon_total_millions_metric_tons)&lt;/span&gt;
+            day_counter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; day_counter&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;: 
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;break&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Drop the nan, ie empty samples&lt;/span&gt;
+    cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price_samples[np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;logical_not(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isnan(cycle_mean_price_samples))]
+    &lt;span style=&#34;color:#75715e&#34;&gt;#Calculate mean price of filling a ship (around a billion according to the data i have if filled to capacity.  Ridiculous.)&lt;/span&gt;
+    cycle_mean_price &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cycle_mean_price&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+    cycle_mean_price_annual_samples[sample] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;cycle_mean_price
+        
+    
+
+    price_samples[sample] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; total_price
+
+        
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;creating-the-annual-price-samples-df&#34; &gt;Creating the Annual Price Samples DF
+&lt;span&gt;
+    &lt;a href=&#34;#creating-the-annual-price-samples-df&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(price_samples, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd&amp;#39;&lt;/span&gt;])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;annual_price_samples_df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cost_in_usd_billions&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; annual_price_samples_df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cost_in_usd 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;imports&#34; &gt;Imports
+&lt;span&gt;
+    &lt;a href=&#34;#imports&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; geopandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; gpd
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; folium
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; contextily &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; cx
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; rtree
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; zlib &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; crc32
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; hashlib
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; shapely.geometry &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Point, LineString, Polygon
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; scipy.spatial &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; cKDTree
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; scipy.stats &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; st
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; shapely.geometry &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Point
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; haversine &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Unit
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; geopy.distance &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; distance
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; warnings
+
+warnings&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;filterwarnings(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ignore&amp;#39;&lt;/span&gt;)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;/Users/jnapolitano/venvs/finance/lib/python3.9/site-packages/geopandas/_compat.py:111: UserWarning: The Shapely GEOS version (3.10.2-CAPI-1.16.0) is incompatible with the GEOS version PyGEOS was compiled with (3.10.1-CAPI-1.16.0). Conversions between both will be slow.
+  warnings.warn(
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

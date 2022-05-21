@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>REST API on Justin&#39;s Data Blog</title>
+    <link>https://blog.jnapolitano.io/categories/rest-api/</link>
+    <description>Justin&#39;s Data Blog (REST API)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 May 2022 13:40:32 +0000</lastBuildDate>
+    
+    <atom:link href="https://blog.jnapolitano.io/categories/rest-api/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Conduct Legal Research with AI: Part 0</title>
+      <link>https://blog.jnapolitano.io/posts/loc_crawler/</link>
+      <pubDate>Mon, 16 May 2022 13:40:32 +0000</pubDate>
+      
+      <guid>https://blog.jnapolitano.io/posts/loc_crawler/</guid>
+      <description>&lt;h1 id=&#34;crawling-the-library-of-congress-api&#34; &gt;Crawling the Library of Congress API
+&lt;span&gt;
+    &lt;a href=&#34;#crawling-the-library-of-congress-api&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h1&gt;&lt;h2 id=&#34;introduction&#34; &gt;Introduction
+&lt;span&gt;
+    &lt;a href=&#34;#introduction&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The United States Library of Congress maintains a rest api for developers to crawl their collections.  It is an open source tool that anyone can access in order to conduct research. Check out the documenation at &lt;a href=&#34;https://libraryofcongress.github.io/data-exploration/&#34;&gt;https://libraryofcongress.github.io/data-exploration/&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;creating-a-crawler&#34; &gt;Creating a crawler
+&lt;span&gt;
+    &lt;a href=&#34;#creating-a-crawler&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;I took the approach of writing a generator that produces a search result page object that can be operated upon with each iteration.&lt;/p&gt;
+&lt;p&gt;The first step is to create a search result page object.&lt;/p&gt;
+&lt;p&gt;The code below documents the search_result page.  It contains a number of helper functions to convert the nodes within the result to json or graphml.  The code can also be used to generate a networkx in memory graph.&lt;/p&gt;
+&lt;h3 id=&#34;the-search-result-object&#34; &gt;The Search Result Object
+&lt;span&gt;
+    &lt;a href=&#34;#the-search-result-object&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;search_results_page&lt;/span&gt;():
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,base_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://www.loc.gov/collections&amp;#34;&lt;/span&gt;,collection &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;united-states-reports&amp;#34;&lt;/span&gt;,json_parameter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fo=json&amp;#34;&lt;/span&gt;,results_per_page &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c=79&amp;#34;&lt;/span&gt;,query_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;?&amp;#34;&lt;/span&gt;,page_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sp=&amp;#34;&lt;/span&gt;,page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;search_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_search_url(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;request_data()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_to_json()
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.soup_html = self.html_parse()&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_next_url()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_json&lt;/span&gt;(self, file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;,file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.json&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(output_name, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; outfile:
+            json&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dump(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json, outfile)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_pandas&lt;/span&gt;(self):
+        df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_pandas_edgelist(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;graph)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(df)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_csv&lt;/span&gt;(self,file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;,file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.csv&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_pandas()
+        df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_csv(output_name)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_graphml&lt;/span&gt;(self,file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;, file_num&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.graphml&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write_graphml(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;graph, output_name)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_to_file&lt;/span&gt;(self,data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;,file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.json&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(output_name, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; outfile:
+            json&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dump(data, outfile)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;node_gen_2&lt;/span&gt;(self, data, root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result&amp;#39;&lt;/span&gt;, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#root = root &lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; dict:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k, v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; node_list:
+                    graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_node(k, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k)
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#node_list.append((k, {&amp;#39;type&amp;#39; : k}))&lt;/span&gt;
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#(1, 2, color=&amp;#39;red&amp;#39;, weight=0.84, size=300)\&lt;/span&gt;
+                    graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_edge(root,k, relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;of&amp;#34;&lt;/span&gt;, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;root&amp;#34;&lt;/span&gt;)
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#edge_list.append((root , k, {&amp;#34;relationship&amp;#34; : &amp;#34;of&amp;#34;}, {&amp;#34;type&amp;#34; : &amp;#39;root&amp;#39;}))&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_value&amp;#39;)&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#save k&lt;/span&gt;
+                previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k
+                previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (root , k)
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_gen_2(v,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list, previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; graph)
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; list:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_data&amp;#39;)&lt;/span&gt;
+
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_gen_2(item,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list,previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_k, previous_edge&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; graph)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#create_edge to k&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            &lt;span style=&#34;color:#75715e&#34;&gt;#this item is no longer a dictionary or list&lt;/span&gt;
+            pprint(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;appending_data&amp;#39;&lt;/span&gt;)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#create edge to k&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+                graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_node(data,type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#node_list.append((data, {&amp;#34;type&amp;#34; : data}))&lt;/span&gt;
+                graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_edge(previous_k, data, relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;is&amp;#34;&lt;/span&gt;, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_k)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#edge_list.append((previous_k ,data,{&amp;#39;relationship&amp;#39;: &amp;#34;is&amp;#34;}, {&amp;#39;type&amp;#39; : data}))&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#edge_list.append((root,data))&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#flatten(hierarchak)_dict)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; graph 
+
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;node_runner&lt;/span&gt;(self,data,graph):
+        
+        node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+            &lt;span style=&#34;color:#75715e&#34;&gt;#root = item[&amp;#39;title&amp;#39;]&lt;/span&gt;
+            graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_gen_2(data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; item, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; graph)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(edge_list)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; graph
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;node_generator&lt;/span&gt;(self, data, root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;title_testing&amp;#39;&lt;/span&gt;, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; dict:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k, v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; node_list:
+                    node_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(k)
+                    edge_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append((root , k))
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_value&amp;#39;)&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#save k&lt;/span&gt;
+                previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k
+                previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (root , k)
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_generator(v,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list, previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge)
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; list:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_data&amp;#39;)&lt;/span&gt;
+
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_generator(item,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list,previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_k, previous_edge&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#create_edge to k&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            &lt;span style=&#34;color:#75715e&#34;&gt;#this item is no longer a dictionary or list&lt;/span&gt;
+            pprint(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;appending_data&amp;#39;&lt;/span&gt;)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#create edge to k&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+                node_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(data)
+                edge_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append((previous_k ,data))
+                edge_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append((root,data))
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#flatten(hierarchak)_dict)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; node_list, edge_list 
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.json_graph = self.create_json_graph()&lt;/span&gt;
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_json_graph&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#graph = nx.Graph(self.response_json)&lt;/span&gt;
+        graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;from_dict_of_dicts(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#graph = json_graph.node_link_graph(self.response_json)&lt;/span&gt;
+        nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;draw(graph)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; graph
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.node_list = self.node_generator`&lt;/span&gt;
+
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_search_result_node&lt;/span&gt;(self):
+     
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json_flat:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k,v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table:
+                    column_string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;colnum_string()
+
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table[k] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;colnum_string(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns)
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;append_to_data_list&lt;/span&gt;(self,rnge,d):&lt;span style=&#34;color:#75715e&#34;&gt;#rename to _data_list&lt;/span&gt;
+        request_body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;range&amp;#39;&lt;/span&gt;: rnge,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;majorDimension&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;COLUMNS&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;values&amp;#34;&lt;/span&gt;: [d]
+        }
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; request_body
+        &lt;span style=&#34;color:#75715e&#34;&gt;#data_list.append(request_body_tmp)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;map_column_to_range&lt;/span&gt;(self,column_key):
+        
+        rnge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;Sheet1&amp;#39;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;!&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; column_key &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; rnge
+                
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;colnum_string&lt;/span&gt;(self,num_columns):
+        string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#34;conlum_string&amp;#34;)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; num_columns &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+            num_columns, remainder &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; divmod(num_columns &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt;)
+            string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; chr(&lt;span style=&#34;color:#ae81ff&#34;&gt;65&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; remainder) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; string
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(string)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; string
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;map_columns_to_lookup_table&lt;/span&gt;(self):
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;first_map_columns_print&amp;#39;)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#num_columns_tmp = self.num_columns&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns_tmp)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json_flat:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keys():
+                num_columns_tmp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table:
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;second_map_Columns_print&amp;#39;)&lt;/span&gt;
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns_tmp)&lt;/span&gt;
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table[k] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;colnum_string(num_columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; num_columns_tmp)
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+       
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#append range to request... &lt;/span&gt;
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#append collumn to batch lookup&lt;/span&gt;
+                
+
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;column_request_list_generator&lt;/span&gt;(self):
+        request_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k,v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+            rnge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;map_column_to_range(k)
+            request_body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append_to_data_list(rnge,v)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(request_body)&lt;/span&gt;
+            request_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(request_body)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; request_list
+
+
+
+
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#return column_lookup_table&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_next_url&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pagination&amp;#39;&lt;/span&gt;][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;next&amp;#39;&lt;/span&gt;])
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_search_url&lt;/span&gt;(self,base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num):
+        url_sep &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;
+        page_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_param &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;(str(page_num))
+        query &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;amp;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([json_parameter,results_per_page,page_param])
+        query &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; query_param &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; query
+        search_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url_sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([base_url,collection,query])
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(search_url)&lt;/span&gt;
+        
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; search_url
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;say_hello&lt;/span&gt;(self):
+        pprint(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;base_url)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;request_data&lt;/span&gt;(self):
+        headers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;User-Agent&amp;#39;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9&amp;#39;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Accept-Encoding&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;identity&amp;#39;&lt;/span&gt;
+                }
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; requests&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;search_url,headers&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;headers)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;response_to_json&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;json()
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;html_parse&lt;/span&gt;(self):
+        soup&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;BeautifulSoup(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;content,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lxml&amp;#39;&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(soup)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; soup
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flatten_result&lt;/span&gt;(self):
+        flat_result_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;results&amp;#39;&lt;/span&gt;]:
+            flat_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; flatten(item)
+            flat_result_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(flat_json)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; flat_result_list
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;the-generator&#34; &gt;The Generator
+&lt;span&gt;
+    &lt;a href=&#34;#the-generator&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The generator yields a search result page if the pagination link included in the response is valid.&lt;/p&gt;
+&lt;p&gt;Depending on your use case you could pass the page_num and collection you would like to crawl.&lt;/p&gt;
+&lt;p&gt;The api is limited to 80 results per minute.  The sleep function limits calls to the desired rate.  The amount of results returned can be passed to the search result page_object.  Review the code above to see which values can be passed.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;search_result_generator&lt;/span&gt;(condition &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#column_lookup_table = {}&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+    page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    column_lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {}
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; condition &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;:
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+        time&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;61&lt;/span&gt;)
+        search_results_page_object &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_search_results_page_object(page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; search_results_page_object&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next_url &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+            condition &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+            page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;            
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;yield&lt;/span&gt; (search_results_page_object)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            condition &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;yield&lt;/span&gt; (search_results_page_object)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;the-runner-function&#34; &gt;The Runner Function
+&lt;span&gt;
+    &lt;a href=&#34;#the-runner-function&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;To initiate the crawl simply run the algorithm below.  It writes each result page to json.&lt;/p&gt;
+&lt;p&gt;As a follow up project, I will post how to integrate the data returned into a neo4j database.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; obj &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; search_result_generator():   
+        page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; obj&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;page_num
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; cd(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;output_2&amp;#34;&lt;/span&gt;):
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;hahaha&amp;#39;)&lt;/span&gt;
+            obj&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_json(file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.write_graphml(file_num= page_num)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.to_pandas()&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.to_csv()&lt;/span&gt;
+        write_last_page_num(page_num)
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; Search Results Crawled&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(page_num))
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;putting-everything-together&#34; &gt;Putting Everything Together
+&lt;span&gt;
+    &lt;a href=&#34;#putting-everything-together&#34;&gt;
+        &lt;svg viewBox=&#34;0 0 28 23&#34; height=&#34;100%&#34; width=&#34;19&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;&lt;path d=&#34;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;path d=&#34;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-miterlimit=&#34;10&#34; stroke-width=&#34;2&#34;/&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+&lt;/span&gt;
+&lt;/h2&gt;&lt;p&gt;The code below is the entire program as it stands.  There is built in functionality to upload the results to a google sheet if that is what you desire using an extension of the google api.   That code can be found at &lt;a href=&#34;https://github.com/justin-napolitano/GoogleAPI&#34;&gt;https://github.com/justin-napolitano/GoogleAPI&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#library_of_congress_scraper.py&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; __future__ &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; print_function
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; bs4 &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; BeautifulSoup
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; requests
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; lxml.etree &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; etree
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; xml.etree.ElementTree &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; ET
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; json
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; time
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; random
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; pprint &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pprint
+&lt;span style=&#34;color:#75715e&#34;&gt;#import load_vars as lv&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; html
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; yaml
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; yaml &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Loader, Dumper
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; glob
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; datetime
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os.path
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; googleapiclient.discovery &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; build
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; google_auth_oauthlib.flow &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; InstalledAppFlow
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; google.auth.transport.requests &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Request
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; google.oauth2.credentials &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Credentials
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; google.oauth2 &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; service_account
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; googleapiclient.http &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; MediaIoBaseDownload, MediaFileUpload
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; flatten_json &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; flatten
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; networkx &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; nx
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib
+&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; networkx.readwrite &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; json_graph
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; tracemalloc
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;span style=&#34;color:#75715e&#34;&gt;#from ratelimiter import RateLimiter&lt;/span&gt;
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cd&lt;/span&gt;:
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;Context manager for changing the current working directory&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, newPath):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;newPath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;expanduser(newPath)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __enter__(self):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;savedPath &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getcwd()
+        os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;chdir(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;newPath)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __exit__(self, etype, value, traceback):
+        os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;chdir(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;savedPath)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;search_results_page&lt;/span&gt;():
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,base_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://www.loc.gov/collections&amp;#34;&lt;/span&gt;,collection &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;united-states-reports&amp;#34;&lt;/span&gt;,json_parameter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fo=json&amp;#34;&lt;/span&gt;,results_per_page &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c=79&amp;#34;&lt;/span&gt;,query_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;?&amp;#34;&lt;/span&gt;,page_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sp=&amp;#34;&lt;/span&gt;,page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;search_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_search_url(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;request_data()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_to_json()
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.soup_html = self.html_parse()&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_next_url()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_json&lt;/span&gt;(self, file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;,file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.json&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(output_name, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; outfile:
+            json&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dump(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json, outfile)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_pandas&lt;/span&gt;(self):
+        df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_pandas_edgelist(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;graph)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;(df)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_csv&lt;/span&gt;(self,file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;,file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.csv&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_pandas()
+        df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_csv(output_name)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_graphml&lt;/span&gt;(self,file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;, file_num&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.graphml&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write_graphml(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;graph, output_name)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_to_file&lt;/span&gt;(self,data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, file_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result_&amp;#39;&lt;/span&gt;,file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, extension &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.json&amp;#34;&lt;/span&gt;):
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; file_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(file_num)
+        output_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; extension
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(output_name, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; outfile:
+            json&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dump(data, outfile)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;node_gen_2&lt;/span&gt;(self, data, root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;result&amp;#39;&lt;/span&gt;, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#root = root &lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; dict:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k, v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; node_list:
+                    graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_node(k, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k)
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#node_list.append((k, {&amp;#39;type&amp;#39; : k}))&lt;/span&gt;
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#(1, 2, color=&amp;#39;red&amp;#39;, weight=0.84, size=300)\&lt;/span&gt;
+                    graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_edge(root,k, relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;of&amp;#34;&lt;/span&gt;, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;root&amp;#34;&lt;/span&gt;)
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#edge_list.append((root , k, {&amp;#34;relationship&amp;#34; : &amp;#34;of&amp;#34;}, {&amp;#34;type&amp;#34; : &amp;#39;root&amp;#39;}))&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_value&amp;#39;)&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#save k&lt;/span&gt;
+                previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k
+                previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (root , k)
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_gen_2(v,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list, previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; graph)
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; list:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_data&amp;#39;)&lt;/span&gt;
+
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_gen_2(item,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list,previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_k, previous_edge&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; graph)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#create_edge to k&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            &lt;span style=&#34;color:#75715e&#34;&gt;#this item is no longer a dictionary or list&lt;/span&gt;
+            pprint(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;appending_data&amp;#39;&lt;/span&gt;)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#create edge to k&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+                graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_node(data,type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#node_list.append((data, {&amp;#34;type&amp;#34; : data}))&lt;/span&gt;
+                graph&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_edge(previous_k, data, relationship &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;is&amp;#34;&lt;/span&gt;, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_k)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#edge_list.append((previous_k ,data,{&amp;#39;relationship&amp;#39;: &amp;#34;is&amp;#34;}, {&amp;#39;type&amp;#39; : data}))&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#edge_list.append((root,data))&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#flatten(hierarchak)_dict)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; graph 
+
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;node_runner&lt;/span&gt;(self,data,graph):
+        
+        node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+            &lt;span style=&#34;color:#75715e&#34;&gt;#root = item[&amp;#39;title&amp;#39;]&lt;/span&gt;
+            graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_gen_2(data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; item, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list, graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; graph)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(edge_list)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; graph
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;node_generator&lt;/span&gt;(self, data, root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;title_testing&amp;#39;&lt;/span&gt;, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [], previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; dict:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k, v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; node_list:
+                    node_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(k)
+                    edge_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append((root , k))
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_value&amp;#39;)&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#save k&lt;/span&gt;
+                previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k
+                previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (root , k)
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_generator(v,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list, previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; k, previous_edge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge)
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; type(data) &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; list:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data:
+                &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#39;passing_data&amp;#39;)&lt;/span&gt;
+
+                self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;node_generator(item,root &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; root, node_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node_list,edge_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; edge_list,previous_k &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_k, previous_edge&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; previous_edge)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#create_edge to k&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            &lt;span style=&#34;color:#75715e&#34;&gt;#this item is no longer a dictionary or list&lt;/span&gt;
+            pprint(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;appending_data&amp;#39;&lt;/span&gt;)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#create edge to k&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+                node_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(data)
+                edge_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append((previous_k ,data))
+                edge_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append((root,data))
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#flatten(hierarchak)_dict)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; node_list, edge_list 
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.json_graph = self.create_json_graph()&lt;/span&gt;
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_json_graph&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#graph = nx.Graph(self.response_json)&lt;/span&gt;
+        graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;from_dict_of_dicts(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#graph = json_graph.node_link_graph(self.response_json)&lt;/span&gt;
+        nx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;draw(graph)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; graph
+        
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.node_list = self.node_generator`&lt;/span&gt;
+
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_search_result_node&lt;/span&gt;(self):
+     
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json_flat:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k,v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table:
+                    column_string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;colnum_string()
+
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table[k] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;colnum_string(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns)
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;append_to_data_list&lt;/span&gt;(self,rnge,d):&lt;span style=&#34;color:#75715e&#34;&gt;#rename to _data_list&lt;/span&gt;
+        request_body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;range&amp;#39;&lt;/span&gt;: rnge,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;majorDimension&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;COLUMNS&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;values&amp;#34;&lt;/span&gt;: [d]
+        }
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; request_body
+        &lt;span style=&#34;color:#75715e&#34;&gt;#data_list.append(request_body_tmp)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;map_column_to_range&lt;/span&gt;(self,column_key):
+        
+        rnge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;Sheet1&amp;#39;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;!&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; column_key &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; rnge
+                
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;colnum_string&lt;/span&gt;(self,num_columns):
+        string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(&amp;#34;conlum_string&amp;#34;)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; num_columns &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+            num_columns, remainder &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; divmod(num_columns &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt;)
+            string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; chr(&lt;span style=&#34;color:#ae81ff&#34;&gt;65&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; remainder) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; string
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(string)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; string
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;map_columns_to_lookup_table&lt;/span&gt;(self):
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;first_map_columns_print&amp;#39;)&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#num_columns_tmp = self.num_columns&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns_tmp)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json_flat:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keys():
+                num_columns_tmp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table:
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;second_map_Columns_print&amp;#39;)&lt;/span&gt;
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns_tmp)&lt;/span&gt;
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table[k] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;colnum_string(num_columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; num_columns_tmp)
+                    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;num_columns &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+       
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#append range to request... &lt;/span&gt;
+                    &lt;span style=&#34;color:#75715e&#34;&gt;#append collumn to batch lookup&lt;/span&gt;
+                
+
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;column_request_list_generator&lt;/span&gt;(self):
+        request_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; k,v &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_lookup_table&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;items():
+            rnge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;map_column_to_range(k)
+            request_body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append_to_data_list(rnge,v)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(request_body)&lt;/span&gt;
+            request_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(request_body)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; request_list
+
+
+
+
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;#return column_lookup_table&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_next_url&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pagination&amp;#39;&lt;/span&gt;][&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;next&amp;#39;&lt;/span&gt;])
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_search_url&lt;/span&gt;(self,base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num):
+        url_sep &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;
+        page_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_param &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;(str(page_num))
+        query &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;amp;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([json_parameter,results_per_page,page_param])
+        query &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; query_param &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; query
+        search_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url_sep&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join([base_url,collection,query])
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(search_url)&lt;/span&gt;
+        
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; search_url
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;say_hello&lt;/span&gt;(self):
+        pprint(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;base_url)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;request_data&lt;/span&gt;(self):
+        headers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;User-Agent&amp;#39;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.11 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9&amp;#39;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Accept-Encoding&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;identity&amp;#39;&lt;/span&gt;
+                }
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; requests&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;search_url,headers&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;headers)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;response_to_json&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;json()
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;html_parse&lt;/span&gt;(self):
+        soup&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;BeautifulSoup(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;content,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lxml&amp;#39;&lt;/span&gt;)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(soup)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; soup
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flatten_result&lt;/span&gt;(self):
+        flat_result_list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;response_json[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;results&amp;#39;&lt;/span&gt;]:
+            flat_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; flatten(item)
+            flat_result_list&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(flat_json)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; flat_result_list
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;search_result&lt;/span&gt;():
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,dict_item,num_columns,colnum_string):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;key &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dict_item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;key()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dict_item&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;value()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; colnum_string
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; num_columns
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;range &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_column_range_string()
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;request_body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_column_request()
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_column_request&lt;/span&gt;(self):
+        request_body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;range&amp;#39;&lt;/span&gt;: self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;range,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;majorDimension&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;COLUMNS&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;values&amp;#34;&lt;/span&gt;: [self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;value]
+        }
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; request_body
+
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_column_range_string&lt;/span&gt;(self):
+
+        rnge &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#39;Sheet1&amp;#39;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;!&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;column_string &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; rnge
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;colnum_string&lt;/span&gt;(self, num_columns):
+        string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; num_columns &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+            num_columns, remainder &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; divmod(num_columns &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;26&lt;/span&gt;)
+            string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; chr(&lt;span style=&#34;color:#ae81ff&#34;&gt;65&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; remainder) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; string
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; string
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;google_drive&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,creds):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_drive_service(creds)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;test&lt;/span&gt;(self):
+        pprint(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello I exist&amp;#34;&lt;/span&gt;)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_drive_service&lt;/span&gt;(self, creds):
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;Shows basic usage of the Drive v3 API.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Prints the names and ids of the first 10 files the user has access to.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+        SCOPES &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#75715e&#34;&gt;#creds = None&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# The file token.json stores the user&amp;#39;s access and refresh tokens, and is&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# created automatically when the authorization flow completes for the first&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# time.&lt;/span&gt;
+
+        service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; build(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;drive&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;v3&amp;#39;&lt;/span&gt;, credentials&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;creds)
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;# Call the Drive v3 API&lt;/span&gt;
+        results &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;files()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;list(
+            pageSize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, fields&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;nextPageToken, files(id, name)&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;execute()
+        items &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; results&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;files&amp;#39;&lt;/span&gt;, [])
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; items:
+            print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;No files found.&amp;#39;&lt;/span&gt;)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Files:&amp;#39;&lt;/span&gt;)
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; item &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; items:
+                print(&lt;span style=&#34;color:#e6db74&#34;&gt;u&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{0}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; (&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{1}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(item[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;], item[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;id&amp;#39;&lt;/span&gt;]))
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; service
+    
+    
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_folder&lt;/span&gt;(self,title):
+        drive_service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;service
+        file_metadata &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(title),
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mimeType&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;application/vnd.google-apps.folder&amp;#39;&lt;/span&gt;
+        }
+        file &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; drive_service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;files()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create(body&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;file_metadata,
+                                            fields&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;id&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;execute()
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Folder ID: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; file&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;id&amp;#39;&lt;/span&gt;))
+
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;add_spreadsheet_to_folder&lt;/span&gt;(self ,folder_id,title):
+        drive_service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;service
+    
+        file_metadata &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(title),
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;parents&amp;#39;&lt;/span&gt;: [folder_id],
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mimeType&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;application/vnd.google-apps.spreadsheet&amp;#39;&lt;/span&gt;,
+        }
+
+        res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; drive_service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;files()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create(body&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;file_metadata)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;execute()
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(res)&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;google_sheet&lt;/span&gt;():
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,creds):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_sheet_service(creds)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_sheet_service&lt;/span&gt;(self,creds):
+        service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; build(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sheets&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;v4&amp;#39;&lt;/span&gt;, credentials&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;creds)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;spreadsheets()
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;google_creds&lt;/span&gt;():
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,creds_path):
+
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;creds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_creds(creds_path)
+   
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_creds&lt;/span&gt;(self,creds_path):
+
+        creds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# The file token.json stores the user&amp;#39;s access and refresh tokens, and is&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# created automatically when the authorization flow completes for the first&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# time.&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;exists(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token.json&amp;#39;&lt;/span&gt;):
+            creds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Credentials&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;from_authorized_user_file(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token.json&amp;#39;&lt;/span&gt;, SCOPES)
+        &lt;span style=&#34;color:#75715e&#34;&gt;# If there are no (valid) credentials available, let the user log in.&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; creds &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; creds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;valid:
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; creds &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; creds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;expired &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; creds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;refresh_token:
+                creds&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;refresh(Request())
+                print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;no creds&amp;#34;&lt;/span&gt;)
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+                creds &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; service_account&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Credentials&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;from_service_account_file(creds_path)
+                &lt;span style=&#34;color:#75715e&#34;&gt;#creds = ServiceAccountCredentials.from_json_keyfile_name(&amp;#39;add_json_file_here.json&amp;#39;, SCOPES)&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#flow = InstalledAppFlow.from_client_secrets_file(&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#    &amp;#39;credentials.json&amp;#39;, SCOPES)&lt;/span&gt;
+                &lt;span style=&#34;color:#75715e&#34;&gt;#creds = flow.run_local_server(port=0)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;# Save the credentials for the next run&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#with open(&amp;#39;token.json&amp;#39;, &amp;#39;w&amp;#39;) as token:&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#    token.write(creds.to_json())&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; creds
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt;():
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self,file_path):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#self.yaml_stream = file(&amp;#34;config.yaml&amp;#34;, &amp;#39;r&amp;#39;)&lt;/span&gt;
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;load_config(file_path)
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;load_config&lt;/span&gt;(self,file_path):
+        &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#34;test&amp;#34;)&lt;/span&gt;
+        stream &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; open(file_path, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;)
+        data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; yaml&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;load(stream,Loader &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Loader)
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(data)&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; data
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_google_credentials_object&lt;/span&gt;(creds_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;credentials.json&amp;#39;&lt;/span&gt;):
+    google_credentials_object &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; google_creds(creds_path)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; google_credentials_object
+    
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_config_object&lt;/span&gt;(file_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;config.yaml&amp;#39;&lt;/span&gt;):
+    config_object &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; config(file_path)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; config_object
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;search_result_generator&lt;/span&gt;(condition &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#column_lookup_table = {}&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+    page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    column_lookup_table &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {}
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; condition &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;:
+        &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+        time&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;61&lt;/span&gt;)
+        search_results_page_object &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_search_results_page_object(page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; search_results_page_object&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next_url &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;:
+            condition &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+            page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;            
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;yield&lt;/span&gt; (search_results_page_object)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+            condition &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;yield&lt;/span&gt; (search_results_page_object)
+        
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_search_results_page_object&lt;/span&gt;(base_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://www.loc.gov/collections&amp;#34;&lt;/span&gt;,collection &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;united-states-reports&amp;#34;&lt;/span&gt;,json_parameter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fo=json&amp;#34;&lt;/span&gt;,results_per_page &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c=70&amp;#34;&lt;/span&gt;,query_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;?&amp;#34;&lt;/span&gt;,page_param &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sp=&amp;#34;&lt;/span&gt;,page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+    &lt;span style=&#34;color:#75715e&#34;&gt;#search = search_results(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(search.search_url)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#pprint(num_columns)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; search_results_page(base_url,collection,json_parameter,results_per_page,query_param,page_param,page_num)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_google_drive_object&lt;/span&gt;(google_creds):
+    drive_service_object &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; google_drive(google_creds)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; drive_service_object
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_google_sheet_object&lt;/span&gt;(google_creds):
+    sheet_service_object &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; google_sheet(google_creds)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; sheet_service_object
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_new_google_sheet&lt;/span&gt;(google_drive_object,folder_id,title):
+    sheet_meta_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; google_drive_object&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add_spreadsheet_to_folder(folder_id, title)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; sheet_meta_data
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flatten_result&lt;/span&gt;(result_json):
+    flat_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; flatten(result_json)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; flat_json
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_last_page_num&lt;/span&gt;(page_num):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;last_page_num.txt&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; f:
+        f&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write(str(page_num))
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;():
+    tracemalloc&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;start()
+    &lt;span style=&#34;color:#75715e&#34;&gt;#rate_limiter = RateLimiter(max_calls=1, period=60)&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#cd to output&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#result = create_search_results_page_object()&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#with cd(&amp;#34;output&amp;#34;):&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#    result.write_to_file(data = result.dict_of_dicts, file_num = 1)&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; obj &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; search_result_generator():   
+        page_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; obj&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;page_num
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; cd(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;output_2&amp;#34;&lt;/span&gt;):
+            &lt;span style=&#34;color:#75715e&#34;&gt;#print(&amp;#39;hahaha&amp;#39;)&lt;/span&gt;
+            obj&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_json(file_num &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; page_num)
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.write_graphml(file_num= page_num)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.to_pandas()&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.write_to_file(data = obj.dict_of_dicts, file_num = page_num)&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;#obj.to_csv()&lt;/span&gt;
+        write_last_page_num(page_num)
+        print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; Search Results Crawled&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(page_num))
+
+
+    
+    snapshot &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tracemalloc&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;take_snapshot()
+    top_stats &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; snapshot&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;statistics(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lineno&amp;#39;&lt;/span&gt;)
+    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;[ Top 10 ]&amp;#34;&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; stat &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; top_stats[:&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;]:
+        print(stat)
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+    main()
+
+        
+        
+
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
