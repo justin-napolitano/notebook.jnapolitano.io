@@ -6,6 +6,7 @@ author = "Justin Napolitano"
 categories = ['Reflection', 'Observations','Identity']
 tags = ['identity','objects']
 series = ['Writing']
+images = ['feature-image.webp]
 +++
 
 
