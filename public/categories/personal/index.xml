@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Justin&#39;s Notebook</title>
-    <link>https://notebook.jnapolitano.io/posts/</link>
-    <description>Justin&#39;s Notebook (Posts)</description>
+    <title>Personal on Justin&#39;s Notebook</title>
+    <link>https://notebook.jnapolitano.io/categories/personal/</link>
+    <description>Justin&#39;s Notebook (Personal)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 21 May 2022 08:30:32 +0000</lastBuildDate>
     
-    <atom:link href="https://notebook.jnapolitano.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://notebook.jnapolitano.io/categories/personal/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
