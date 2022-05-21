@@ -6,7 +6,7 @@ author = "Justin Napolitano"
 categories = ['Reflection', 'Observations','Identity']
 tags = ['identity','objects']
 series = ['Writing']
-images = ['feature-image.webp]
+images = ['feature-image.webp']
 +++
 
 
@@ -33,7 +33,6 @@ My dad told me to just ignore the bullshit.  To focus on what is important.  Gen
 I still attempt to find truth and reason in why I do the things I do.  I read a solution to the problem once.  So it goes.  
 
 Supposedly, one can create their identity.  Society etches her identity in to me.
-to me.  
 
 I do not believe in God.  I ask him for help to get out of bed.  I rationalize it away as a fear response.  Mother Mary laughs from the chain around my neck.  
 
