@@ -8,8 +8,6 @@
     <ul class="series">
     {{ range $series.Pages }}
     <li class="list"><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a></li>
-    {{end}}
     </ul>
-{{ else }}
-    Warning - check your series - as none found
+    {{end}}
 {{ end }}
