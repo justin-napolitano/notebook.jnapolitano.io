@@ -21,14 +21,14 @@ Moments and words.  Colors and music.  I can not process the barrage of sensatio
 
 ### Emilie
 
-Emilie a woman  Emilie a danseur.  Emilie a lover.
+Emilie a woman.  Emilie a danseur.  Emilie a lover.  Blonde and petite.  Expressive and honest.  She owns nothing.  She lives alone.  
 
 
 ### The Wife 
 
-The wife.  Traditional.  Hard working.  Caring.  She cooks.  She sews.  She likes it when he has enjoys her.    
+The wife is traditional, disciplined, caring.  She cooks.  She sews.  She fucks.     
 
-### THe Man
+### The Man
 
 The man, a man.  Beautiful man.  Tall, dark, handsome.  A carpenter, always well dressed and well mannered.  Joyous without fail.  He loves his wife.  He loves his children.  He loves his mistress.  He loves his nephews.  He loves his uncle.
 
