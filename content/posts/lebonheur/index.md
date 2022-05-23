@@ -13,7 +13,7 @@ series = ['French New Wave ']
 
 The music.  The poetry.  The stills.  
 
-The beauty of this film haunts me.  Pastels.  Mozart.  Yello.  Blue.  Red. Green.  Temptation.  Fidelity.
+The beauty of this film haunts me.  Pastels.  Mozart.  Yellow.  Blue.  Red. Green.  Temptation.  Fidelity.
 
 Moments and words.  Colors and music.  I can not process the barrage of sensation.
 
