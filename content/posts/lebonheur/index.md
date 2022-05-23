@@ -6,7 +6,7 @@ author = "Justin Napolitano"
 categories = ['Film', 'Observation']
 tags = ['color','music', 'being', 'identity', 'gender', 'love']
 images = ['feature-image.webp']
-series = ['Writing']
+series = ['French New Wave']
 +++
 
 ## Le Bonheur
