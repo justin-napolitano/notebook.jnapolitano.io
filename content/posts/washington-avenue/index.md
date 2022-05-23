@@ -5,7 +5,7 @@ description = ""
 author = "Justin Napolitano"
 categories = ['Reflection', 'Observation']
 tags = ['cigarettes','lonliness']
-images = ['feature-image.webp']
+images = ['feature-image.*']
 series = ['Writing']
 +++
 
