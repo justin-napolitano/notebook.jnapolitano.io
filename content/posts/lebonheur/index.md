@@ -1,3 +1,14 @@
++++
+title =  "Le Bonheur"
+date = "2022-05-23T01:40:32.169Z"
+description = "Death, Love, Replacement, Embrace."
+author = "Justin Napolitano"
+categories = ['Film', 'Observation']
+tags = ['color','music', 'being', 'identity', 'gender', 'love']
+images = ['feature-image.webp']
+series = ['Writing']
++++
+
 ## Le Bonheur
 
 The music.  The poetry.  The stills.  
