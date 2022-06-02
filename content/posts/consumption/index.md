@@ -7,7 +7,6 @@ categories = ['Consumption', 'Observation']
 tags = ['youtube', 'consumerism', 'identity']
 images = ['feature-image.*']
 series = ['Justin Feels']
-image = 'pond.jpeg'
 +++
 
 ## Consumption
@@ -18,7 +17,7 @@ I watched 5 hours of youtube.  I masturbated twice.  I had two coffees.  I ate a
 
 It doesn't feel right. 
 
-I want to be able to do without caring.  To be able to fuck, drink, smoke, and kill without a thought.  To be hard.  
+I want to be able to do without caring.  To be able to fuck, drink, smoke, and kill.  To be hard.  
 
 I cannot do it.  
 
@@ -28,11 +27,11 @@ I am not such a man.  Everything hurts.  I am tired.  I am in pain.  I want to d
 
 Death smiled at me.  He embraced me with his blade.  He only cut halfway through.  
 
-I still stand.  Somehow I walk, I talk, I breathe.  I step forward to live.
+I still stand.  I walk. I talk. I breathe.  I step forward to live.
 
 I live behind a computer screen.  I sit and type.  I sit and read.  I sit and consume sex, smoke, and mirrors. 
 
-I wanted to live.  Now, I disgrace myself with filth  I accepted it for a time.  I am broke.  I am dependent.  I am sick.  
+I wanted to live.  Now, I disgrace myself with filth.  I accepted it for a time.  I am broke.  I am dependent.  I am sick.  
 
 I hate it.  I cannot liberate myself from all of it.  I cannot truly be free.  Decay will come.  It is already here.  
 
