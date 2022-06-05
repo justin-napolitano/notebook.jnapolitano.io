@@ -2,8 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://notebook.jnapolitano.io/posts/prayer/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
     <loc>https://notebook.jnapolitano.io/categories/</loc>
-    <lastmod>2022-06-01T23:43:32+00:00</lastmod>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/categories/diary/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/tags/diary/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/tags/food/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/tags/god/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/tags/illness/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/posts/listeria/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/posts/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
+  </url><url>
+    <loc>https://notebook.jnapolitano.io/tags/</loc>
+    <lastmod>2022-06-05T02:43:32+00:00</lastmod>
   </url><url>
     <loc>https://notebook.jnapolitano.io/tags/consumerism/</loc>
     <lastmod>2022-06-01T23:43:32+00:00</lastmod>
@@ -20,19 +50,10 @@
     <loc>https://notebook.jnapolitano.io/series/justin-feels/</loc>
     <lastmod>2022-06-01T23:43:32+00:00</lastmod>
   </url><url>
-    <loc>https://notebook.jnapolitano.io/</loc>
-    <lastmod>2022-06-01T23:43:32+00:00</lastmod>
-  </url><url>
     <loc>https://notebook.jnapolitano.io/categories/observation/</loc>
     <lastmod>2022-06-01T23:43:32+00:00</lastmod>
   </url><url>
-    <loc>https://notebook.jnapolitano.io/posts/</loc>
-    <lastmod>2022-06-01T23:43:32+00:00</lastmod>
-  </url><url>
     <loc>https://notebook.jnapolitano.io/series/</loc>
-    <lastmod>2022-06-01T23:43:32+00:00</lastmod>
-  </url><url>
-    <loc>https://notebook.jnapolitano.io/tags/</loc>
     <lastmod>2022-06-01T23:43:32+00:00</lastmod>
   </url><url>
     <loc>https://notebook.jnapolitano.io/tags/youtube/</loc>
